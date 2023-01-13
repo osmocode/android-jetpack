@@ -1,4 +1,4 @@
-package fr.uge.android.plutus
+package fr.uge.plutus
 
 import org.junit.Test
 

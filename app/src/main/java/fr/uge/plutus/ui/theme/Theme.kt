@@ -1,4 +1,4 @@
-package fr.uge.android.plutus.ui.theme
+package fr.uge.plutus.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

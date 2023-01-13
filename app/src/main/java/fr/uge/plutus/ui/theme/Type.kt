@@ -1,4 +1,4 @@
-package fr.uge.android.plutus.ui.theme
+package fr.uge.plutus.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

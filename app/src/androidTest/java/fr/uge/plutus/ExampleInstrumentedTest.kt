@@ -1,4 +1,4 @@
-package fr.uge.android.plutus
+package fr.uge.plutus
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("fr.uge.android.plutus", appContext.packageName)
+        assertEquals("fr.uge.plutus", appContext.packageName)
     }
 }
