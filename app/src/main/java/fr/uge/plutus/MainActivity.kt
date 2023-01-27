@@ -4,25 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.uge.plutus.ui.theme.PlutusTheme
+import fr.uge.plutus.ui.ant.Ant
+import fr.uge.plutus.ui.ant.AntTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PlutusTheme {
-                // A surface container using the 'background' color from the theme
+            AntTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = Ant.colors.primary
                 ) {
-                    Greeting("Android")
+                    Greeting(name = "Android")
                 }
             }
         }
@@ -37,7 +36,7 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    PlutusTheme {
+    AntTheme {
         Greeting("Android")
     }
 }
