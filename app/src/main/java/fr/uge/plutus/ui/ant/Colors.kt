@@ -6,53 +6,53 @@ import androidx.compose.ui.graphics.Color
 
 @Stable
 class AntColors(
-    primary: Color,
-    success: Color,
-    warning: Color,
-    danger: Color
+    nav_background: Color,
+    nav_item: Color,
+    nav_item_focus: Color,
+    nav_shadow: Color
 ) {
-    var primary by mutableStateOf(primary, structuralEqualityPolicy())
+    var nav_background by mutableStateOf(nav_background, structuralEqualityPolicy())
         internal set
 
-    var success by mutableStateOf(success, structuralEqualityPolicy())
+    var nav_item by mutableStateOf(nav_item, structuralEqualityPolicy())
         internal set
 
-    var warning by mutableStateOf(warning, structuralEqualityPolicy())
+    var nav_item_focus by mutableStateOf(nav_item_focus, structuralEqualityPolicy())
         internal set
 
-    var danger by mutableStateOf(danger, structuralEqualityPolicy())
+    var nav_shadow by mutableStateOf(nav_shadow, structuralEqualityPolicy())
         internal set
 
     fun copy(
-        primary: Color = this.primary,
-        success: Color = this.success,
-        warning: Color = this.warning,
-        danger: Color = this.danger
+        nav_background: Color = this.nav_background,
+        nav_item_color: Color = this.nav_item,
+        nav_item_focus: Color = this.nav_item_focus,
+        nav_shadow: Color = this.nav_shadow
     ): AntColors = AntColors(
-        primary,
-        success,
-        warning,
-        danger
+        nav_background,
+        nav_item_color,
+        nav_item_focus,
+        nav_shadow
     )
 }
 
 fun defaultAntColors(
-    primary: Color = Color(0xFF1677ff),
-    success: Color = Color(0xFF00b578),
-    warning: Color = Color(0xFFff8f1f),
-    danger: Color = Color(0xFFff3141)
+    nav_background: Color = Color(0xFFECF0F1),
+    nav_item: Color = Color(0xFF95A5A6),
+    nav_item_focus: Color = Color(0xFF2C3E50),
+    nav_shadow: Color = Color(0xFF000000)
 ): AntColors = AntColors(
-    primary,
-    success,
-    warning,
-    danger
+    nav_background,
+    nav_item,
+    nav_item_focus,
+    nav_shadow
 )
 
 internal fun AntColors.updateColorsFrom(other: AntColors) {
-    primary = other.primary
-    success = other.success
-    warning = other.warning
-    danger = other.danger
+    nav_background = other.nav_background
+    nav_item = other.nav_item
+    nav_item_focus = other.nav_item_focus
+    nav_shadow = other.nav_shadow
 }
 
 internal val LocalColors = staticCompositionLocalOf { defaultAntColors() }
