@@ -5,11 +5,13 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -87,13 +89,19 @@ fun RowScope.AntBottomBarItem (
     navController: NavHostController
 ) {
     val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
+    val interactionSource = remember { MutableInteractionSource() }
 
     Box(
         modifier = Modifier
-            .clickable {
-                navController.navigate(item.route) {
-                    popUpTo(navController.graph.findStartDestination().id)
-                    launchSingleTop = true
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ){
+                if (!selected) {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.findStartDestination().id)
+                        launchSingleTop = true
+                    }
                 }
             }
     ) {
