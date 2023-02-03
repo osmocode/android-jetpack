@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +26,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 
 import fr.uge.plutus.ui.ant.Ant
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -34,7 +36,7 @@ fun AntTopBar(
     pages : List<String>
 ) {
     val pagerState = rememberPagerState()
-
+    val coroutineScope = rememberCoroutineScope()
 
     val indicator = @Composable {tabPosition : List<TabPosition> ->
         CustomIndicator(tabPosition, pagerState)
@@ -54,7 +56,9 @@ fun AntTopBar(
             Tab(
                 modifier = Modifier.zIndex(6f),
                 selected = selected,
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    coroutineScope.launch { pagerState.animateScrollToPage(index) }
+                    }) {
                 Text(text = title, color = if(selected) { Ant.colors.nav_item} else {Ant.colors.nav_item_focus})
             }
         }
@@ -67,7 +71,13 @@ fun AntTopBar(
             val selected = pagerState.currentPage == page
             Box(modifier = Modifier
                 .fillMaxSize()
-                .background(color = if (selected) { Color.Red } else { Color.White })
+                .background(
+                    color = if (selected) {
+                        Color.Red
+                    } else {
+                        Color.White
+                    }
+                )
             ){
                 Text(modifier = Modifier.align(Alignment.Center), text = "Page $page")
             }
