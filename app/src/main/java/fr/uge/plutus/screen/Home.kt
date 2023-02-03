@@ -29,6 +29,8 @@ fun HomeScreen(
             fontSize = 30.sp
         )
 
-        AntTopBar(navController = navController)
+        AntTopBar(navController = navController,
+            pages = listOf("Transaction", "Categories", "Summary")
+        )
     }
 }

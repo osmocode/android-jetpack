@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -22,17 +23,17 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+
 import fr.uge.plutus.ui.ant.Ant
-import kotlinx.coroutines.selects.select
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun AntTopBar(navController : NavHostController){
+fun AntTopBar(
+    navController : NavHostController,
+    pages : List<String>
+) {
     val pagerState = rememberPagerState()
-    val pages = listOf("Transaction", "Categories", "Summary")
-
-
 
 
     val indicator = @Composable {tabPosition : List<TabPosition> ->
@@ -40,32 +41,38 @@ fun AntTopBar(navController : NavHostController){
     }
 
     TabRow(
-        modifier = Modifier.height(50.dp),
+        modifier = Modifier
+            .height(35.dp)
+            .padding(2.dp)
+            .clip(shape = RoundedCornerShape(20)),
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = Ant.colors.nav_background,
         indicator = indicator)
     {
         pages.forEachIndexed{index, title ->
-           val active = pagerState.currentPage == index
+           val selected = pagerState.currentPage == index
             Tab(
                 modifier = Modifier.zIndex(6f),
-                selected = pagerState.currentPage == index,
+                selected = selected,
                 onClick = { /*TODO*/ }) {
-                Text(text = title, color = if(active) { Ant.colors.nav_item} else {Ant.colors.nav_item_focus})
+                Text(text = title, color = if(selected) { Ant.colors.nav_item} else {Ant.colors.nav_item_focus})
             }
         }
     }
-
-
     HorizontalPager(
         modifier = Modifier.zIndex(2f),
         count = pages.size,
-        state = pagerState)
-    { page ->
-        Box(modifier = Modifier.fillMaxSize()){
-            Text(modifier = Modifier.align(Alignment.Center), text = "Page $page")
-        }
+        state = pagerState
+    ) { page ->
+            val selected = pagerState.currentPage == page
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(color = if (selected) { Color.Red } else { Color.White })
+            ){
+                Text(modifier = Modifier.align(Alignment.Center), text = "Page $page")
+            }
     }
+
 }
 
 
@@ -98,13 +105,17 @@ private fun CustomIndicator(tabPositions: List<TabPosition>, pagerState: PagerSt
     }
 
     Box(modifier = Modifier
+        .height(35.dp)
         .offset(x = indicatorStart)
         .wrapContentSize(align = Alignment.BottomStart)
         .width(indicatorEnd - indicatorStart)
-        .padding(2.dp)
         .fillMaxSize()
-        .background(color = Ant.colors.nav_item_focus, shape = RoundedCornerShape(50))
-        .border(border = BorderStroke(2.dp, color = Ant.colors.nav_item_focus), shape = RoundedCornerShape(50))
+        .clip(shape = RoundedCornerShape(20))
+        .background(color = Ant.colors.nav_item_focus)
+        .border(
+            border = BorderStroke(2.dp, color = Ant.colors.nav_item_focus),
+            shape = RoundedCornerShape(20)
+        )
         .zIndex(1f)
     )
 }
