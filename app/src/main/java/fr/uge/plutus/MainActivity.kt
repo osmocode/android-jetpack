@@ -22,12 +22,13 @@ class MainActivity : ComponentActivity() {
                         NavigationBar(
                             navController = navController
                         )
+                    },
+                    content = {
+                        NavigationRouter(
+                            navController = navController
+                        )
                     }
-                ) {
-                    NavigationRouter(
-                        navController = navController
-                    )
-                }
+                )
             }
         }
     }
@@ -47,11 +48,12 @@ fun DefaultPreview() {
                 NavigationBar(
                     navController = navController
                 )
+            },
+            content = {
+                NavigationRouter(
+                    navController = navController
+                )
             }
-        ) {
-            NavigationRouter(
-                navController = navController
-            )
-        }
+        )
     }
 }
