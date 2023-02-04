@@ -1,6 +1,5 @@
 package fr.uge.plutus.screen
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,12 +18,12 @@ fun SettingScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(15.dp)
     ) {
         Text(
             text = "Settings",
             fontWeight = FontWeight.Bold,
-            fontSize = 30.sp
+            fontSize = 30.sp,
+            modifier = Modifier.padding(10.dp)
         )
     }
 }

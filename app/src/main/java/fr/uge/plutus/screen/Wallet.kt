@@ -18,12 +18,12 @@ fun WalletScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(15.dp)
     ) {
         Text(
             text = "Wallets",
             fontWeight = FontWeight.Bold,
-            fontSize = 30.sp
+            fontSize = 30.sp,
+            modifier = Modifier.padding(10.dp)
         )
     }
 }

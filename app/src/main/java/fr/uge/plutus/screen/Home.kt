@@ -7,11 +7,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import fr.uge.plutus.ui.components.AntTopBar
 
 
 @Composable
@@ -21,16 +19,12 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(15.dp)
     ) {
         Text(
             text = "Home",
             fontWeight = FontWeight.Bold,
-            fontSize = 30.sp
-        )
-
-        AntTopBar(navController = navController,
-            pages = listOf("Transaction", "Categories", "Summary")
+            fontSize = 30.sp,
+            modifier = Modifier.padding(10.dp)
         )
     }
 }
