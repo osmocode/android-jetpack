@@ -1,7 +1,7 @@
 # Selectionner un porte feuille courant
 
 ## Description
-** Faire un description simple de l'objectif du use-case **
+Choix de wallet  
 
 ## Sub use-case
-- [] Un action que l'utilisateur doit fair afin de répondre au use case principale
+- [ ] la possicilité que le user choisisse son wallet 

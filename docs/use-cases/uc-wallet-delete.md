@@ -1,8 +1,11 @@
 # Supprimer un porte feuille
 
 ## Description
-Faire un description simple de l'objectif du use-case
+suppression d'un wallet 
 
 ## Sub use-case
-- [] Un action que l'utilisateur doit fair afin de répondre au use case principale
-- Confirmer la suppression du porte feuille
+- [ ] Confirmer la suppression du porte feuille
+- [ ] faire attention au transaction qui sont entre deux wallet 
+
+` exemple ` :
+on a une transaction qui a comme etiquette transfere dans une wallet voir ce qui faut faire dans ce cas la 

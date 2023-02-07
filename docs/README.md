@@ -9,10 +9,9 @@
 - [ ] [uc-transaction-new](./use-cases/uc-transaction-new.md)
 - [x] [uc-transaction-research](./use-cases/uc-transaction-research.md)
 - [ ] [uc-transaction-update](./use-cases/uc-transaction-update.md)
-<div>
-      <input type="checkbox" id="scales" name="scales" checked>
-      <label for="scales">Scales</label>
-    </div>
+- [ ] [uc-notifier-budget](./use-cases/uc-notifier-budget.md)
+- [ ] [uc-notifier-location](./use-cases/uc-notifier-location.md)
+- [ ] [uc-notifier-todo](./use-cases/uc-notifier-todo.md)
 
 
 ## User flow

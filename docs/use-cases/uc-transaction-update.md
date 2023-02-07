@@ -2,8 +2,10 @@
 
 ## Description
 Dans ce use case on peut faire :
-- Modification d'une transaction <0>
-    - motant
-    - étiquettes
 
-         
+- [ ] Modification d'une transaction <0>
+    - [ ] motant
+    - [ ] étiquettes
+    - [ ] date 
+    - [ ] location
+    
