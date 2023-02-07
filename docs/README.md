@@ -60,8 +60,7 @@
 - filtrer sur une fourchette de montant
 - résultats triable sur montant et/ou date
 - exploitation d'index sur étiquettes
-- production de rapport synthétiques -> diagramme des montants selon temps avec comparaison avec le budjet<br>
-									 -> répartition transactions selon étiquettes
+- production de rapport synthétiques -> diagramme des montants selon temps avec comparaison avec le budjet + répartition transactions selon étiquettes
 
 # Niveau <2>
 
