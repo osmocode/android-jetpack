@@ -1,4 +1,6 @@
 # Rappel sur un emplacement
-- [ ] L'utilisateur doit pouvoir activer cet fonctionnalité
-- [ ] L'utilisateur doit pouvoir désactiver cet fonctionnalité
-- [ ] L'utilisateur doit pouvoir choisir les emplacements sur les quels effectuer les rappels
+
+L'utilisateur doit pouvoir :
+- [ ] activer/désactiver cette fonctionnalité
+- [ ] choisir les emplacements sur lesquels effectuer les rappels
+- [ ] recevoir une notification l'invitant à saisir une nouvelle transaction à cet emplacement
