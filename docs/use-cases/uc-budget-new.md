@@ -8,6 +8,7 @@ exemple :  depense : 200 €
 
 ## Sub use-case
 
-  -  [ ] L'utilisateur doit pouvoir créer un budget sur une etiquette
-  - [ ] L'utilisateur doit pouvoir créer un budget avec un montant précis
- - [ ] l'utilisateur doit être notifié lorsque son budget est atteint
+L'utilisateur doit :
+  -  [ ]  pouvoir créer un budget sur une etiquette
+  - [ ] pouvoir créer un budget avec un montant précis
+ - [ ]  être notifié lorsque son budget est atteint
