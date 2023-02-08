@@ -1,4 +1,5 @@
 # Rappel sur un budget
-- [ ] L'utilisateur doit pouvoir activer cet fonctionnalité
-- [ ] L'utilistaeur doit pouvoir desactive cet fonctionnlité
-- [ ] L'utilisateur doit pouvoir choisir a partir de quelt montant il recoit la notification
+
+L'utilisateur doit : 
+- [ ] pouvoir activer/désactiver cette fonctionnalité
+- [ ] recevoir ces notifications dans le tiroir à notification
