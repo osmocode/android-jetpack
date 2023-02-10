@@ -1,7 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
+
+apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'fr.uge.plutus'
@@ -65,6 +68,10 @@ dependencies {
 
     // Room dependencies
     implementation "androidx.room:room-common:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
 
     // Accompanist dependencies
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"

@@ -8,12 +8,11 @@ interface ITransactionRepository {
 
     fun retrieveAllTransaction(): Flow<List<Transaction>>
 
-    suspend fun createTransaction(transaction: Transaction): Transaction
+    suspend fun createTransaction(transaction: Transaction)
 
     suspend fun retrieveTransaction(id: Int): Transaction?
 
-    suspend fun updateTransaction(transaction: Transaction): Transaction
+    suspend fun updateTransaction(transaction: Transaction): Int
 
-    suspend fun deleteTransaction(transaction: Transaction): Boolean
-
+    suspend fun deleteTransaction(transaction: Transaction): Int
 }

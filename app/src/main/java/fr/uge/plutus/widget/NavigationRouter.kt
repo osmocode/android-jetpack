@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.uge.plutus.screen.HistoryScreen
+import fr.uge.plutus.layout.history.HistoryScreen
 import fr.uge.plutus.screen.HomeScreen
 import fr.uge.plutus.screen.SettingScreen
 import fr.uge.plutus.screen.WalletScreen
