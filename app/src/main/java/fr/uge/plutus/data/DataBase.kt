@@ -1,7 +1,6 @@
 package fr.uge.plutus.data
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -18,19 +17,18 @@ abstract class DataBase : RoomDatabase() {
 
     companion object {
 
-        //@Volatile // To make sure that visible for other thread immediately
+        // @Volatile
+        // To use if check was made outside of synchronized
         private var INSTANCE: DataBase? = null
 
         fun getInstance(context: Context): DataBase {
-            Log.println(Log.ASSERT, "BDD","context= $context")
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room
-                        .databaseBuilder(context/*.applicationContext*/, DataBase::class.java, "plutus.db")
+                        .databaseBuilder(context, DataBase::class.java, "plutus.db")
                         .build()
                     INSTANCE = instance
-//                    Log.println(Log.ASSERT, "BDD","context= $context")
                 }
                 return instance
             }

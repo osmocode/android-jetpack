@@ -1,7 +1,7 @@
 package fr.uge.plutus.data.repository
 
-import android.app.Application
 import android.content.Context
+import android.util.Log
 import fr.uge.plutus.data.DataBase
 import fr.uge.plutus.data.dao.TransactionDao
 import fr.uge.plutus.data.interfaces.ITransactionRepository
@@ -13,8 +13,10 @@ class TransactionRepository(
 ) : ITransactionRepository {
     override fun retrieveAllTransaction(): Flow<List<Transaction>> = transactionDao.retrieveAll()
 
-    override suspend fun createTransaction(transaction: Transaction) =
+    override suspend fun createTransaction(transaction: Transaction) {
+        Log.println(Log.ASSERT, "INSERT", transaction.toString())
         transactionDao.create(transaction)
+    }
 
     override suspend fun retrieveTransaction(id: Int): Transaction? =
         transactionDao.retrieveById(id)
