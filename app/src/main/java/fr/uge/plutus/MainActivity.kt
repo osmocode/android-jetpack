@@ -13,8 +13,10 @@ import fr.uge.plutus.ui.ant.AntTheme
 import fr.uge.plutus.widget.NavigationBar
 import fr.uge.plutus.widget.NavigationRouter
 
+
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

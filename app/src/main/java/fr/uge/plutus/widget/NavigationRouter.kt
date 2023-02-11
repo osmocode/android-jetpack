@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import fr.uge.plutus.layout.transaction_list.TransactionListScreen
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import fr.uge.plutus.screen.HistoryScreen
@@ -16,19 +17,19 @@ import fr.uge.plutus.screen.WalletScreen
 sealed class NavigationRoute(
     val path: String,
 ) {
-    object Home: NavigationRoute (
+    object Home : NavigationRoute(
         path = "home"
     )
 
-    object History: NavigationRoute (
+    object History : NavigationRoute(
         path = "history"
     )
 
-    object Wallets: NavigationRoute (
+    object Wallets : NavigationRoute(
         path = "wallets"
     )
 
-    object Settings: NavigationRoute (
+    object Settings : NavigationRoute(
         path = "settings"
     )
 }
@@ -69,7 +70,7 @@ fun NavigationRouter(
         composable(
             route = NavigationRoute.History.path,
             content = {
-                HistoryScreen(
+                TransactionListScreen(
                     navController = navController
                 )
             }
