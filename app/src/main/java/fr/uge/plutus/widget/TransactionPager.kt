@@ -15,7 +15,7 @@ import fr.uge.plutus.ui.components.AntTabBarItem
 
 @Composable
 fun TransactionPager(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val items = listOf(
         AntTabBarItem (

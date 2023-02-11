@@ -22,18 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberAnimatedNavController()
             AntTheme {
-                Scaffold(
-                    bottomBar = {
-                        NavigationBar(
-                            navController = navController
-                        )
-                    },
-                    content = {
-                        NavigationRouter(
-                            navController = navController
-                        )
-                    }
-                )
+                NavigationRouter(navController = navController)
             }
         }
     }

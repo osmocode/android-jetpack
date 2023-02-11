@@ -37,7 +37,10 @@ fun TransactionWidget(
         CustomButton(
             title = "See all",
             type = CustomButtonType.PRIMARY,
-            trailingIcon = Icons.Outlined.ChevronRight
+            trailingIcon = Icons.Outlined.ChevronRight,
+            onClick = {
+                navController.navigate(NavigationRoute.Transaction.path)
+            }
         )
     }
 

@@ -1,11 +1,16 @@
 package fr.uge.plutus.widget
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import fr.uge.plutus.ui.components.AntBottomBar
 import fr.uge.plutus.ui.components.AntBottomBarItem
 
@@ -46,6 +51,7 @@ sealed class NavigationBarItem (
 
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationBar(
     navController: NavHostController
@@ -57,9 +63,26 @@ fun NavigationBar(
         NavigationBarItem.Settings
     )
 
-    AntBottomBar(
-        navController = navController,
-        items = items
-    )
+    val navStackBackEntry by navController.currentBackStackEntryAsState()
+    var currentDestination = navStackBackEntry?.destination
+    val selected = items.any { it.route == currentDestination?.route }
+
+    AnimatedVisibility(
+        visible = selected,
+        enter = slideInVertically(
+            initialOffsetY = { height -> height * 2 / 3  },
+            animationSpec = tween(300)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { height -> height * 2 / 3 },
+            animationSpec = tween(300)
+        )
+    ) {
+        AntBottomBar(
+            navController = navController,
+            items = items
+        )
+    }
+
 
 }
