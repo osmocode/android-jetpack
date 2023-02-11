@@ -23,9 +23,11 @@ fun AntCard(
     extras : String,
 ) {
 
-    Box(modifier = Modifier
-        .background(color = Color.White)
-        .padding(10.dp)) {
+    Box(
+        modifier = Modifier
+            .background(color = Color.White)
+            .padding(10.dp)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -73,5 +75,5 @@ fun AntCard(
 @Preview
 @Composable
 fun AntCardPreview(){
-    AntCard("Crous","07/02/23", "3,25€")
+    AntCard("Nouveau","07/02/23", "3,25€")
 }
