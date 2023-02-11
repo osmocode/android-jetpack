@@ -12,6 +12,6 @@ data class Transaction(
     val desc: String,
     // val data
     @Embedded
-    val price: Price
-
+    val price: Price,
+    val timestamp: Double
 )

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.uge.plutus.layout.history.HistoryScreen
+import fr.uge.plutus.layout.transaction_list.TransactionListScreen
 import fr.uge.plutus.screen.HomeScreen
 import fr.uge.plutus.screen.SettingScreen
 import fr.uge.plutus.screen.WalletScreen
@@ -13,19 +13,19 @@ import fr.uge.plutus.screen.WalletScreen
 sealed class NavigationRoute(
     val path: String,
 ) {
-    object Home: NavigationRoute (
+    object Home : NavigationRoute(
         path = "home"
     )
 
-    object History: NavigationRoute (
+    object History : NavigationRoute(
         path = "history"
     )
 
-    object Wallets: NavigationRoute (
+    object Wallets : NavigationRoute(
         path = "wallets"
     )
 
-    object Settings: NavigationRoute (
+    object Settings : NavigationRoute(
         path = "settings"
     )
 }
@@ -49,7 +49,7 @@ fun NavigationRouter(
         composable(
             route = NavigationRoute.History.path,
             content = {
-                HistoryScreen(
+                TransactionListScreen(
                     navController = navController
                 )
             }
