@@ -10,6 +10,7 @@ class AntColors(
     nav_item: Color,
     nav_item_focus: Color,
     nav_shadow: Color,
+    button_color: Color,
     input_textColor: Color,
     input_leadingIconColor: Color,
     input_trailingIconColor: Color,
@@ -29,6 +30,9 @@ class AntColors(
         internal set
 
     var nav_shadow by mutableStateOf(nav_shadow, structuralEqualityPolicy())
+        internal set
+
+    var button_color by mutableStateOf(button_color, structuralEqualityPolicy())
         internal set
 
     var input_textColor by mutableStateOf(input_textColor, structuralEqualityPolicy())
@@ -60,6 +64,7 @@ class AntColors(
         nav_item_color: Color = this.nav_item,
         nav_item_focus: Color = this.nav_item_focus,
         nav_shadow: Color = this.nav_shadow,
+        button_color: Color = this.button_color,
         input_textColor: Color = this.input_textColor,
         input_leadingIconColor: Color = this.input_leadingIconColor,
         input_trailingIconColor: Color = this.input_trailingIconColor,
@@ -73,6 +78,7 @@ class AntColors(
         nav_item_color,
         nav_item_focus,
         nav_shadow,
+        button_color,
         input_textColor,
         input_leadingIconColor,
         input_trailingIconColor,
@@ -89,6 +95,7 @@ fun defaultAntColors(
     nav_item: Color = Color(0xFF95A5A6),
     nav_item_focus: Color = Color(0xFF2C3E50),
     nav_shadow: Color = Color(0xFF000000),
+    button_color: Color = Color(0xFF2C3E50),
     input_textColor: Color = Color(0xFF2C3E50),
     input_leadingIconColor: Color = Color(0xFF2C3E50),
     input_trailingIconColor: Color = Color(0xFF2C3E50),
@@ -102,6 +109,7 @@ fun defaultAntColors(
     nav_item,
     nav_item_focus,
     nav_shadow,
+    button_color,
     input_textColor,
     input_leadingIconColor,
     input_trailingIconColor,
@@ -117,6 +125,7 @@ internal fun AntColors.updateColorsFrom(other: AntColors) {
     nav_item = other.nav_item
     nav_item_focus = other.nav_item_focus
     nav_shadow = other.nav_shadow
+    button_color = other.button_color
     input_textColor = other.input_textColor
     input_leadingIconColor = other.input_leadingIconColor
     input_trailingIconColor = other.input_trailingIconColor

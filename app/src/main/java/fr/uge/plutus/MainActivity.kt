@@ -3,21 +3,24 @@ package fr.uge.plutus
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import fr.uge.plutus.ui.ant.AntTheme
 import fr.uge.plutus.widget.NavigationBar
 import fr.uge.plutus.widget.NavigationRouter
 
 
+@OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
+            val navController = rememberAnimatedNavController()
             AntTheme {
                 Scaffold(
                     bottomBar = {
