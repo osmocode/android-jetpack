@@ -32,17 +32,19 @@ fun AntTextField(
     var text = remember { mutableStateOf("") }
     val interactionSource = remember { MutableInteractionSource() }
     Box(
-        modifier = Modifier.padding(horizontal = 10.dp)
+        modifier = Modifier.padding(horizontal = 15.dp)
     ) {
         BasicTextField(
             modifier = modifier
-                .height(42.dp)
                 .background(
                     color = Ant.colors.input_backgroundColor,
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(5.dp)
                 )
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp),
+                .padding(
+                    vertical = 5.dp,
+                    horizontal = 10.dp
+                ),
             value = text.value,
             onValueChange = {
                 text.value = it
@@ -57,12 +59,12 @@ fun AntTextField(
             decorationBox = { text_field ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Search Icon",
-                        tint = Ant.colors.input_textColor
+                        tint = Ant.colors.input_textColor,
                     )
                     Box(
                         modifier = Modifier.weight(1f)
@@ -84,7 +86,7 @@ fun AntTextField(
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(24.dp)
+                                .size(20.dp)
                                 .background(
                                     color = Ant.colors.input_textColor,
                                     shape = CircleShape
