@@ -48,7 +48,7 @@ fun AntPagerLayout(
                 )
             },
             modifier = Modifier
-                .height(42.dp)
+                .height(35.dp)
                 .padding(horizontal = 10.dp)
                 .clip(shape = RoundedCornerShape(10.dp)),
         ) {
