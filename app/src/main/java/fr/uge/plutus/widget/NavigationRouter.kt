@@ -53,6 +53,22 @@ fun NavigationRouter(
         AnimatedNavHost(
             navController = navController,
             startDestination = NavigationRoute.Home.path,
+            enterTransition = {
+                slideInVertically(
+                    initialOffsetY = { height -> height/15 },
+                    animationSpec = tween(300)
+                ) + fadeIn(
+                    animationSpec = tween(150)
+                )
+            },
+            exitTransition = {
+                slideOutVertically(
+                    targetOffsetY = { height -> height/15 },
+                    animationSpec = tween(300)
+                ) + fadeOut(
+                    animationSpec = tween(150)
+                )
+            }
         ) {
             composable(
                 route = NavigationRoute.Home.path,
@@ -62,12 +78,7 @@ fun NavigationRouter(
                             initialOffsetX = { width -> -width },
                             animationSpec = tween(300)
                         )
-                        else -> slideInVertically(
-                            initialOffsetY = { height -> height/15 },
-                            animationSpec = tween(300)
-                        ) + fadeIn(
-                            animationSpec = tween(150)
-                        )
+                        else -> null
                     }
                 },
                 exitTransition = {
@@ -76,14 +87,7 @@ fun NavigationRouter(
                             targetOffsetX = { width -> -width },
                             animationSpec = tween(300)
                         )
-                        else -> {
-                            slideOutVertically(
-                                targetOffsetY = { height -> height/15 },
-                                animationSpec = tween(300)
-                            ) + fadeOut(
-                                animationSpec = tween(150)
-                            )
-                        }
+                        else -> null
                     }
                 },
                 content = {
@@ -94,22 +98,6 @@ fun NavigationRouter(
             )
             composable(
                 route = NavigationRoute.History.path,
-                enterTransition = {
-                    slideInVertically(
-                        initialOffsetY = { height -> height/15 },
-                        animationSpec = tween(300)
-                    ) + fadeIn(
-                        animationSpec = tween(150)
-                    )
-                },
-                exitTransition = {
-                    slideOutVertically(
-                        targetOffsetY = { height -> height/15 },
-                        animationSpec = tween(300)
-                    ) + fadeOut(
-                        animationSpec = tween(150)
-                    )
-                },
                 content = {
                     TransactionListScreen(
                         navController = navController
@@ -118,22 +106,6 @@ fun NavigationRouter(
             )
             composable(
                 route = NavigationRoute.Wallets.path,
-                enterTransition = {
-                    slideInVertically(
-                        initialOffsetY = { height -> height/15 },
-                        animationSpec = tween(300)
-                    ) + fadeIn(
-                        animationSpec = tween(150)
-                    )
-                },
-                exitTransition = {
-                    slideOutVertically(
-                        targetOffsetY = { height -> height/15 },
-                        animationSpec = tween(300)
-                    ) + fadeOut(
-                        animationSpec = tween(150)
-                    )
-                },
                 content = {
                     WalletScreen(
                         navController = navController
@@ -142,22 +114,6 @@ fun NavigationRouter(
             )
             composable(
                 route = NavigationRoute.Settings.path,
-                enterTransition = {
-                    slideInVertically(
-                        initialOffsetY = { height -> height/15 },
-                        animationSpec = tween(300)
-                    ) + fadeIn(
-                        animationSpec = tween(150)
-                    )
-                },
-                exitTransition = {
-                    slideOutVertically(
-                        targetOffsetY = { height -> height/15 },
-                        animationSpec = tween(300)
-                    ) + fadeOut(
-                        animationSpec = tween(150)
-                    )
-                },
                 content = {
                     SettingScreen(
                         navController = navController
