@@ -6,53 +6,134 @@ import androidx.compose.ui.graphics.Color
 
 @Stable
 class AntColors(
-    primary: Color,
-    success: Color,
-    warning: Color,
-    danger: Color
+    nav_background: Color,
+    nav_item: Color,
+    nav_item_focus: Color,
+    nav_shadow: Color,
+    button_color: Color,
+    input_textColor: Color,
+    input_leadingIconColor: Color,
+    input_trailingIconColor: Color,
+    input_cursorColor: Color,
+    input_placeholderColor: Color,
+    input_focusedIndicatorColor: Color,
+    input_unfocusedIndicatorColor: Color,
+    input_backgroundColor: Color
 ) {
-    var primary by mutableStateOf(primary, structuralEqualityPolicy())
+    var nav_background by mutableStateOf(nav_background, structuralEqualityPolicy())
         internal set
 
-    var success by mutableStateOf(success, structuralEqualityPolicy())
+    var nav_item by mutableStateOf(nav_item, structuralEqualityPolicy())
         internal set
 
-    var warning by mutableStateOf(warning, structuralEqualityPolicy())
+    var nav_item_focus by mutableStateOf(nav_item_focus, structuralEqualityPolicy())
         internal set
 
-    var danger by mutableStateOf(danger, structuralEqualityPolicy())
+    var nav_shadow by mutableStateOf(nav_shadow, structuralEqualityPolicy())
+        internal set
+
+    var button_color by mutableStateOf(button_color, structuralEqualityPolicy())
+        internal set
+
+    var input_textColor by mutableStateOf(input_textColor, structuralEqualityPolicy())
+        internal set
+
+    var input_leadingIconColor by mutableStateOf(input_leadingIconColor, structuralEqualityPolicy())
+        internal set
+
+    var input_trailingIconColor by mutableStateOf(input_trailingIconColor, structuralEqualityPolicy())
+        internal set
+
+    var input_cursorColor by mutableStateOf(input_cursorColor, structuralEqualityPolicy())
+        internal set
+
+    var input_placeholderColor by mutableStateOf(input_placeholderColor, structuralEqualityPolicy())
+        internal set
+
+    var input_focusedIndicatorColor by mutableStateOf(input_focusedIndicatorColor, structuralEqualityPolicy())
+        internal set
+
+    var input_unfocusedIndicatorColor by mutableStateOf(input_unfocusedIndicatorColor, structuralEqualityPolicy())
+        internal set
+
+    var input_backgroundColor by mutableStateOf(input_backgroundColor, structuralEqualityPolicy())
         internal set
 
     fun copy(
-        primary: Color = this.primary,
-        success: Color = this.success,
-        warning: Color = this.warning,
-        danger: Color = this.danger
+        nav_background: Color = this.nav_background,
+        nav_item_color: Color = this.nav_item,
+        nav_item_focus: Color = this.nav_item_focus,
+        nav_shadow: Color = this.nav_shadow,
+        button_color: Color = this.button_color,
+        input_textColor: Color = this.input_textColor,
+        input_leadingIconColor: Color = this.input_leadingIconColor,
+        input_trailingIconColor: Color = this.input_trailingIconColor,
+        input_cursorColor: Color = this.input_cursorColor,
+        input_placeholderColor: Color = this.input_placeholderColor,
+        input_focusedIndicatorColor: Color = this.input_focusedIndicatorColor,
+        input_unfocusedIndicatorColor: Color = this.input_unfocusedIndicatorColor,
+        input_backgroundColor: Color = this.input_backgroundColor
     ): AntColors = AntColors(
-        primary,
-        success,
-        warning,
-        danger
+        nav_background,
+        nav_item_color,
+        nav_item_focus,
+        nav_shadow,
+        button_color,
+        input_textColor,
+        input_leadingIconColor,
+        input_trailingIconColor,
+        input_cursorColor,
+        input_placeholderColor,
+        input_focusedIndicatorColor,
+        input_unfocusedIndicatorColor,
+        input_backgroundColor
     )
 }
 
 fun defaultAntColors(
-    primary: Color = Color(0xFF1677ff),
-    success: Color = Color(0xFF00b578),
-    warning: Color = Color(0xFFff8f1f),
-    danger: Color = Color(0xFFff3141)
-): AntColors = AntColors(
-    primary,
-    success,
-    warning,
-    danger
+    nav_background: Color = Color(0xFFECF0F1),
+    nav_item: Color = Color(0xFF95A5A6),
+    nav_item_focus: Color = Color(0xFF2C3E50),
+    nav_shadow: Color = Color(0xFF000000),
+    button_color: Color = Color(0xFF2C3E50),
+    input_textColor: Color = Color(0xFF2C3E50),
+    input_leadingIconColor: Color = Color(0xFF2C3E50),
+    input_trailingIconColor: Color = Color(0xFF2C3E50),
+    input_cursorColor: Color = Color(0xFF2C3E50),
+    input_placeholderColor: Color = Color(0xFF2C3E50),
+    input_focusedIndicatorColor: Color = Color.Transparent,
+    input_unfocusedIndicatorColor: Color = Color.Transparent,
+    input_backgroundColor: Color = Color(0xFFECF0F1)
+) = AntColors(
+    nav_background,
+    nav_item,
+    nav_item_focus,
+    nav_shadow,
+    button_color,
+    input_textColor,
+    input_leadingIconColor,
+    input_trailingIconColor,
+    input_cursorColor,
+    input_placeholderColor,
+    input_focusedIndicatorColor,
+    input_unfocusedIndicatorColor,
+    input_backgroundColor
 )
 
 internal fun AntColors.updateColorsFrom(other: AntColors) {
-    primary = other.primary
-    success = other.success
-    warning = other.warning
-    danger = other.danger
+    nav_background = other.nav_background
+    nav_item = other.nav_item
+    nav_item_focus = other.nav_item_focus
+    nav_shadow = other.nav_shadow
+    button_color = other.button_color
+    input_textColor = other.input_textColor
+    input_leadingIconColor = other.input_leadingIconColor
+    input_trailingIconColor = other.input_trailingIconColor
+    input_cursorColor = other.input_cursorColor
+    input_placeholderColor = other.input_placeholderColor
+    input_focusedIndicatorColor = other.input_focusedIndicatorColor
+    input_unfocusedIndicatorColor = other.input_unfocusedIndicatorColor
+    input_backgroundColor = other.input_backgroundColor
 }
 
 internal val LocalColors = staticCompositionLocalOf { defaultAntColors() }

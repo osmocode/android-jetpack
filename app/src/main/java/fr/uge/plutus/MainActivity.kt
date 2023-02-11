@@ -3,40 +3,60 @@ package fr.uge.plutus
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.uge.plutus.ui.ant.Ant
+import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import fr.uge.plutus.ui.ant.AntTheme
+import fr.uge.plutus.widget.NavigationBar
+import fr.uge.plutus.widget.NavigationRouter
 
+@OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberAnimatedNavController()
             AntTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Ant.colors.primary
-                ) {
-                    Greeting(name = "Android")
-                }
+                Scaffold(
+                    bottomBar = {
+                        NavigationBar(
+                            navController = navController
+                        )
+                    },
+                    content = {
+                        NavigationRouter(
+                            navController = navController
+                        )
+                    }
+                )
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    widthDp = 412,
+    heightDp = 915
+)
 @Composable
 fun DefaultPreview() {
+    val navController = rememberNavController()
     AntTheme {
-        Greeting("Android")
+        Scaffold(
+            bottomBar = {
+                NavigationBar(
+                    navController = navController
+                )
+            },
+            content = {
+                NavigationRouter(
+                    navController = navController
+                )
+            }
+        )
     }
 }
