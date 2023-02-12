@@ -3,11 +3,14 @@ package fr.uge.plutus.layout.transaction_list
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,9 +20,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.uge.plutus.ui.components.*
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TransactionListScreen(
     navController: NavHostController
@@ -69,33 +74,64 @@ fun TransactionListScreen(
         )
     )
 
-    AntTopBar(
-        title = "Transaction",
-        backIcon = Icons.Default.ArrowBack,
-        backOnClick = {
-          navController.popBackStack()
-        },
-        trailingIcon = {
-            AntActionButton(
-                modifier = Modifier.padding(end = 16.dp),
-                type = AntActionButtonType.PRIMARY,
-                icon = Icons.Outlined.Add,
-                title = "New Transaction",
-                onClick = { /*TODO*/ }
+    val coroutineScope = rememberCoroutineScope()
+    AntBottomSheetScaffold(
+        sheetContent = listOf(
+            AntBottomSheetItemState(
+                label = "Choice 1",
+                icon = Icons.Default.CalendarToday,
+                onClick = {}
+            ),
+            AntBottomSheetItemState(
+                label = "Choice 1",
+                icon = Icons.Default.CalendarToday,
+                onClick = {}
+            ),
+            AntBottomSheetItemState(
+                label = "Choice 1",
+                icon = Icons.Default.CalendarToday,
+                onClick = {}
             )
-        }
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+        )
+    ) { state ->
+        AntTopBar(
+            title = "Transaction",
+            backIcon = Icons.Default.ArrowBack,
+            backOnClick = {
+                navController.popBackStack()
+            },
+            trailingIcon = {
+                AntActionButton(
+                    modifier = Modifier.padding(end = 16.dp),
+                    type = AntActionButtonType.PRIMARY,
+                    icon = Icons.Outlined.Add,
+                    title = "New Transaction",
+                    onClick = {
+                        coroutineScope.launch {
+                            if (state.bottomSheetState.isCollapsed) {
+                                state.bottomSheetState.expand()
+                            } else {
+                                state.bottomSheetState.collapse()
+                            }
+                        }
+                    }
+                )
+            }
         ) {
-            AntTextField()
-            AntPagerLayout(
-                navController = navController,
-                pages = items
-            )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                AntTextField()
+                AntPagerLayout(
+                    navController = navController,
+                    pages = items
+                )
+            }
         }
     }
+
+
 }
 
 @Preview
