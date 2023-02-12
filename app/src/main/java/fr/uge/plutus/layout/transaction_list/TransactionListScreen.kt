@@ -3,8 +3,6 @@ package fr.uge.plutus.layout.transaction_list
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -73,17 +71,9 @@ fun TransactionListScreen(
 
     AntTopBar(
         title = "Transaction",
-        leadingIcon = {
-            IconButton(
-                onClick = {
-                    navController.popBackStack()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Arrow Back"
-                )
-            }
+        backIcon = Icons.Default.ArrowBack,
+        backOnClick = {
+          navController.popBackStack()
         },
         trailingIcon = {
             AntActionButton(

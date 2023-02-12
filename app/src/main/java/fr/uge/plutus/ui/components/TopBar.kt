@@ -10,19 +10,20 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun AntTopBar(
-    title: String,
-    leadingIcon: @Composable () -> Unit = {},
+    title: String? = null,
+    backIcon: ImageVector? = null,
+    backOnClick: () -> Unit,
     trailingIcon: @Composable () -> Unit = {},
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -32,26 +33,35 @@ fun AntTopBar(
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    vertical = 3.dp
-                ),
+                .padding(horizontal = 3.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            leadingIcon()
+            if (backIcon != null) {
+                IconButton(
+                    onClick = backOnClick
+                ) {
+                    Icon(
+                        imageVector = backIcon,
+                        contentDescription = null
+                    )
+                }
+            }
             trailingIcon()
         }
-        Text(
-            modifier = Modifier
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 10.dp
-                ),
-            text = title,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
+        if (title != null) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 10.dp
+                    ),
+                text = title,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
         Box (
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -63,22 +73,13 @@ fun AntTopBar(
 
 @Preview
 @Composable
-fun AntTopBarPreview (
+fun MiddleAntTopBarPreview (
 
 ) {
-    val navController = rememberNavController()
     AntTopBar(
         title = "Preview",
-        leadingIcon = {
-            IconButton(
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Arrow Back"
-                )
-            }
-        },
+        backIcon = Icons.Default.ArrowBack,
+        backOnClick = {},
         trailingIcon = {
             AntActionButton(
                 modifier = Modifier.padding(end = 16.dp),
@@ -87,6 +88,19 @@ fun AntTopBarPreview (
                 title = "New Transaction",
                 onClick = { /*TODO*/ }
             )
+        }
+    )
+}
+
+@Preview
+@Composable
+fun LightAntTopBarPreview(
+
+) {
+    AntTopBar(
+        backIcon = Icons.Default.ArrowBack,
+        backOnClick = {
+
         }
     )
 }

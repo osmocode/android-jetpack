@@ -32,7 +32,7 @@ fun AntTextField(
     var text = remember { mutableStateOf("") }
     val interactionSource = remember { MutableInteractionSource() }
     Box(
-        modifier = Modifier.padding(horizontal = 15.dp)
+        modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         BasicTextField(
             modifier = modifier
