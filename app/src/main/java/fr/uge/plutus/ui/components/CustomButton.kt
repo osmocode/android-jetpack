@@ -5,11 +5,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.runtime.Composable
@@ -46,9 +44,9 @@ fun CustomButton(
                 color = if (type == CustomButtonType.DEFAULT) Ant.colors.button_color else Color.Transparent,
                 shape = RoundedCornerShape(10.dp)
             )
-            .clickable {
-                onClick()
-            }
+            .clickable(
+                onClick = onClick
+            )
             .fillMaxWidth()
             .background(
                 color = CustomButtonBackgroundColor(

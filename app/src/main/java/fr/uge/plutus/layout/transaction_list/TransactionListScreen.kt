@@ -3,20 +3,22 @@ package fr.uge.plutus.layout.transaction_list
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import fr.uge.plutus.ui.components.AntCard
-import fr.uge.plutus.ui.components.AntPagerLayout
-import fr.uge.plutus.ui.components.AntTabBarItem
-import fr.uge.plutus.ui.components.AntTextField
+import androidx.navigation.compose.rememberNavController
+import fr.uge.plutus.ui.components.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,21 +71,50 @@ fun TransactionListScreen(
         )
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+    AntTopBar(
+        title = "Transaction",
+        leadingIcon = {
+            IconButton(
+                onClick = {
+                    navController.popBackStack()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Arrow Back"
+                )
+            }
+        },
+        trailingIcon = {
+            AntActionButton(
+                modifier = Modifier.padding(end = 16.dp),
+                type = AntActionButtonType.PRIMARY,
+                icon = Icons.Outlined.Add,
+                title = "New Transaction",
+                onClick = { /*TODO*/ }
+            )
+        }
     ) {
-        Text(
-            text = "History",
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            modifier = Modifier.padding(15.dp)
-        )
-        AntTextField()
-        AntPagerLayout(
-            navController = navController,
-            pages = items
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            AntTextField()
+            AntPagerLayout(
+                navController = navController,
+                pages = items
+            )
+        }
     }
+}
+
+@Preview
+@Composable
+fun TransactionListScreenPreview(
+
+) {
+    val navController = rememberNavController()
+    TransactionListScreen(
+        navController = navController
+    )
 }
