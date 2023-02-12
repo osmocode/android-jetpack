@@ -13,6 +13,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.outlined.SyncAlt
+import androidx.compose.material.icons.outlined.TrendingDown
+import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -126,8 +129,8 @@ fun AntBottomSheetItem(
             verticalAlignment = Alignment.CenterVertically
         ){
             Box(
-                modifier = Modifier
-                    .size(50.dp)
+                modifier = Modifier.padding(start = 10.dp)
+                    .size(40.dp)
                     .background(
                         color = Ant.colors.nav_item_focus,
                         shape = CircleShape
@@ -159,18 +162,18 @@ fun AntBottomSheetScaffoldPreview(
     AntBottomSheetScaffold(
         sheetContent = listOf(
             AntBottomSheetItemState(
-                label = "Choice 1",
-                icon = Icons.Default.CalendarToday,
+                label = "Credit",
+                icon = Icons.Outlined.TrendingUp,
                 onClick = {}
             ),
             AntBottomSheetItemState(
-                label = "Choice 1",
-                icon = Icons.Default.CalendarToday,
+                label = "Debit",
+                icon = Icons.Outlined.TrendingDown,
                 onClick = {}
             ),
             AntBottomSheetItemState(
-                label = "Choice 1",
-                icon = Icons.Default.CalendarToday,
+                label = "Transfer",
+                icon = Icons.Outlined.SyncAlt,
                 onClick = {}
             )
         ),

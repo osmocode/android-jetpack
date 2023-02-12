@@ -9,6 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.SyncAlt
+import androidx.compose.material.icons.outlined.TrendingDown
+import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -74,18 +77,18 @@ fun TransactionListScreen(
     AntBottomSheetScaffold(
         sheetContent = listOf(
             AntBottomSheetItemState(
-                label = "Choice 1",
-                icon = Icons.Default.CalendarToday,
+                label = "Credit",
+                icon = Icons.Outlined.TrendingUp,
                 onClick = {}
             ),
             AntBottomSheetItemState(
-                label = "Choice 1",
-                icon = Icons.Default.CalendarToday,
+                label = "Debit",
+                icon = Icons.Outlined.TrendingDown,
                 onClick = {}
             ),
             AntBottomSheetItemState(
-                label = "Choice 1",
-                icon = Icons.Default.CalendarToday,
+                label = "Transfer",
+                icon = Icons.Outlined.SyncAlt,
                 onClick = {}
             )
         )

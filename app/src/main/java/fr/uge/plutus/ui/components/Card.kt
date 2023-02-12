@@ -3,7 +3,9 @@ package fr.uge.plutus.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,13 +18,14 @@ import androidx.compose.ui.unit.sp
 import fr.uge.plutus.ui.ant.Ant
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AntCard(
     title : String,
     description : String,
     extras : String,
 ) {
-
+    val swipe = rememberSwipeableState(initialValue = 0)
     Box(
         modifier = Modifier
             .background(color = Color.White)
