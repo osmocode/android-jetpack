@@ -13,28 +13,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.uge.plutus.ui.components.*
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
+import java.text.DateFormat.getDateInstance
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TransactionListScreen(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
-    val context = LocalContext.current.applicationContext
-    val viewModel = viewModel<TransactionListViewModel>(
-        factory = TransactionListViewModelFactory(context)
-    )
+    val viewModel = hiltViewModel<TransactionListViewModel>()
     val state = viewModel.state.value
-    val formater = SimpleDateFormat("dd/MM/yyyy")
+    val formater = getDateInstance()//SimpleDateFormat("dd/MM/yyyy")
 
     val items = listOf(
         AntTabBarItem(
@@ -63,7 +59,7 @@ fun TransactionListScreen(
         ),
         AntTabBarItem(
             label = "Coming",
-            content =  { page ->
+            content = { page ->
                 Box {
                     Text(
                         text = "Page: $page",

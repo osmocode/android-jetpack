@@ -1,11 +1,10 @@
 package fr.uge.plutus.layout.transaction_list
 
-import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uge.plutus.data.model.Price
 import fr.uge.plutus.data.model.Transaction
 import fr.uge.plutus.data.repository.TransactionRepository
@@ -14,13 +13,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class TransactionListViewModel(context: Context) : ViewModel() {
+@HiltViewModel
+class TransactionListViewModel @Inject constructor(
+    private val transactionRepository: TransactionRepository
+) : ViewModel() {
 
     private val _state = mutableStateOf(TransactionListState())
     val state: State<TransactionListState> = _state
 
-    private val transactionRepository = TransactionRepository.build(context)
     private var getTransactionsJob: Job? = null
     private var getTransactionsJob2: Job? = null
 
@@ -85,17 +87,5 @@ class TransactionListViewModel(context: Context) : ViewModel() {
         getTransactionsJob = transactionRepository.retrieveAllTransaction().onEach { transactions ->
             _state.value = state.value.copy(transactions = transactions)
         }.launchIn(viewModelScope)
-    }
-}
-
-class TransactionListViewModelFactory(
-    private val context: Context
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TransactionListViewModel::class.java)) {
-            return TransactionListViewModel(context) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
