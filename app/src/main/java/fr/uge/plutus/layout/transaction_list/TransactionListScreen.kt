@@ -13,6 +13,8 @@ import androidx.compose.material.icons.outlined.SyncAlt
 import androidx.compose.material.icons.outlined.TrendingDown
 import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,26 +75,30 @@ fun TransactionListScreen(
         )
     )
 
-    val coroutineScope = rememberCoroutineScope()
+    val visible = remember { mutableStateOf(false) }
     AntBottomSheetScaffold(
+        sheetVisible = visible,
         sheetContent = listOf(
             AntBottomSheetItemState(
                 label = "Credit",
+                desc = "Create new income",
                 icon = Icons.Outlined.TrendingUp,
                 onClick = {}
             ),
             AntBottomSheetItemState(
                 label = "Debit",
+                desc = "Create new expense",
                 icon = Icons.Outlined.TrendingDown,
                 onClick = {}
             ),
             AntBottomSheetItemState(
                 label = "Transfer",
+                desc = "Create new transfer",
                 icon = Icons.Outlined.SyncAlt,
                 onClick = {}
             )
         )
-    ) { state ->
+    ) {
         AntTopBar(
             title = "Transaction",
             backIcon = Icons.Default.ArrowBack,
@@ -106,13 +112,7 @@ fun TransactionListScreen(
                     icon = Icons.Outlined.Add,
                     title = "New Transaction",
                     onClick = {
-                        coroutineScope.launch {
-                            if (state.bottomSheetState.isCollapsed) {
-                                state.bottomSheetState.expand()
-                            } else {
-                                state.bottomSheetState.collapse()
-                            }
-                        }
+                        visible.value = !visible.value
                     }
                 )
             }

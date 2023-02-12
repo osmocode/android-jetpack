@@ -1,10 +1,8 @@
 package fr.uge.plutus.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,11 +10,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.outlined.SyncAlt
 import androidx.compose.material.icons.outlined.TrendingDown
 import androidx.compose.material.icons.outlined.TrendingUp
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,6 +29,7 @@ import fr.uge.plutus.ui.ant.Ant
 data class AntBottomSheetItemState(
     val icon: ImageVector,
     val label: String,
+    val desc: String,
     val onClick: () -> Unit
 )
 
@@ -39,11 +37,13 @@ data class AntBottomSheetItemState(
 @Composable
 fun AntBottomSheetScaffold(
     sheetContent: List<AntBottomSheetItemState>,
-    content: @Composable (BottomSheetScaffoldState) -> Unit
+    sheetVisible: MutableState<Boolean>,
+    content: @Composable () -> Unit
 ) {
     val state = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
+
     BottomSheetScaffold(
         scaffoldState = state,
         sheetGesturesEnabled = true,
@@ -80,6 +80,7 @@ fun AntBottomSheetScaffold(
                         )
                 ) {
                     Column(
+                        modifier = Modifier.padding(vertical = 5.dp),
                         verticalArrangement = Arrangement.spacedBy(5.dp),
                     ) {
                         sheetContent.forEach { item ->
@@ -90,10 +91,24 @@ fun AntBottomSheetScaffold(
             }
         },
         content = {
+            LaunchedEffect(
+                key1 = sheetVisible.value,
+            ) {
+                if (sheetVisible.value)
+                    state.bottomSheetState.expand()
+                else
+                    state.bottomSheetState.collapse()
+            }
+            LaunchedEffect(
+                key1 = state.bottomSheetState.currentValue
+            ) {
+                if (state.bottomSheetState.isCollapsed)
+                    sheetVisible.value = false
+            }
             Box{
-                content.invoke(state)
+                content()
                 AnimatedVisibility(
-                    visible = state.bottomSheetState.isExpanded,
+                    visible = sheetVisible.value,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -102,6 +117,10 @@ fun AntBottomSheetScaffold(
                             .fillMaxSize()
                             .alpha(0.4f)
                             .background(color = Color.Black)
+                            .clickable {
+                                if (sheetVisible.value)
+                                    sheetVisible.value = false
+                            }
                     )
                 }
             }
@@ -129,7 +148,8 @@ fun AntBottomSheetItem(
             verticalAlignment = Alignment.CenterVertically
         ){
             Box(
-                modifier = Modifier.padding(start = 10.dp)
+                modifier = Modifier
+                    .padding(start = 5.dp)
                     .size(40.dp)
                     .background(
                         color = Ant.colors.nav_item_focus,
@@ -143,40 +163,53 @@ fun AntBottomSheetItem(
                     tint = Color.White
                 )
             }
-            Text(
-                text = item.label,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Normal,
-                color = Ant.colors.nav_item_focus,
-            )
+            Column {
+                Text(
+                    text = item.label,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Ant.colors.nav_item_focus,
+                )
+                Text(
+                    text = item.desc,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Ant.colors.nav_item_focus,
+                )
+            }
+
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun AntBottomSheetScaffoldPreview(
 
 ) {
+    val visible = remember { mutableStateOf(true) }
     AntBottomSheetScaffold(
         sheetContent = listOf(
             AntBottomSheetItemState(
                 label = "Credit",
+                desc = "Credit",
                 icon = Icons.Outlined.TrendingUp,
                 onClick = {}
             ),
             AntBottomSheetItemState(
                 label = "Debit",
+                desc = "Debit",
                 icon = Icons.Outlined.TrendingDown,
                 onClick = {}
             ),
             AntBottomSheetItemState(
                 label = "Transfer",
+                desc = "Transfer",
                 icon = Icons.Outlined.SyncAlt,
                 onClick = {}
             )
         ),
+        sheetVisible = visible,
         content = {
             Box(modifier = Modifier.fillMaxSize())
         }
