@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import fr.uge.plutus.ui.components.AntAmountField
 import fr.uge.plutus.ui.components.AntTopBar
 import fr.uge.plutus.ui.components.CustomButton
 import fr.uge.plutus.ui.components.CustomButtonType
@@ -52,10 +53,11 @@ fun TransactionPriceWidget (
                     trailingIcon = Icons.Outlined.ChevronRight,
                     onClick = {},
                 )
-                Text(
-                    text = "$00.00",
-                    fontSize = 50.sp
-                )
+//                Text(
+//                    text = "$00.00",
+//                    fontSize = 50.sp
+//                )
+                //AntAmountField()
             }
             CustomButton(
                 type = CustomButtonType.PRIMARY,
