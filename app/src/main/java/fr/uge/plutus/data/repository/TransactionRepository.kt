@@ -1,14 +1,13 @@
 package fr.uge.plutus.data.repository
 
-import android.content.Context
 import android.util.Log
-import fr.uge.plutus.data.DataBase
 import fr.uge.plutus.data.dao.TransactionDao
 import fr.uge.plutus.data.interfaces.ITransactionRepository
 import fr.uge.plutus.data.model.Transaction
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class TransactionRepository(
+class TransactionRepository @Inject constructor(
     private val transactionDao: TransactionDao
 ) : ITransactionRepository {
     override fun retrieveAllTransaction(): Flow<List<Transaction>> = transactionDao.retrieveAll()
@@ -26,12 +25,4 @@ class TransactionRepository(
 
     override suspend fun deleteTransaction(transaction: Transaction): Int =
         transactionDao.delete(transaction)
-
-
-    companion object {
-        fun build(context: Context): TransactionRepository {
-            val transactionDao = DataBase.getInstance(context).transactionDao()
-            return TransactionRepository(transactionDao)
-        }
-    }
 }
