@@ -29,9 +29,5 @@ fun HistoryScreen(
             fontSize = 30.sp,
             modifier = Modifier.padding(15.dp)
         )
-        AntTextField()
-        TransactionPager(
-            navController = navController
-        )
     }
 }
