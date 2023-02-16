@@ -1,6 +1,5 @@
 package fr.uge.plutus.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
@@ -49,7 +48,7 @@ fun AntAmountField(
 
             if(Pattern.compile("\\d*\\.?\\d*").matcher(it).matches()){
                 text.value = it
-                if(it.isNotEmpty()) {
+                if(it.isNotEmpty() && it.length > 1) {
                     amount.value = it.toDouble()
                 }
             }
