@@ -24,18 +24,18 @@ enum class AntActionButtonType {
 
 @Composable
 fun AntActionButton(
+    modifier: Modifier = Modifier,
     icon: ImageVector,
-    title: String,
+    title: String = "",
     type: AntActionButtonType = AntActionButtonType.DEFAULT,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Box(
        modifier = modifier
            .clip(shape = CircleShape)
            .clickable(onClick = onClick)
            .background(
-               color = AntActionButtonBackgroundColor(
+               color = antActionButtonBackgroundColor(
                    type = type
                )
            )
@@ -47,25 +47,27 @@ fun AntActionButton(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = AntActionButtonColor(
+                tint = antActionButtonColor(
                     type = type
                 )
             )
-            Text(
-                modifier = Modifier.padding(
-                    end = 5.dp,
-                ),
-                text = title,
-                color = AntActionButtonColor(
-                    type = type
+            if(title.isNotEmpty()) {
+                Text(
+                    modifier = Modifier.padding(
+                        end = 5.dp,
+                    ),
+                    text = title,
+                    color = antActionButtonColor(
+                        type = type
+                    )
                 )
-            )
+            }
         }
     }
 }
 
 @Composable
-fun AntActionButtonBackgroundColor(
+fun antActionButtonBackgroundColor(
     type: AntActionButtonType
 ): Color {
     return when (type) {
@@ -76,7 +78,7 @@ fun AntActionButtonBackgroundColor(
 }
 
 @Composable
-fun AntActionButtonColor(
+fun antActionButtonColor(
     type: AntActionButtonType
 ): Color {
     return when (type) {
@@ -91,11 +93,19 @@ fun AntActionButtonColor(
 fun DefaultAntActionButtonPreview(
 
 ) {
-    AntActionButton(
-        icon = Icons.Outlined.Add,
-        title = "New Transaction",
-        onClick = { /*TODO*/ }
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        AntActionButton(
+            icon = Icons.Outlined.Add,
+            title = "Default",
+            onClick = { /*TODO*/ }
+        )
+        AntActionButton(
+            icon = Icons.Outlined.Add,
+            onClick = { /*TODO*/ }
+        )
+    }
 }
 
 @Preview
@@ -103,10 +113,39 @@ fun DefaultAntActionButtonPreview(
 fun PrimaryAntActionButtonPreview(
 
 ) {
-    AntActionButton(
-        type = AntActionButtonType.PRIMARY,
-        icon = Icons.Outlined.Add,
-        title = "New Transaction",
-        onClick = { /*TODO*/ }
-    )
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        AntActionButton(
+            type = AntActionButtonType.PRIMARY,
+            icon = Icons.Outlined.Add,
+            title = "New Transaction",
+            onClick = { /*TODO*/ }
+        )
+
+        AntActionButton(
+            type = AntActionButtonType.PRIMARY,
+            icon = Icons.Outlined.Add,
+            onClick = { /*TODO*/ }
+        )
+    }
+}
+
+
+
+@Preview
+@Composable
+fun LinkAntActionButtonPreview(){
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        AntActionButton(
+            type = AntActionButtonType.LINK,
+            icon = Icons.Outlined.Add,
+            title = "Link",
+            onClick = { /*TODO*/ }
+        )
+
+        AntActionButton(
+            type = AntActionButtonType.LINK,
+            icon = Icons.Outlined.Add,
+            onClick = { /*TODO*/ }
+        )
+    }
 }
