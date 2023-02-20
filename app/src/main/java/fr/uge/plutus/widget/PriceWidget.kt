@@ -4,9 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -21,9 +22,11 @@ import fr.uge.plutus.ui.components.CustomButton
 import fr.uge.plutus.ui.components.CustomButtonType
 
 @Composable
-fun TransactionPriceWidget (
+fun PriceWidget (
     navController: NavHostController,
 ) {
+    val prefix = remember { mutableStateOf("$") }
+    val amount = remember { mutableStateOf(10.0) }
 
     AntTopBar(
         backIcon = Icons.Default.ArrowBack,
@@ -53,11 +56,8 @@ fun TransactionPriceWidget (
                     trailingIcon = Icons.Outlined.ChevronRight,
                     onClick = {},
                 )
-//                Text(
-//                    text = "$00.00",
-//                    fontSize = 50.sp
-//                )
-                //AntAmountField()
+
+                AntAmountField(prefix = prefix, amount = amount)
             }
             CustomButton(
                 type = CustomButtonType.PRIMARY,
@@ -70,11 +70,11 @@ fun TransactionPriceWidget (
 
 @Preview
 @Composable
-fun TransactionPriceWidgetPreview(
+fun PriceWidgetPreview(
 
 ) {
     val navController = rememberNavController()
-    TransactionPriceWidget(
+    PriceWidget(
         navController = navController
     )
 }
