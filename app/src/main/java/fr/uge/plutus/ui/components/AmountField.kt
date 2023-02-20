@@ -1,5 +1,6 @@
 package fr.uge.plutus.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
@@ -45,39 +46,16 @@ fun AntAmountField(
     BasicTextField(
         value = text.value,
         onValueChange = {
-
-            if(Pattern.compile("\\d*\\.?\\d*").matcher(it).matches()){
+            if(Pattern.compile("\\d*\\.?\\d{0,2}").matcher(it).matches()){
                 text.value = it
-                if(it.isNotEmpty() && it.length > 1) {
+                val dotted = Pattern.compile("\\.").matcher(it).matches()
+                if(dotted && it.length > 1)
                     amount.value = it.toDouble()
-                }
+                else if(!dotted && it.isNotEmpty())
+                    amount.value = it.toDouble()
+                else
+                    amount.value = 0.0
             }
-
-//           val str =  it.replace(
-//                regex = Regex("[^(\\d|\\.)]"),
-//                replacement = ""
-//            )
-//
-//            val newString = str.filter { char ->
-//                char == ".".first()
-//            }
-//
-//            if (newString.length <= 1)
-//                text.value = str
-//
-//            if (newString.length == 0) {
-//                if (str.isNotEmpty()) {
-//                    amount.value = str.toDouble()
-//                } else {
-//                    amount.value = 0.0
-//                }
-//            } else if (newString.length == 1) {
-//                if (str.length > 1) {
-//                    amount.value = str.toDouble()
-//                } else {
-//                    amount.value = 0.0
-//                }
-//            }
         },
 
         cursorBrush = SolidColor(
