@@ -1,5 +1,6 @@
 package fr.uge.plutus.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,6 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,11 +30,12 @@ enum class CustomButtonType {
 
 @Composable
 fun CustomButton(
+    modifier: Modifier = Modifier,
     title: String,
     type: CustomButtonType = CustomButtonType.DEFAULT,
+    disabled: MutableState<Boolean> = mutableStateOf(false),
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
 
@@ -45,13 +50,21 @@ fun CustomButton(
                 shape = RoundedCornerShape(10.dp)
             )
             .clickable(
-                onClick = onClick
+                enabled = !disabled.value,
+                onClick = { if (!disabled.value) onClick() }
             )
             .fillMaxWidth()
             .background(
-                color = CustomButtonBackgroundColor(
-                    type = type
-                ),
+                color =
+                if (!disabled.value) {
+                    customButtonBackgroundColor(
+                        type = type
+                    )
+                } else {
+                    customButtonBackgroundColorDisabled(
+                        type = type
+                    )
+                }
             )
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -61,14 +74,14 @@ fun CustomButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = "Leading Icon",
-                tint = CustomButtonColor(
+                tint = customButtonColor(
                     type = type
                 )
             )
         }
         Text(
             text = title,
-            color = CustomButtonColor(
+            color = customButtonColor(
                 type = type
             )
         )
@@ -76,7 +89,7 @@ fun CustomButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = "Trailing Icon",
-                tint = CustomButtonColor(
+                tint = customButtonColor(
                     type = type
                 )
             )
@@ -85,7 +98,7 @@ fun CustomButton(
 }
 
 @Composable
-fun CustomButtonBackgroundColor(
+fun customButtonBackgroundColor(
     type: CustomButtonType
 ): Color {
     return when (type) {
@@ -96,7 +109,21 @@ fun CustomButtonBackgroundColor(
 }
 
 @Composable
-fun CustomButtonColor(
+fun customButtonBackgroundColorDisabled(
+    type: CustomButtonType
+): Color {
+    return when (type) {
+
+        CustomButtonType.PRIMARY -> Color.LightGray
+        CustomButtonType.DEFAULT -> Color.LightGray
+        CustomButtonType.LINK -> Color.Transparent
+    }
+}
+
+
+
+@Composable
+fun customButtonColor(
     type: CustomButtonType
 ): Color {
     return when (type) {
@@ -111,11 +138,31 @@ fun CustomButtonColor(
 fun PrimaryCustomButtonPreview(
 
 ) {
-    CustomButton(
-        title = "Button",
-        type = CustomButtonType.PRIMARY,
-        trailingIcon = Icons.Outlined.ChevronRight,
-    )
+    val disabled = remember { mutableStateOf(true) }
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        CustomButton(
+            title = "Button",
+            type = CustomButtonType.PRIMARY,
+            trailingIcon = Icons.Outlined.ChevronRight,
+            onClick = {
+                Log.println(Log.ASSERT, "enable","pass")
+            }
+        )
+        CustomButton(
+            title = "Button",
+            type = CustomButtonType.PRIMARY,
+            trailingIcon = Icons.Outlined.ChevronRight,
+            disabled = disabled,
+            onClick = {
+                Log.println(Log.ASSERT, "disable","pass")
+            }
+
+
+        )
+        Log.println(Log.ASSERT, "button","pass")
+    }
 }
 
 @Preview
