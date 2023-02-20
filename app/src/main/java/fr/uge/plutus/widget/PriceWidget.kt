@@ -16,10 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import fr.uge.plutus.ui.components.AntAmountField
-import fr.uge.plutus.ui.components.AntTopBar
-import fr.uge.plutus.ui.components.CustomButton
-import fr.uge.plutus.ui.components.CustomButtonType
+import fr.uge.plutus.ui.components.*
 
 @Composable
 fun PriceWidget (
@@ -29,42 +26,44 @@ fun PriceWidget (
     val amount = remember { mutableStateOf(10.0) }
 
     AntTopBar(
-        backIcon = Icons.Default.ArrowBack,
-        backOnClick = {
-            navController.popBackStack()
-        }
-    ) {
+        leadingIcons = listOf{
+            AntActionButton(
+                icon =Icons.Default.ArrowBack,
+                onClick = {navController.popBackStack()}
+            )
+        },
+        trailingIcons = listOf{}
+    )
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
+    ){
+        Text(
+            text = "Enter Amount",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(16.dp)
+        )
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ){
-            Text(
-                text = "Enter Amount",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(16.dp)
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CustomButton(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    title = "Currency",
-                    type = CustomButtonType.LINK,
-                    trailingIcon = Icons.Outlined.ChevronRight,
-                    onClick = {},
-                )
-
-                AntAmountField(prefix = prefix, amount = amount)
-            }
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             CustomButton(
-                type = CustomButtonType.PRIMARY,
-                title = "Valid",
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
+                title = "Currency",
+                type = CustomButtonType.LINK,
+                trailingIcon = Icons.Outlined.ChevronRight,
+                onClick = {},
             )
+
+            AntAmountField(prefix = prefix, amount = amount)
         }
+        CustomButton(
+            type = CustomButtonType.PRIMARY,
+            title = "Valid",
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
 

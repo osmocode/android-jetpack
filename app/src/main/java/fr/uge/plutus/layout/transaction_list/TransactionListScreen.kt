@@ -3,11 +3,9 @@ package fr.uge.plutus.layout.transaction_list
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.SyncAlt
 import androidx.compose.material.icons.outlined.TrendingDown
@@ -15,7 +13,6 @@ import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,11 +21,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.uge.plutus.ui.components.*
-import kotlinx.coroutines.launch
 import java.text.DateFormat.getDateInstance
 import java.util.*
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TransactionListScreen(
     navController: NavHostController,
@@ -48,8 +43,7 @@ fun TransactionListScreen(
                             horizontal = 15.dp
                         )
                 ) {
-
-                    items(state.transactions) {
+                    items(state.transactions){
                         Column(modifier = Modifier.fillMaxSize()) {
                             AntCard(
                                 title = it.desc,
@@ -101,13 +95,17 @@ fun TransactionListScreen(
     ) {
         AntTopBar(
             title = "Transaction",
-            backIcon = Icons.Default.ArrowBack,
-            backOnClick = {
-                navController.popBackStack()
-            },
-            trailingIcon = {
+            leadingIcons = listOf {
                 AntActionButton(
-                    modifier = Modifier.padding(end = 16.dp),
+                    type = AntActionButtonType.PRIMARY,
+                    icon = Icons.Default.ArrowBack,
+                    onClick = {
+                        navController.popBackStack()
+                    }
+                )
+            },
+            trailingIcons = listOf {
+                AntActionButton(
                     type = AntActionButtonType.PRIMARY,
                     icon = Icons.Outlined.Add,
                     title = "New Transaction",
@@ -116,17 +114,16 @@ fun TransactionListScreen(
                     }
                 )
             }
+        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                AntTextField()
-                AntPagerLayout(
-                    navController = navController,
-                    pages = items
-                )
-            }
+            AntTextField()
+            AntPagerLayout(
+                navController = navController,
+                pages = items
+            )
         }
     }
 
