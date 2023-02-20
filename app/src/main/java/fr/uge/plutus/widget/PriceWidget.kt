@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,11 +23,15 @@ import fr.uge.plutus.ui.components.CustomButton
 import fr.uge.plutus.ui.components.CustomButtonType
 
 @Composable
-fun PriceWidget (
+fun PriceWidget(
     navController: NavHostController,
+    currency: String,
+    amount: Double,
+    onSubmit: (Double) -> Unit
 ) {
-    val prefix = remember { mutableStateOf("$") }
-    val amount = remember { mutableStateOf(10.0) }
+    val prefix = remember { mutableStateOf(currency) }
+    val currentAmount = remember { mutableStateOf(amount) }
+    val canSubmit = remember { mutableStateOf(amount != 0.0) }
 
     AntTopBar(
         backIcon = Icons.Default.ArrowBack,
@@ -37,7 +42,7 @@ fun PriceWidget (
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
-        ){
+        ) {
             Text(
                 text = "Enter Amount",
                 fontSize = 24.sp,
@@ -56,14 +61,20 @@ fun PriceWidget (
                     trailingIcon = Icons.Outlined.ChevronRight,
                     onClick = {},
                 )
-
-                AntAmountField(prefix = prefix, amount = amount)
+                AntAmountField(prefix = prefix, amount = currentAmount)
             }
             CustomButton(
                 type = CustomButtonType.PRIMARY,
                 title = "Valid",
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                onClick = { onSubmit(currentAmount.value) }
             )
+        }
+    }
+
+    LaunchedEffect(currentAmount.value) {
+        if (amount != currentAmount.value) {
+            canSubmit.value = true
         }
     }
 }
@@ -73,8 +84,13 @@ fun PriceWidget (
 fun PriceWidgetPreview(
 
 ) {
+    val currency = "$"
+    val amount = 10.0
     val navController = rememberNavController()
     PriceWidget(
-        navController = navController
+        navController = navController,
+        currency = currency,
+        amount = amount,
+        onSubmit = {}
     )
 }
