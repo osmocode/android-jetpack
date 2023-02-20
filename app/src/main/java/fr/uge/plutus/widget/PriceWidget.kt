@@ -31,7 +31,7 @@ fun PriceWidget(
 ) {
     val prefix = remember { mutableStateOf(currency) }
     val currentAmount = remember { mutableStateOf(amount) }
-    val canSubmit = remember { mutableStateOf(amount != 0.0) }
+    val canSubmit = remember { mutableStateOf(true) }
 
     AntTopBar(
         backIcon = Icons.Default.ArrowBack,
@@ -67,15 +67,14 @@ fun PriceWidget(
                 type = CustomButtonType.PRIMARY,
                 title = "Valid",
                 modifier = Modifier.padding(16.dp),
-                onClick = { onSubmit(currentAmount.value) }
+                onClick = { onSubmit(currentAmount.value) },
+                disabled = canSubmit,
             )
         }
     }
 
     LaunchedEffect(currentAmount.value) {
-        if (amount != currentAmount.value) {
-            canSubmit.value = true
-        }
+        canSubmit.value = amount == currentAmount.value
     }
 }
 
