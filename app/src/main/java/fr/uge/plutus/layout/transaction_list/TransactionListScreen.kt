@@ -140,3 +140,9 @@ fun TransactionListScreenPreview(
         navController = navController
     )
 }
+
+@Composable
+fun swipeable(){
+    Box(){
+    }
+}
