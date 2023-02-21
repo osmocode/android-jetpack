@@ -51,9 +51,12 @@ fun DatepickerComponent() {
             value = fecha,
             onValueChange = { fecha = it },
             readOnly = true,
+            enabled = false,
             label = { Text(text = "Select Date") },
-
-            )
+            modifier = Modifier.clickable {
+                datePickerDialog.show()
+            }
+        )
         Icon(
             imageVector = Icons.Filled.DateRange,
             contentDescription = null,
@@ -82,9 +85,14 @@ fun ShowTimePicker(context: Context, initHour: Int, initMinute: Int) {
             value = time.value,
             onValueChange = { time.value = it },
             readOnly = true,
+            enabled = false,
             label = { Text(text = "Selected Time") },
+            modifier = Modifier.clickable {
+                timePickerDialog.show()
 
-            )
+            }
+
+        )
         Icon(
             imageVector = Icons.Filled.AccessTime,
             contentDescription = null,
