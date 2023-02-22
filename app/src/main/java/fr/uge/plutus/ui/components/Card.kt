@@ -11,7 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.FileCopy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,24 +22,42 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.uge.plutus.ui.ant.Ant
 import kotlin.math.roundToInt
 
+open class AntCardActionItem(
+    val icon: ImageVector,
+    val color: Color,
+    val onClick: () -> Unit,
+)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AntCard(
-    title : String,
-    description : String,
-    extras : String,
+    title: String,
+    description: String,
+    extras: String,
+    leadingIcon: List<AntCardActionItem>,
+    trailingIcon: List<AntCardActionItem>,
 ) {
-
+    val size = 50.dp
     val swipe = rememberSwipeableState(initialValue = 0)
-    val left = with(LocalDensity.current) { 60.dp.toPx() }
-    val right = -with(LocalDensity.current) { 130.dp.toPx() }
+    val left = with(LocalDensity.current) {
+        antCardActionPadding(
+            size = size,
+            length = leadingIcon.size
+        ).toPx()
+    }
+    val right = -with(LocalDensity.current) {
+        antCardActionPadding(
+            size = size,
+            length = trailingIcon.size
+        ).toPx()
+    }
     val fraction:Float = if (swipe.progress.from - swipe.progress.to < 0){
         swipe.progress.fraction
     }
@@ -77,24 +94,29 @@ fun AntCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ){
-            AntCardAction(
-                icon = Icons.Outlined.Delete,
-                onClick = {},
-                size = fraction
-            )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(Ant.spacing.default)
+                horizontalArrangement = Arrangement.spacedBy(Ant.spacing.small)
             ) {
-                AntCardAction(
-                    icon = Icons.Outlined.Edit,
-                    onClick = {},
-                    size = fraction
-                )
-                AntCardAction(
-                    icon = Icons.Outlined.FileCopy,
-                    onClick = {},
-                    size = fraction
-                )
+                leadingIcon.forEach { item ->
+                    AntCardAction(
+                        icon = item.icon,
+                        color = item.color,
+                        onClick = item.onClick,
+                        size = fraction
+                    )
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(Ant.spacing.small)
+            ) {
+                trailingIcon.forEach { item ->
+                    AntCardAction(
+                        icon = item.icon,
+                        color = item.color,
+                        onClick = item.onClick,
+                        size = fraction
+                    )
+                }
             }
         }
         Box(modifier = Modifier
@@ -122,14 +144,14 @@ fun AntCard(
                 ){
                     Text(
                         text = title,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Ant.colors.primary_text
                     )
 
                     Text(
                         text = description,
-                        fontSize = 16.sp,
+                        fontSize = 12.sp,
                         color = Ant.colors.secondary_text
                     )
                 }
@@ -146,9 +168,17 @@ fun AntCard(
 }
 
 @Composable
+fun antCardActionPadding(
+    size: Dp,
+    length: Int
+): Dp {
+    return (size + Ant.spacing.small)*length + (if (length <= 0) 0.dp else (Ant.spacing.small * (length-1)))
+}
+
+@Composable
 fun AntCardAction(
     icon: ImageVector,
-    color: Color = Ant.colors.primary_text,
+    color: Color,
     onClick: () -> Unit,
     size: Float
 ) {
@@ -175,5 +205,28 @@ fun AntCardAction(
 @Preview
 @Composable
 fun AntCardPreview(){
-    AntCard("Nouveau","07/02/23", "3,25€")
+    AntCard(
+        title = "Nouveau",
+        description = "07/02/23",
+        extras = "3,25€",
+        leadingIcon = listOf(
+            AntCardActionItem(
+                icon = Icons.Outlined.Delete,
+                color = Ant.colors.primary_text,
+                onClick = {}
+            )
+        ),
+        trailingIcon = listOf(
+            AntCardActionItem(
+                icon = Icons.Outlined.Edit,
+                color = Ant.colors.primary_text,
+                onClick = {}
+            ),
+            AntCardActionItem(
+                icon = Icons.Outlined.Edit,
+                color = Ant.colors.primary_text,
+                onClick = {}
+            ),
+        )
+    )
 }
