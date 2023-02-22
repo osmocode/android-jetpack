@@ -36,14 +36,16 @@ class TransactionNewViewModel @Inject constructor(
         }
     }
 
-//    fun onEvent(event: TransactionNewEvent) {
-//        when (event) {
+    fun onEvent(event: TransactionNewEvent) {
+        when (event) {
 //            is TransactionNewEvent.EditDate -> TODO()
 //            is TransactionNewEvent.EditDescription -> TODO()
 //            is TransactionNewEvent.EditLocation -> TODO()
-//            is TransactionNewEvent.EditPrice -> TODO()
+            is TransactionNewEvent.EditPrice -> {
+                _state.value = state.value.copy(price = event.price)
+            }
 //            is TransactionNewEvent.EditTags -> TODO()
 //            is TransactionNewEvent.EditTitle -> TODO()
-//        }
-//    }
+        }
+    }
 }
