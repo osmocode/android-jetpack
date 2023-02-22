@@ -32,12 +32,12 @@ fun AntTextField(
     var text = remember { mutableStateOf("") }
     val interactionSource = remember { MutableInteractionSource() }
     Box(
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = Ant.spacing.default)
     ) {
         BasicTextField(
             modifier = modifier
                 .background(
-                    color = Ant.colors.input_backgroundColor,
+                    color = Ant.colors.gray_5,
                     shape = RoundedCornerShape(5.dp)
                 )
                 .fillMaxWidth()
@@ -51,10 +51,10 @@ fun AntTextField(
             },
             singleLine = true,
             cursorBrush = SolidColor(
-                value = Ant.colors.input_cursorColor
+                value = Ant.colors.gray_9
             ),
             textStyle = LocalTextStyle.current.copy(
-                color = Ant.colors.input_textColor
+                color = Ant.colors.gray_9
             ),
             decorationBox = { text_field ->
                 Row(
@@ -64,7 +64,7 @@ fun AntTextField(
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Search Icon",
-                        tint = Ant.colors.input_textColor,
+                        tint = Ant.colors.gray_9,
                     )
                     Box(
                         modifier = Modifier.weight(1f)
@@ -73,7 +73,7 @@ fun AntTextField(
                             Text(
                                 text = placeHolder,
                                 style = LocalTextStyle.current.copy(
-                                    color = Ant.colors.input_placeholderColor,
+                                    color = Ant.colors.gray_9,
                                 )
                             )
                         }
@@ -88,7 +88,7 @@ fun AntTextField(
                             modifier = Modifier
                                 .size(20.dp)
                                 .background(
-                                    color = Ant.colors.input_textColor,
+                                    color = Ant.colors.gray_9,
                                     shape = CircleShape
                                 ),
                             contentAlignment = Alignment.Center
@@ -96,7 +96,7 @@ fun AntTextField(
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = "Clear Icon",
-                                tint = Ant.colors.input_backgroundColor,
+                                tint = Ant.colors.gray_9,
                                 modifier = Modifier
                                     .size(18.dp)
                                     .clickable(
@@ -112,56 +112,6 @@ fun AntTextField(
             }
         )
     }
-
-    /*
-    TextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            .background(
-                color = Ant.colors.nav_background,
-                shape = RoundedCornerShape(10.dp)
-            ),
-        value = text.value,
-        onValueChange = {
-            text.value = it
-        },
-        placeholder = {
-            Text(
-                text = "Search...",
-            )
-        },
-        singleLine = true,
-        leadingIcon = {
-            Icon(
-                modifier = Modifier.padding(top = 0.dp),
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search Icon",
-            )
-        },
-        trailingIcon = {
-            IconButton(
-                onClick = {}
-            ) {
-                Icon(
-                    modifier = Modifier.padding(top = 0.dp),
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Clear Icon",
-                )
-            }
-        },
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Ant.colors.input_textColor,
-            leadingIconColor = Ant.colors.input_leadingIconColor,
-            trailingIconColor = Ant.colors.input_trailingIconColor,
-            cursorColor = Ant.colors.input_cursorColor,
-            placeholderColor = Ant.colors.input_placeholderColor,
-            focusedIndicatorColor = Ant.colors.input_focusedIndicatorColor,
-            unfocusedIndicatorColor = Ant.colors.input_unfocusedIndicatorColor,
-            backgroundColor = Ant.colors.input_backgroundColor
-        )
-    )
-    */
 }
 
 @Preview

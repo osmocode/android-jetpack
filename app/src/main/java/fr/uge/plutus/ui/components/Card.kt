@@ -47,11 +47,20 @@ fun AntCard(
     val left = with(LocalDensity.current) { 60.dp.toPx() }
     val right = -with(LocalDensity.current) { 130.dp.toPx() }
     Log.println(Log.ASSERT, "SWIPE", swipe.progress.toString())
-    val fraction = swipe.progress.fraction
+    var fraction:Float
+    if (swipe.progress.from - swipe.progress.to < 0){
+        fraction = swipe.progress.fraction
+    }
+    else if (swipe.progress.from - swipe.progress.to == 0){
+        fraction = 1f
+    }
+    else{
+        fraction = 1 - swipe.progress.fraction
+    }
 
     Box(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(Ant.spacing.default)
             .height(50.dp)
             .fillMaxWidth()
             .swipeable(
@@ -70,25 +79,28 @@ fun AntCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.Center)
                 .alpha(fraction),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ){
             AntCardAction(
-                modifier = Modifier.size(30),
                 icon = Icons.Outlined.Delete,
-                onClick = {}
+                onClick = {},
+                size = fraction
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(Ant.spacing.default)
             ) {
                 AntCardAction(
                     icon = Icons.Outlined.Edit,
-                    onClick = {}
+                    onClick = {},
+                    size = fraction
                 )
                 AntCardAction(
                     icon = Icons.Outlined.FileCopy,
-                    onClick = {}
+                    onClick = {},
+                    size = fraction
                 )
             }
         }
@@ -96,36 +108,36 @@ fun AntCard(
             .offset {
                 IntOffset(swipe.offset.value.roundToInt(), 0)
             }
+            .background(color = Ant.colors.background)
             .fillMaxSize()
-            .background(Color.White)){
+        ){
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(Ant.spacing.default),
                 verticalAlignment = Alignment.Top
             ){
                 Box(
                     modifier = Modifier
                         .size(50.dp)
                         .background(
-                            color = Ant.colors.nav_background,
+                            color = Ant.colors.gray_5,
                             shape = CircleShape
                         )
                 )
-                Column(modifier = Modifier
-                    .weight(1f)
+                Column(
+                    modifier = Modifier.weight(1f)
                 ){
                     Text(
                         text = title,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Ant.colors.nav_item_focus
+                        color = Ant.colors.primary_text
                     )
 
                     Text(
                         text = description,
                         fontSize = 16.sp,
-                        color = Ant.colors.nav_item_focus
+                        color = Ant.colors.secondary_text
                     )
                 }
                 Text(
@@ -133,7 +145,7 @@ fun AntCard(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Right,
-                    color = Ant.colors.nav_item_focus
+                    color = Ant.colors.primary_text
                 )
             }
         }
@@ -142,23 +154,24 @@ fun AntCard(
 
 @Composable
 fun AntCardAction(
-    modifier: Modifier = Modifier,
     icon: ImageVector,
-    color: Color = Ant.colors.nav_item_focus,
+    color: Color = Ant.colors.primary_text,
     onClick: () -> Unit,
+    size: Float
 ) {
+    val sizeIcon = 12.dp + (size * 12).dp
+    val sizeBox = 25.dp + (size * 25).dp
     Box(
-        modifier = modifier
+        modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
-            .background(
-                color = Ant.colors.nav_background,
-            )
+            .background(color = Ant.colors.gray_5)
+            .size(sizeBox)
             .clickable(onClick = onClick)
-
     ) {
         Icon(
             modifier = Modifier
-                .align(Alignment.Center),
+                .align(Alignment.Center)
+                .size(sizeIcon),
             imageVector = icon,
             contentDescription = null,
             tint = color

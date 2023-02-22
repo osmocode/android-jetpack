@@ -13,33 +13,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.uge.plutus.ui.ant.Ant
 
 @Composable
 fun AntTopBar(
     title: String = "",
-    leadingIcons : List<@Composable () -> Unit>,
-    trailingIcons: List<@Composable () -> Unit>
+    leadingIcons : List<@Composable () -> Unit> = listOf(),
+    trailingIcons: List<@Composable () -> Unit> = listOf()
 ) {
-    Column(
+    Column (
         modifier = Modifier
-            .fillMaxSize()
-    ) {
+            .padding(
+                top = 20.dp,
+                bottom = 10.dp
+            ),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ){
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 11.dp
-                ),
+                .padding(horizontal = Ant.spacing.default - 5.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row {
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(Ant.spacing.small)
+            ) {
                 leadingIcons.forEach{
                     it.invoke()
                 }
             }
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(Ant.spacing.small)
+            ){
                 trailingIcons.forEach{
                     it.invoke()
                 }
@@ -49,10 +55,11 @@ fun AntTopBar(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = Ant.spacing.default),
                 text = title,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold,
+                color = Ant.colors.primary_text
             )
         }
     }
@@ -97,7 +104,6 @@ fun LightAntTopBarPreview(
     AntTopBar(
         leadingIcons = listOf{
             AntActionButton(
-                modifier = Modifier.padding(start = 16.dp),
                 type = AntActionButtonType.LINK,
                 icon = Icons.Default.ArrowBack,
                 onClick = { /*TODO*/ }

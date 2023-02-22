@@ -24,14 +24,13 @@ enum class AntActionButtonType {
 
 @Composable
 fun AntActionButton(
-    modifier: Modifier = Modifier,
     icon: ImageVector,
     title: String = "",
     type: AntActionButtonType = AntActionButtonType.DEFAULT,
     onClick: () -> Unit,
 ) {
     Box(
-       modifier = modifier
+       modifier = Modifier
            .clip(shape = CircleShape)
            .clickable(onClick = onClick)
            .background(
@@ -71,8 +70,8 @@ fun antActionButtonBackgroundColor(
     type: AntActionButtonType
 ): Color {
     return when (type) {
-        AntActionButtonType.PRIMARY -> Ant.colors.button_color
-        AntActionButtonType.DEFAULT -> Color.White
+        AntActionButtonType.PRIMARY -> Ant.colors.primary_color_5
+        AntActionButtonType.DEFAULT -> Ant.colors.background
         AntActionButtonType.LINK -> Color.Transparent
     }
 }
@@ -83,8 +82,8 @@ fun antActionButtonColor(
 ): Color {
     return when (type) {
         AntActionButtonType.PRIMARY -> Color.White
-        AntActionButtonType.DEFAULT -> Ant.colors.button_color
-        AntActionButtonType.LINK -> Ant.colors.button_color
+        AntActionButtonType.DEFAULT -> Ant.colors.gray_10
+        AntActionButtonType.LINK -> Ant.colors.primary_color_5
     }
 }
 

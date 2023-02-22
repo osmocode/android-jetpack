@@ -44,6 +44,7 @@ fun PriceWidget (
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(16.dp)
         )
+        /*
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -64,6 +65,7 @@ fun PriceWidget (
             title = "Valid",
             modifier = Modifier.padding(16.dp)
         )
+         */
     }
 }
 

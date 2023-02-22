@@ -11,8 +11,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import fr.uge.plutus.ui.components.AntTextField
-import fr.uge.plutus.widget.TransactionPager
 
 @Composable
 fun HistoryScreen(

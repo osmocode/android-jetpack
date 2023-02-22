@@ -3,12 +3,12 @@ package fr.uge.plutus.ui.ant
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.remember
 
 @Composable
 fun Ant(
     colors: AntColors = Ant.colors,
     spacing: AntSpacing = Ant.spacing,
+    shapes: AntShape = Ant.shapes,
     content: @Composable () -> Unit
 ) {
 
@@ -18,6 +18,7 @@ fun Ant(
     CompositionLocalProvider(
         LocalColors provides colors,
         LocalSpacing provides spacing,
+        LocalShaping provides shapes,
         content = content
     )
 }
@@ -33,5 +34,10 @@ object Ant {
         @Composable
         @ReadOnlyComposable
         get() = LocalSpacing.current
+
+    val shapes: AntShape
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalShaping.current
 
 }

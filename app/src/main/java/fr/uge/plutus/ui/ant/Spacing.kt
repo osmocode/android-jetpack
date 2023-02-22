@@ -7,10 +7,10 @@ import androidx.compose.ui.unit.dp
 
 @Immutable
 class AntSpacing(
-    val default: Dp = 2.dp,
-    val small: Dp = 4.dp,
-    val middle: Dp = 8.dp,
-    val large: Dp = 16.dp
+    val default: Dp = 16.dp,
+    val small: Dp = 8.dp,
+    val middle: Dp = 16.dp,
+    val large: Dp = 24.dp
 ) {
 
     fun copy(

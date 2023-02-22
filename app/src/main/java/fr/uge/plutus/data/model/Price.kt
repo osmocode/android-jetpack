@@ -5,4 +5,8 @@ data class Price(
     val currency: String,
     val amount: Double
 
-)
+) {
+    override fun toString(): String {
+        return "$currency $amount"
+    }
+}

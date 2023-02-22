@@ -19,6 +19,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
+import fr.uge.plutus.ui.ant.Ant
 import kotlinx.coroutines.launch
 
 open class ScrollablePagerLayoutItem(
@@ -29,24 +30,21 @@ open class ScrollablePagerLayoutItem(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ScrollablePagerLayout(
-    navController: NavHostController,
+fun AntScrollablePagerLayout(
     pages: List<ScrollablePagerLayoutItem>
 ){
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column {
         ScrollableTabRow(
             backgroundColor = Color.Transparent,
             selectedTabIndex = pagerState.currentPage,
-            contentColor = Color.Magenta,
+            contentColor = Color.Black,
             edgePadding = 0.dp,
             divider = {},
-            indicator = {tabPositions ->
-                ScrollablePagerLayoutIndicator(
+            indicator = { tabPositions ->
+                AntScrollablePagerLayoutIndicator(
                     modifier = Modifier
                         .pagerTabIndicatorOffset(
                             pagerState= pagerState,
@@ -71,21 +69,24 @@ fun ScrollablePagerLayout(
                             pagerState.animateScrollToPage(index)
                         }
                     },
-                    selectedContentColor = Color.Black,
-                    unselectedContentColor = Color.DarkGray
+                    selectedContentColor = Ant.colors.primary_text,
+                    unselectedContentColor = Ant.colors.secondary_text
                 ){
                     Box(modifier = Modifier.fillMaxSize()){
-                        Text(text = page.label, modifier = Modifier.align(Alignment.Center))
+                        Text(
+                            text = page.label,
+                            modifier = Modifier.align(Alignment.Center),
+                        )
                     }
                 }
             }
         }
         HorizontalPager(
+            modifier = Modifier.background(color = Color.Transparent),
             state = pagerState,
             count = pages.size,
-            modifier = Modifier.fillMaxSize(),
             content = {page ->
-                ScrollablePagerLayoutPage(
+                AntScrollablePagerLayoutPage(
                     page = page,
                     pages = pages)
 
@@ -95,7 +96,7 @@ fun ScrollablePagerLayout(
 }
 
 @Composable
-fun ScrollablePagerLayoutPage(
+fun AntScrollablePagerLayoutPage(
     page: Int,
     pages: List<ScrollablePagerLayoutItem>
 ){
@@ -103,13 +104,13 @@ fun ScrollablePagerLayoutPage(
 }
 
 @Composable
-fun ScrollablePagerLayoutIndicator(
+fun AntScrollablePagerLayoutIndicator(
     modifier: Modifier = Modifier
 ){
     Box(modifier = modifier
         .fillMaxSize()
         .padding(3.dp)
         .clip(shape = RoundedCornerShape(10.dp))
-        .background(color = Color.LightGray)
+        .background(color = Ant.colors.gray_1)
     )
 }

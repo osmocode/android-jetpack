@@ -9,6 +9,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FindInPage
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.FindInPage
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -16,12 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.utils.shadow
 
@@ -49,7 +56,7 @@ fun AntBottomBar(
         Box(
             modifier = Modifier
                 .shadow(
-                    color = Ant.colors.nav_shadow,
+                    color = Ant.colors.gray_13,
                     borderRadius = 5.dp,
                     blurRadius = 10.dp,
                     offsetX = 0.dp,
@@ -61,7 +68,7 @@ fun AntBottomBar(
                 modifier = Modifier
                     .height(60.dp)
                     .clip(shape = RoundedCornerShape(15.dp))
-                    .background(color = Ant.colors.nav_background)
+                    .background(color = Ant.colors.gray_3)
                     .padding(
                         horizontal = 30.dp,
                         //vertical = 15.dp
@@ -109,7 +116,7 @@ fun RowScope.AntBottomBarItem (
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val color by animateColorAsState(
-                targetValue = if (selected) Ant.colors.nav_item_focus else Ant.colors.nav_item
+                targetValue = if (selected) Ant.colors.primary_color_5 else Ant.colors.primary_color_3
             )
             val size by animateDpAsState(
                 targetValue = if (selected) 10.dp else 0.dp
@@ -153,4 +160,32 @@ fun RowScope.AntBottomBarItem (
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun AntBottomBarPreview(
+
+) {
+    val navController = rememberNavController()
+    val items = listOf(
+        AntBottomBarItem(
+            route = "home",
+            title = "Home",
+            icon = Icons.Outlined.Home,
+            icon_focus = Icons.Filled.Home
+        ),
+        AntBottomBarItem(
+            route = "research",
+            title = "Research",
+            icon = Icons.Outlined.FindInPage,
+            icon_focus = Icons.Filled.FindInPage
+        )
+    )
+
+
+    AntBottomBar(
+        navController = navController,
+        items = items
+    )
 }

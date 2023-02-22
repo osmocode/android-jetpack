@@ -59,11 +59,11 @@ fun AntAmountField(
         },
 
         cursorBrush = SolidColor(
-            value = Ant.colors.input_cursorColor
+            value = Ant.colors.primary_color_3
         ),
         singleLine = true,
         textStyle = LocalTextStyle.current.copy(
-            color = Ant.colors.input_textColor,
+            color = Ant.colors.primary_color_3,
             fontSize = 50.sp,
             textAlign = TextAlign.Center
         ),

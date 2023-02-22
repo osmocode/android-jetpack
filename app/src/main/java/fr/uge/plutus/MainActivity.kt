@@ -4,15 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.uge.plutus.ui.ant.AntTheme
-import fr.uge.plutus.widget.NavigationBar
-import fr.uge.plutus.widget.NavigationRouter
+import fr.uge.plutus.navigation.NavigationRouter
+
 
 @AndroidEntryPoint
 @OptIn(ExperimentalAnimationApi::class)
@@ -21,9 +24,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val defaultMode = isSystemInDarkTheme()
+            val darkMode = remember { mutableStateOf(defaultMode) }
             val navController = rememberAnimatedNavController()
-            AntTheme {
-                NavigationRouter(navController = navController)
+            AntTheme(
+                darkTheme = darkMode.value,
+            ) {
+                NavigationRouter(
+                    darkMode = darkMode,
+                    navController = navController
+                )
             }
         }
     }
@@ -36,19 +46,15 @@ class MainActivity : ComponentActivity() {
 )
 @Composable
 fun DefaultPreview() {
+    val defaultMode = isSystemInDarkTheme()
+    val darkMode = remember { mutableStateOf(defaultMode) }
     val navController = rememberNavController()
-    AntTheme {
-        Scaffold(
-            bottomBar = {
-                NavigationBar(
-                    navController = navController
-                )
-            },
-            content = {
-                NavigationRouter(
-                    navController = navController
-                )
-            }
+    AntTheme(
+        darkTheme = darkMode.value
+    ){
+        NavigationRouter(
+            darkMode = darkMode,
+            navController = navController
         )
     }
 }

@@ -12,13 +12,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 
 import fr.uge.plutus.ui.ant.Ant
 import kotlinx.coroutines.launch
 
-open class AntTabBarItem(
+open class AntPagerLayoutItem(
     val label: String,
     val content: @Composable (page: Int) -> Unit
 )
@@ -26,9 +25,8 @@ open class AntTabBarItem(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AntPagerLayout(
-    navController: NavHostController,
-    pages: List<AntTabBarItem>,
-
+    pages: List<AntPagerLayoutItem>,
+    animated: Boolean = false
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
@@ -38,8 +36,8 @@ fun AntPagerLayout(
             .fillMaxSize()
     ) {
         TabRow(
-            contentColor = Ant.colors.nav_item,
-            backgroundColor = Ant.colors.nav_background,
+            contentColor = Ant.colors.primary_color_2,
+            backgroundColor = Ant.colors.gray_5,
             selectedTabIndex = pagerState.currentPage,
             indicator = { tabPositions ->
                 AntPagerLayoutIndicator(
@@ -50,30 +48,33 @@ fun AntPagerLayout(
             modifier = Modifier
                 .height(35.dp)
                 .padding(horizontal = 10.dp)
-                .clip(shape = RoundedCornerShape(10.dp)),
+                .clip(shape = Ant.shapes.default),
         ) {
             pages.forEachIndexed { index, page ->
                 val selected = pagerState.currentPage == index
                 Tab(
-                    modifier = Modifier.zIndex(1f),
+                    modifier = Modifier
+                        .zIndex(1f)
+                        .clip(shape = Ant.shapes.default),
                     selected = selected,
                     onClick = {
                         scope.launch {
-                            pagerState.animateScrollToPage(index)
+                            pagerState.scrollToPage(index)
+                            // Animated option
+                            // pagerState.animateScrollToPage(index)
                         }
                     },
-                    selectedContentColor = Ant.colors.nav_background,
-                    unselectedContentColor = Ant.colors.nav_item_focus
+                    selectedContentColor = Color.White,
+                    unselectedContentColor = Ant.colors.primary_text
                 ){
-                    Text(text = page.label)
+                    Text(text = page.label,)
                 }
             }
         }
         HorizontalPager(
             state = pagerState,
             count = pages.size,
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             content = { page ->
                 AntPagerLayoutPage(
                     page = page,
@@ -84,10 +85,11 @@ fun AntPagerLayout(
     }
 }
 
+
 @Composable
 fun AntPagerLayoutIndicator(
     modifier: Modifier = Modifier,
-    color: Color = Ant.colors.nav_item_focus,
+    color: Color = Ant.colors.primary_color_5,
 ) {
     Box(
         modifier
@@ -101,7 +103,7 @@ fun AntPagerLayoutIndicator(
 @Composable
 fun AntPagerLayoutPage(
     page: Int,
-    pages: List<AntTabBarItem>
+    pages: List<AntPagerLayoutItem>
 ) {
     pages[page].content(page)
 }

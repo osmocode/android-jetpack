@@ -1,16 +1,14 @@
 package fr.uge.plutus.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ChevronLeft
-import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -30,138 +28,75 @@ enum class CustomButtonType {
 
 @Composable
 fun CustomButton(
-    modifier: Modifier = Modifier,
     title: String,
     type: CustomButtonType = CustomButtonType.DEFAULT,
     disabled: MutableState<Boolean> = mutableStateOf(false),
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit
 ) {
-
     Row(
-        modifier = modifier
-            .clip(
-                shape = RoundedCornerShape(10.dp)
-            )
+        modifier = Modifier
+            .clip(shape = Ant.shapes.default)
             .border(
                 width = 1.dp,
-                color = if (type == CustomButtonType.DEFAULT) Ant.colors.button_color else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
+                color = if (type == CustomButtonType.DEFAULT) Ant.colors.primary_color_5 else Color.Transparent,
+                shape = Ant.shapes.default
             )
             .clickable(
                 enabled = !disabled.value,
-                onClick = { if (!disabled.value) onClick() }
+                onClick = onClick
             )
             .fillMaxWidth()
-            .background(
-                color =
-                if (!disabled.value) {
-                    customButtonBackgroundColor(
-                        type = type
-                    )
-                } else {
-                    customButtonBackgroundColorDisabled(
-                        type = type
-                    )
-                }
-            )
+            .background(color = CustomButtonBackgroundColor(type = type, disabled = disabled))
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
-    ){
+    ) {
         if (leadingIcon != null) {
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = "Leading Icon",
-                tint = customButtonColor(
-                    type = type
-                )
+                tint = CustomButtonColor(type = type, disabled = disabled),
+                modifier = Modifier.padding(end = Ant.spacing.small)
             )
         }
         Text(
             text = title,
-            color = customButtonColor(
-                type = type
-            )
+            color = CustomButtonColor(type = type, disabled = disabled)
         )
         if (trailingIcon != null) {
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = "Trailing Icon",
-                tint = customButtonColor(
-                    type = type
-                )
+                tint = CustomButtonColor(type = type, disabled = disabled),
+                modifier = Modifier.padding(start = Ant.spacing.small)
             )
         }
     }
 }
 
 @Composable
-fun customButtonBackgroundColor(
-    type: CustomButtonType
+fun CustomButtonBackgroundColor(
+    type: CustomButtonType,
+    disabled: MutableState<Boolean>,
 ): Color {
-    return when (type) {
-        CustomButtonType.PRIMARY -> Ant.colors.button_color
-        CustomButtonType.DEFAULT -> Color.White
+    return when(type) {
+        CustomButtonType.DEFAULT -> if (disabled.value) Ant.colors.gray_9 else Ant.colors.gray_1
+        CustomButtonType.PRIMARY -> if (disabled.value) Ant.colors.primary_color_3 else Ant.colors.primary_color_5
         CustomButtonType.LINK -> Color.Transparent
     }
 }
 
 @Composable
-fun customButtonBackgroundColorDisabled(
-    type: CustomButtonType
+fun CustomButtonColor(
+    type: CustomButtonType,
+    disabled: MutableState<Boolean>,
 ): Color {
-    return when (type) {
-
-        CustomButtonType.PRIMARY -> Color.LightGray
-        CustomButtonType.DEFAULT -> Color.LightGray
-        CustomButtonType.LINK -> Color.Transparent
-    }
-}
-
-
-
-@Composable
-fun customButtonColor(
-    type: CustomButtonType
-): Color {
-    return when (type) {
-        CustomButtonType.PRIMARY -> Color.White
-        CustomButtonType.DEFAULT -> Ant.colors.button_color
-        CustomButtonType.LINK -> Ant.colors.button_color
-    }
-}
-
-@Preview
-@Composable
-fun PrimaryCustomButtonPreview(
-
-) {
-    val disabled = remember { mutableStateOf(true) }
-    Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        CustomButton(
-            title = "Button",
-            type = CustomButtonType.PRIMARY,
-            trailingIcon = Icons.Outlined.ChevronRight,
-            onClick = {
-                Log.println(Log.ASSERT, "enable","pass")
-            }
-        )
-        CustomButton(
-            title = "Button",
-            type = CustomButtonType.PRIMARY,
-            trailingIcon = Icons.Outlined.ChevronRight,
-            disabled = disabled,
-            onClick = {
-                Log.println(Log.ASSERT, "disable","pass")
-            }
-
-
-        )
-        Log.println(Log.ASSERT, "button","pass")
+    return when(type) {
+        CustomButtonType.DEFAULT -> if (disabled.value) Ant.colors.primary_color_3 else Ant.colors.primary_color_5
+        CustomButtonType.PRIMARY -> if (disabled.value) Ant.colors.gray_8 else Ant.colors.gray_1
+        CustomButtonType.LINK -> if (disabled.value) Ant.colors.gray_8 else Ant.colors.primary_color_5
     }
 }
 
@@ -170,21 +105,73 @@ fun PrimaryCustomButtonPreview(
 fun DefaultCustomButtonPreview(
 
 ) {
-    CustomButton(
-        title = "Previous",
-        leadingIcon = Icons.Outlined.ChevronLeft
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        val state = remember { mutableStateOf(true) }
+        CustomButton(
+            title = "Previous",
+            leadingIcon = Icons.Outlined.ArrowBack,
+            onClick = {}
+        )
+        CustomButton(
+            title = "Previous",
+            leadingIcon = Icons.Outlined.ArrowBack,
+            disabled = state,
+            onClick = {}
+        )
+    }
 }
+
+@Preview
+@Composable
+fun PrimaryCustomButtonPreview(
+
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        val state = remember { mutableStateOf(true) }
+        CustomButton(
+            title = "Continue",
+            type = CustomButtonType.PRIMARY,
+            trailingIcon = Icons.Outlined.ArrowForward,
+            onClick = {}
+        )
+        CustomButton(
+            title = "Continue",
+            type = CustomButtonType.PRIMARY,
+            trailingIcon = Icons.Outlined.ArrowForward,
+            disabled = state,
+            onClick = {}
+        )
+    }
+}
+
 
 @Preview
 @Composable
 fun LinkCustomButtonPreview(
 
 ) {
-    CustomButton(
-        title = "Button",
-        type = CustomButtonType.LINK,
-        leadingIcon = Icons.Outlined.ChevronLeft,
-        trailingIcon = Icons.Outlined.ChevronRight
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        val state = remember { mutableStateOf(true) }
+        CustomButton(
+            title = "Double",
+            trailingIcon = Icons.Outlined.ArrowForward,
+            leadingIcon = Icons.Outlined.ArrowBack,
+            type = CustomButtonType.LINK,
+            onClick = {}
+        )
+        CustomButton(
+            title = "Double",
+            trailingIcon = Icons.Outlined.ArrowForward,
+            leadingIcon = Icons.Outlined.ArrowBack,
+            type = CustomButtonType.LINK,
+            disabled = state,
+            onClick = {}
+        )
+    }
 }
