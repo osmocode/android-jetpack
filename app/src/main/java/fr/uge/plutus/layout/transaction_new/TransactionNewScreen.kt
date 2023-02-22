@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.uge.plutus.data.model.Price
+import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
@@ -49,16 +50,24 @@ fun TransactionNewScreen(
             Spacer(modifier = Modifier.size(Ant.spacing.default))
             AntAmountInput(
                 amount = amount,
-                onClick = {}
+                onClick = {
+                    navController.navigate(NavigationRoute.Price.route)
+                }
             )
             AntTagInput (
-                onClick = {}
+                onClick = {
+                    navController.navigate(NavigationRoute.Tag.route)
+                }
             )
             AntNoteInput (
-                onClick = {}
+                onClick = {
+                    navController.navigate(NavigationRoute.Note.route)
+                }
             )
             AntDateInput (
-                onClick = {}
+                onClick = {
+                    navController.navigate(NavigationRoute.Date.route)
+                }
             )
         }
     }

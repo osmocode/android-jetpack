@@ -13,9 +13,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import fr.uge.plutus.layout.transaction_list.TransactionListScreen
 import fr.uge.plutus.layout.transaction_new.TransactionNewScreen
-import fr.uge.plutus.pages.HomePage
-import fr.uge.plutus.pages.ResearchPage
-import fr.uge.plutus.pages.SettingsPage
+import fr.uge.plutus.pages.*
 import fr.uge.plutus.ui.ant.Ant
 
 
@@ -28,6 +26,10 @@ sealed class NavigationRoute(
     object Settings: NavigationRoute(route = "settings")
     object Transaction: NavigationRoute(route = "transactions")
     object NewTransaction: NavigationRoute(route = "newTransaction")
+    object Price: NavigationRoute(route = "price")
+    object Tag: NavigationRoute(route = "tag")
+    object Note: NavigationRoute(route = "note")
+    object Date: NavigationRoute(route = "date")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -119,6 +121,38 @@ fun NavigationRouter(
                 route = NavigationRoute.NewTransaction.route,
                 content = {
                     TransactionNewScreen(
+                        navController = navController
+                    )
+                }
+            )
+            composable(
+                route = NavigationRoute.Price.route,
+                content = {
+                    PricePage(
+                        navController = navController
+                    )
+                }
+            )
+            composable(
+                route = NavigationRoute.Tag.route,
+                content = {
+                    TagPage(
+                        navController = navController
+                    )
+                }
+            )
+            composable(
+                route = NavigationRoute.Note.route,
+                content = {
+                    NotePage(
+                        navController = navController
+                    )
+                }
+            )
+            composable(
+                route = NavigationRoute.Date.route,
+                content = {
+                    DatePage(
                         navController = navController
                     )
                 }
