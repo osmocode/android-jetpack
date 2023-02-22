@@ -25,11 +25,11 @@ import fr.uge.plutus.ui.components.*
 fun PricePage(
     navController: NavHostController,
     price : Price,
-    onSubmit : (Double) -> Unit
+    onSubmit : (Price) -> Unit
 ) {
     val sheetVisible = remember { mutableStateOf(false) }
 
-    val prefix = remember { mutableStateOf(price.currency) }
+    val currency = remember { mutableStateOf(price.currency) }
     val amount = remember { mutableStateOf(price.amount) }
 
     val buttonDisable = remember { mutableStateOf(true) }
@@ -76,7 +76,7 @@ fun PricePage(
                     onClick = {}
                 )
                 AntAmountField(
-                    prefix = prefix,
+                    prefix = currency,
                     amount = amount
                 )
             }
@@ -85,7 +85,10 @@ fun PricePage(
                 type = CustomButtonType.PRIMARY,
                 disabled = buttonDisable,
                 onClick = {
-                    onSubmit(amount.value)
+                    onSubmit(Price(
+                        currency = currency.value,
+                        amount = amount.value
+                    ))
                     focusManger.clearFocus()
                 }
             )

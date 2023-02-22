@@ -96,7 +96,11 @@ fun TransactionNewScreen(
             route = NavigationRoute.Price.route,
             content = {
                 PricePage(
-                    navController = subNavController
+                    navController = subNavController,
+                    price = price,
+                    onSubmit = { newPrice ->
+                        viewModel.state.value.copy(price = newPrice)
+                    }
                 )
             }
         )
