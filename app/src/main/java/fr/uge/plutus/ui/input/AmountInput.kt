@@ -16,7 +16,7 @@ import fr.uge.plutus.ui.ant.Ant
 
 @Composable
 fun AntAmountInput(
-    amount: Price,
+    price: Price,
     onClick: () -> Unit
 ) {
     Row(
@@ -25,8 +25,8 @@ fun AntAmountInput(
             .fillMaxWidth()
             .clip(shape = Ant.shapes.default)
             .background(color = Ant.colors.gray_1,)
-            .padding(horizontal = Ant.spacing.default)
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .padding(horizontal = Ant.spacing.default),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -35,7 +35,7 @@ fun AntAmountInput(
             color = Ant.colors.secondary_text
         )
         Text(
-            text = "${amount}",
+            text = "${price}",
             fontWeight = FontWeight.SemiBold,
             color = Ant.colors.primary_text
         )
@@ -47,12 +47,12 @@ fun AntAmountInput(
 fun AntAmountInputPreview(
 
 ) {
-    val amount: Price = Price(
+    val price = Price(
         currency = "$",
         amount = 135.0
     )
     AntAmountInput(
-        amount = amount,
+        price = price,
         onClick = { }
     )
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -47,34 +48,9 @@ fun NavigationRouter(
             )
         }
     ) {
-        AnimatedNavHost(
-            modifier = Modifier.background(color = Ant.colors.background),
+        NavigationRouteHost(
             navController = navController,
-            startDestination = NavigationRoute.Home.route,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { width -> width },
-                    animationSpec = tween(300)
-                )
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { width -> -width },
-                    animationSpec = tween(300)
-                )
-            },
-            popEnterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { width -> -width },
-                    animationSpec = tween(300)
-                )
-            },
-            popExitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { width -> width },
-                    animationSpec = tween(300)
-                )
-            }
+            startDestination = NavigationRoute.Home.route
         ) {
             composable(
                 route = NavigationRoute.Home.route,
@@ -135,39 +111,47 @@ fun NavigationRouter(
                     )
                 }
             )
-            composable(
-                route = NavigationRoute.Price.route,
-                content = {
-                    PricePage(
-                        navController = navController
-                    )
-                }
-            )
-            composable(
-                route = NavigationRoute.Tag.route,
-                content = {
-                    TagPage(
-                        navController = navController
-                    )
-                }
-            )
-            composable(
-                route = NavigationRoute.Note.route,
-                content = {
-                    NotePage(
-                        navController = navController
-                    )
-                }
-            )
-            composable(
-                route = NavigationRoute.Date.route,
-                content = {
-                    DatePage(
-                        navController = navController
-                    )
-                }
-            )
         }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun NavigationRouteHost(
+    navController: NavHostController,
+    startDestination: String,
+    content: NavGraphBuilder.() -> Unit
+) {
+    AnimatedNavHost(
+        modifier = Modifier.background(color = Ant.colors.background),
+        navController = navController,
+        startDestination = startDestination,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { width -> width },
+                animationSpec = tween(300)
+            )
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { width -> -width },
+                animationSpec = tween(300)
+            )
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { width -> -width },
+                animationSpec = tween(300)
+            )
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { width -> width },
+                animationSpec = tween(300)
+            )
+        },
+    ) {
+        content()
     }
 }
 

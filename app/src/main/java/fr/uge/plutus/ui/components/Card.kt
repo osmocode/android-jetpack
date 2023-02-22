@@ -1,9 +1,7 @@
 package fr.uge.plutus.ui.components
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
@@ -15,8 +13,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FileCopy
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -27,7 +23,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +30,7 @@ import fr.uge.plutus.ui.ant.Ant
 import kotlin.math.roundToInt
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AntCard(
     title : String,
@@ -46,16 +41,14 @@ fun AntCard(
     val swipe = rememberSwipeableState(initialValue = 0)
     val left = with(LocalDensity.current) { 60.dp.toPx() }
     val right = -with(LocalDensity.current) { 130.dp.toPx() }
-    Log.println(Log.ASSERT, "SWIPE", swipe.progress.toString())
-    var fraction:Float
-    if (swipe.progress.from - swipe.progress.to < 0){
-        fraction = swipe.progress.fraction
+    val fraction:Float = if (swipe.progress.from - swipe.progress.to < 0){
+        swipe.progress.fraction
     }
     else if (swipe.progress.from - swipe.progress.to == 0){
-        fraction = 1f
+        1f
     }
-    else{
-        fraction = 1 - swipe.progress.fraction
+    else {
+        1 - swipe.progress.fraction
     }
 
     Box(

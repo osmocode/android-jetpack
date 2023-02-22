@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,12 +24,12 @@ fun AntTagInput(
         modifier = Modifier
             .fillMaxWidth()
             .clip(shape = Ant.shapes.default)
-            .background(color = Ant.colors.gray_1,)
+            .background(color = Ant.colors.gray_1)
+            .clickable(onClick = onClick)
             .padding(
                 vertical = Ant.spacing.small,
                 horizontal = Ant.spacing.default
-            )
-            .clickable(onClick = onClick),
+            ),
         horizontalArrangement = Arrangement.spacedBy(Ant.spacing.default),
         verticalAlignment = Alignment.CenterVertically
     ){
