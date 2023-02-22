@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.uge.plutus.data.model.Price
-
 import fr.uge.plutus.ui.components.*
+import fr.uge.plutus.ui.field.AntAmountField
 
 @Composable
 fun PricePage(
@@ -62,7 +62,6 @@ fun PricePage(
                 },
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Box{}
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
