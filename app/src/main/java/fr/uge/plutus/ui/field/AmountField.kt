@@ -1,4 +1,4 @@
-package fr.uge.plutus.ui.components
+package fr.uge.plutus.ui.field
 
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
