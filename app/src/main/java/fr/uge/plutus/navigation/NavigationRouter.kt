@@ -9,6 +9,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import fr.uge.plutus.layout.transaction_list.TransactionListScreen
@@ -76,32 +78,32 @@ fun NavigationRouter(
         ) {
             composable(
                 route = NavigationRoute.Home.route,
-                enterTransition = { NavigationRouterEnterAnimation(initialState) },
-                exitTransition = { NavigationRouterExitAnimation(targetState) },
+                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
                     HomePage(navController = navController)
                 }
             )
             composable(
                 route = NavigationRoute.Research.route,
-                enterTransition = { NavigationRouterEnterAnimation(initialState) },
-                exitTransition = { NavigationRouterExitAnimation(targetState) },
+                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
                     ResearchPage(navController = navController)
                 }
             )
             composable(
                 route = NavigationRoute.Wallets.route,
-                enterTransition = { NavigationRouterEnterAnimation(initialState) },
-                exitTransition = { NavigationRouterExitAnimation(targetState) },
+                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
                     HomePage(navController = navController)
                 }
             )
             composable(
                 route = NavigationRoute.Settings.route,
-                enterTransition = { NavigationRouterEnterAnimation(initialState) },
-                exitTransition = { NavigationRouterExitAnimation(targetState) },
+                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
                     SettingsPage(
                         darkMode = darkMode,
@@ -118,7 +120,15 @@ fun NavigationRouter(
                 }
             )
             composable(
-                route = NavigationRoute.NewTransaction.route,
+                route = NavigationRoute.NewTransaction.route + "?transactionId={transactionId}",
+                arguments = listOf(
+                    navArgument(
+                        name = "transactionId"
+                    ) {
+                        type = NavType.IntType
+                        defaultValue = -1
+                    }
+                ),
                 content = {
                     TransactionNewScreen(
                         navController = navController
@@ -161,7 +171,7 @@ fun NavigationRouter(
     }
 }
 
-fun NavigationRouterEnterAnimation(
+fun navigationRouterEnterAnimation(
     initialState: NavBackStackEntry
 ): EnterTransition? {
     return when(initialState.destination.route) {
@@ -178,7 +188,7 @@ fun NavigationRouterEnterAnimation(
     }
 }
 
-fun NavigationRouterExitAnimation(
+fun navigationRouterExitAnimation(
     targetState: NavBackStackEntry
 ): ExitTransition? {
     return when(targetState.destination.route) {

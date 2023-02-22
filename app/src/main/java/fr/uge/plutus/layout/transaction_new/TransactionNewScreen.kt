@@ -9,9 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import fr.uge.plutus.data.model.Price
 import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
@@ -20,9 +20,11 @@ import fr.uge.plutus.ui.input.AntNoteInput
 
 @Composable
 fun TransactionNewScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: TransactionNewViewModel = hiltViewModel()
 ) {
-    val amount = Price(currency = "$", amount = 0.0)
+    val state = viewModel.state.value
+    val price = state.price
     val sheetVisible = remember { mutableStateOf(false) }
 
     AntBottomSheetScaffold(
@@ -49,7 +51,7 @@ fun TransactionNewScreen(
         ) {
             Spacer(modifier = Modifier.size(Ant.spacing.default))
             AntAmountInput(
-                amount = amount,
+                amount = price,
                 onClick = {
                     navController.navigate(NavigationRoute.Price.route)
                 }
