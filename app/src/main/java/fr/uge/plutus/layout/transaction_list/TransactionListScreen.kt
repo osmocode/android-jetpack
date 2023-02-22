@@ -109,13 +109,28 @@ fun TransactionListScreen(
                                     AntCard(
                                         title = transaction.desc,
                                         description = formatter.format(Date(transaction.timestamp.toLong())),
-                                        extras = "${transaction.price}"
-                                    )
-                                    CustomButton(
-                                        title = "TEST",
-                                        onClick = {
-                                            navController.navigate(NavigationRoute.NewTransaction.route + "?transactionId=${transaction.id}")
-                                        }
+                                        extras = "${transaction.price}",
+                                        leadingIcon = listOf(
+                                            AntCardActionItem(
+                                                icon = Icons.Outlined.Delete,
+                                                color = Ant.colors.primary_text,
+                                                onClick = {},
+                                            )
+                                        ),
+                                        trailingIcon = listOf(
+                                            AntCardActionItem(
+                                                icon = Icons.Outlined.Edit,
+                                                color = Ant.colors.primary_text,
+                                                onClick = {},
+                                            ),
+                                            AntCardActionItem(
+                                                icon = Icons.Outlined.FileCopy,
+                                                color = Ant.colors.primary_text,
+                                                onClick = {
+                                                    navController.navigate(NavigationRoute.NewTransaction.route + "?transactionId=${transaction.id}")
+                                                },
+                                            )
+                                        )
                                     )
                                 }
                             }
