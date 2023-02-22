@@ -28,12 +28,9 @@ fun PricePage(
     onSubmit : (Price) -> Unit
 ) {
     val sheetVisible = remember { mutableStateOf(false) }
-
     val currency = remember { mutableStateOf(price.currency) }
     val amount = remember { mutableStateOf(price.amount) }
-
     val buttonDisable = remember { mutableStateOf(true) }
-
     val focusManger = LocalFocusManager.current
 
     AntBottomSheetScaffold(
@@ -90,6 +87,7 @@ fun PricePage(
                         amount = amount.value
                     ))
                     focusManger.clearFocus()
+                    navController.popBackStack()
                 }
             )
         }
