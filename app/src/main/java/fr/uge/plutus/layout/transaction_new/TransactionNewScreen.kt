@@ -99,7 +99,7 @@ fun TransactionNewScreen(
                     navController = subNavController,
                     price = price,
                     onSubmit = { newPrice ->
-                        viewModel.state.value.copy(price = newPrice)
+                        viewModel.onEvent(TransactionNewEvent.EditPrice(newPrice))
                     }
                 )
             }
