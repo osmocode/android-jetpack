@@ -103,7 +103,6 @@ fun TransactionListScreen(
                         content = {
                             LazyColumn(
                                 modifier = Modifier.padding(horizontal = Ant.spacing.default),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
                                 items(state.transactions) { transaction ->
                                     AntCard(
