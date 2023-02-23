@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -38,7 +37,6 @@ sealed class NavigationRoute(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationRouter(
-    darkMode: MutableState<Boolean>,
     navController: NavHostController
 ) {
     Scaffold(
@@ -81,10 +79,7 @@ fun NavigationRouter(
                 enterTransition = { navigationRouterEnterAnimation(initialState) },
                 exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
-                    SettingsPage(
-                        darkMode = darkMode,
-                        navController = navController
-                    )
+                    SettingsPage(navController = navController)
                 }
             )
             composable(

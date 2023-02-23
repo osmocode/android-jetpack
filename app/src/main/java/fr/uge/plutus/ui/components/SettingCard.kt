@@ -2,27 +2,27 @@ package fr.uge.plutus.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Switch
-import androidx.compose.material.SwitchColors
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import fr.uge.plutus.data.DataStorageProvider
 import fr.uge.plutus.ui.ant.Ant
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingCard(
     label: String,
     desc: String = "",
-    state: MutableState<Boolean>
 ) {
+    val dataStorage = DataStorageProvider.getInstance(LocalContext.current)
+    val dark by dataStorage.getTheme().collectAsState(initial = null)
+    val scope = rememberCoroutineScope()
 
     Row(
         modifier = Modifier
@@ -57,9 +57,11 @@ fun SettingCard(
                 uncheckedTrackColor = Ant.colors.gray_6,
                 uncheckedTrackAlpha = 0.38f
             ),
-            checked = state.value,
+            checked = if (dark == null) false else dark!!,
             onCheckedChange = {
-                state.value = it
+                scope.launch {
+                    dataStorage.setTheme(it)
+                }
             }
         )
     }
@@ -75,6 +77,6 @@ fun SettingCardPreview(
     SettingCard(
         label = "Dark mode",
         desc = "By default use system mode",
-        state = state
+        //state = state
     )
 }
