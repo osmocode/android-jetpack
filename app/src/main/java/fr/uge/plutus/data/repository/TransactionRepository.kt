@@ -1,6 +1,5 @@
 package fr.uge.plutus.data.repository
 
-import android.util.Log
 import fr.uge.plutus.data.dao.TransactionDao
 import fr.uge.plutus.data.interfaces.ITransactionRepository
 import fr.uge.plutus.data.model.Transaction
@@ -13,7 +12,6 @@ class TransactionRepository @Inject constructor(
     override fun retrieveAllTransaction(): Flow<List<Transaction>> = transactionDao.retrieveAll()
 
     override suspend fun createTransaction(transaction: Transaction) {
-        Log.println(Log.ASSERT, "INSERT", transaction.toString())
         transactionDao.create(transaction)
     }
 

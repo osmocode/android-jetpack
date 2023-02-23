@@ -9,7 +9,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fr.uge.plutus.data.DataBase
 import fr.uge.plutus.data.dao.TransactionDao
+import fr.uge.plutus.data.dao.WalletDao
+import fr.uge.plutus.data.interfaces.ITransactionRepository
+import fr.uge.plutus.data.interfaces.IWalletRepository
 import fr.uge.plutus.data.repository.TransactionRepository
+import fr.uge.plutus.data.repository.WalletRepository
 import javax.inject.Singleton
 
 
@@ -35,7 +39,20 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideTransactionRepository(dao: TransactionDao): TransactionRepository {
+    fun provideTransactionRepository(dao: TransactionDao): ITransactionRepository {
         return TransactionRepository(dao)
     }
+
+    @Singleton
+    @Provides
+    fun provideWalletDao(db: DataBase): WalletDao {
+        return db.walletDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideWalletRepository(dao: WalletDao): IWalletRepository {
+        return WalletRepository(dao)
+    }
+
 }
