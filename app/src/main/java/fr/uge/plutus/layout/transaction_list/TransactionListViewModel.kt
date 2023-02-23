@@ -5,14 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.uge.plutus.data.model.Price
-import fr.uge.plutus.data.model.Transaction
 import fr.uge.plutus.data.repository.TransactionRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,43 +24,18 @@ class TransactionListViewModel @Inject constructor(
     private var getTransactionsJob2: Job? = null
 
     init {
-
         getTransactions()
-
-        viewModelScope.launch {
-
-            transactionRepository.createTransaction(
-                Transaction(
-                    null,
-                    "Crous",
-                    Price("€", 3.35),
-                    Date().time.toDouble()
-                )
-            )
-
-            transactionRepository.createTransaction(
-                Transaction(
-                    null,
-                    "Essence",
-                    Price("€", 126.0),
-                    Date().time.toDouble()
-                )
-            )
-            transactionRepository.createTransaction(
-                Transaction(
-                    null,
-                    "Assurance",
-                    Price("€", 47.0),
-                    Date().time.toDouble()
-                )
-            )
-        }
     }
 
     fun onEvent(event: TransactionListEvent) {
         when (event) {
             is TransactionListEvent.AddNewTransaction -> TODO()
             is TransactionListEvent.SelectTransaction -> TODO()
+            is TransactionListEvent.DeleteTransaction -> {
+                viewModelScope.launch {
+                    transactionRepository.deleteTransaction(event.transaction)
+                }
+            }
         }
     }
 

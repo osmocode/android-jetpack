@@ -20,6 +20,7 @@ import androidx.navigation.*
 import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
+import fr.uge.plutus.ui.field.AntTextField
 import java.text.DateFormat.getDateInstance
 import java.util.*
 
@@ -68,7 +69,7 @@ fun TransactionListScreen(
                         shape = Ant.shapes.default
                     ),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
-            ){
+            ) {
                 AntActionCard(
                     label = "Credit",
                     desc = "Create new income",
@@ -95,9 +96,12 @@ fun TransactionListScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            AntTextField()
+            AntTextField(
+                leadingIcon = Icons.Outlined.Search,
+                onChange = {}
+            )
             AntPagerLayout(
-                pages = listOf (
+                pages = listOf(
                     AntPagerLayoutItem(
                         label = "Past",
                         content = {
@@ -106,14 +110,20 @@ fun TransactionListScreen(
                             ) {
                                 items(state.transactions) { transaction ->
                                     AntCard(
-                                        title = transaction.desc,
+                                        title = transaction.title,
                                         description = formatter.format(Date(transaction.timestamp.toLong())),
                                         extras = "${transaction.price}",
                                         leadingIcon = listOf(
                                             AntCardActionItem(
                                                 icon = Icons.Outlined.Delete,
                                                 color = Ant.colors.primary_text,
-                                                onClick = {},
+                                                onClick = {
+                                                    viewModel.onEvent(
+                                                        TransactionListEvent.DeleteTransaction(
+                                                            transaction
+                                                        )
+                                                    )
+                                                },
                                             )
                                         ),
                                         trailingIcon = listOf(
