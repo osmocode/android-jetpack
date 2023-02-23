@@ -73,7 +73,7 @@ fun NavigationRouter(
                 enterTransition = { navigationRouterEnterAnimation(initialState) },
                 exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
-                    HomePage(navController = navController)
+                    WalletPage(navController = navController)
                 }
             )
             composable(
