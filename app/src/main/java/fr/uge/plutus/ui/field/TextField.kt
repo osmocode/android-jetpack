@@ -27,6 +27,7 @@ import fr.uge.plutus.ui.ant.Ant
 
 @Composable
 fun AntTextField(
+    modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
     placeHolder: String = "Placeholder",
     onChange: (value: String) -> Unit
@@ -34,7 +35,7 @@ fun AntTextField(
     val text = remember { mutableStateOf("") }
     val interactionSource = remember { MutableInteractionSource() }
     BasicTextField(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = Ant.colors.gray_5,
                 shape = RoundedCornerShape(5.dp)

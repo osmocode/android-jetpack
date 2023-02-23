@@ -41,8 +41,8 @@ fun AntCard(
     title: String,
     description: String,
     extras: String,
-    leadingIcon: List<AntCardActionItem>,
-    trailingIcon: List<AntCardActionItem>,
+    leadingIcon: List<AntCardActionItem> = listOf(),
+    trailingIcon: List<AntCardActionItem> = listOf(),
 ) {
     val size = 50.dp
     val swipe = rememberSwipeableState(initialValue = 0)

@@ -97,6 +97,7 @@ fun TransactionListScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             AntTextField(
+                modifier = Modifier.padding(horizontal = Ant.spacing.default),
                 leadingIcon = Icons.Outlined.Search,
                 onChange = {}
             )
