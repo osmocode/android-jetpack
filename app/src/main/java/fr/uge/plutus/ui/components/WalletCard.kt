@@ -9,9 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -74,12 +78,56 @@ fun AntWalletCard(
             .fillMaxSize()
             .padding(Ant.spacing.small)
             .clip(Ant.shapes.default)
-            .background(color = Color.LightGray)
+            .background(
+                Brush.linearGradient(
+                    colors = listOf(
+                        Ant.colors.primary_color_3,
+                        Ant.colors.primary_color_5
+                    )
+                )
+            )
             .padding(Ant.spacing.default)
     ) {
-        Text(
-            text = item.label
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = item.label,
+                    fontSize = 18.sp,
+                    color = Color.White
+                )
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = Color.Black.copy(alpha = 0.3f),
+                            shape = CircleShape
+                        )
+                        .padding(
+                            vertical = Ant.spacing.small/2,
+                            horizontal = Ant.spacing.small
+                        )
+                ) {
+                    Text(
+                        text = "Selected",
+                        fontSize = 10.sp,
+                        color = Color.White
+                    )
+                }
+            }
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "$ 1000",
+                textAlign = TextAlign.End,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Light,
+                color = Color.White
+            )
+        }
     }
 }
 
