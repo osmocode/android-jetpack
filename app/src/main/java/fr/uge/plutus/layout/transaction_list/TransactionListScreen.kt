@@ -16,10 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
+import fr.uge.plutus.ui.field.AntTextField
+import java.text.DateFormat.getDateInstance
+import java.util.*
 
 @Composable
 fun TransactionListScreen(
@@ -27,7 +30,7 @@ fun TransactionListScreen(
 ) {
     val viewModel = hiltViewModel<TransactionListViewModel>()
     val state = viewModel.state.value
-    //val formater = getDateInstance()//SimpleDateFormat("dd/MM/yyyy")
+    val formatter = getDateInstance()//SimpleDateFormat("dd/MM/yyyy")
 
     val sheetVisible = remember { mutableStateOf(false) }
 
@@ -66,7 +69,7 @@ fun TransactionListScreen(
                         shape = Ant.shapes.default
                     ),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
-            ){
+            ) {
                 AntActionCard(
                     label = "Credit",
                     desc = "Create new income",
@@ -93,21 +96,51 @@ fun TransactionListScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            AntTextField()
+            AntTextField(
+                modifier = Modifier.padding(horizontal = Ant.spacing.default),
+                leadingIcon = Icons.Outlined.Search,
+                onChange = {}
+            )
             AntPagerLayout(
-                pages = listOf (
+                pages = listOf(
                     AntPagerLayoutItem(
                         label = "Past",
                         content = {
                             LazyColumn(
                                 modifier = Modifier.padding(horizontal = Ant.spacing.default),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                items(state.transactions) {item ->
+                                items(state.transactions) { transaction ->
                                     AntCard(
-                                        title = item.desc,
-                                        description = item.timestamp.toString(),
-                                        extras = "${item.price}"
+                                        title = transaction.title,
+                                        description = formatter.format(Date(transaction.timestamp.toLong())),
+                                        extras = "${transaction.price}",
+                                        leadingIcon = listOf(
+                                            AntCardActionItem(
+                                                icon = Icons.Outlined.Delete,
+                                                color = Ant.colors.primary_text,
+                                                onClick = {
+                                                    viewModel.onEvent(
+                                                        TransactionListEvent.DeleteTransaction(
+                                                            transaction
+                                                        )
+                                                    )
+                                                },
+                                            )
+                                        ),
+                                        trailingIcon = listOf(
+                                            AntCardActionItem(
+                                                icon = Icons.Outlined.Edit,
+                                                color = Ant.colors.primary_text,
+                                                onClick = {},
+                                            ),
+                                            AntCardActionItem(
+                                                icon = Icons.Outlined.FileCopy,
+                                                color = Ant.colors.primary_text,
+                                                onClick = {
+                                                    navController.navigate(NavigationRoute.NewTransaction.route + "?transactionId=${transaction.id}")
+                                                },
+                                            )
+                                        )
                                     )
                                 }
                             }

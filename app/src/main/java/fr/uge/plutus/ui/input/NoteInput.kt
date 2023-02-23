@@ -8,7 +8,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DriveFileRenameOutline
-import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,21 +18,23 @@ import fr.uge.plutus.ui.ant.Ant
 
 @Composable
 fun AntNoteInput(
+    title: String,
+    description: String,
     onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(shape = Ant.shapes.default)
-            .background(color = Ant.colors.gray_1,)
+            .background(color = Ant.colors.gray_1)
+            .clickable(onClick = onClick)
             .padding(
                 vertical = Ant.spacing.small,
                 horizontal = Ant.spacing.default
-            )
-            .clickable(onClick = onClick),
+            ),
         horizontalArrangement = Arrangement.spacedBy(Ant.spacing.default),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -51,10 +52,10 @@ fun AntNoteInput(
         }
         Column {
             Text(
-                text = "Write note",
+                text = title,
                 color = Ant.colors.secondary_text
             )
-            Text(text = "")
+            Text(text = description)
         }
     }
 }
@@ -66,6 +67,8 @@ fun AntNoteInputPreview(
 
 ) {
     AntNoteInput(
+        title = "Lorem",
+        description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         onClick = {}
     )
 }

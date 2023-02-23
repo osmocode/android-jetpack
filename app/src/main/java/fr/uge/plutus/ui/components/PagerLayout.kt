@@ -26,7 +26,6 @@ open class AntPagerLayoutItem(
 @Composable
 fun AntPagerLayout(
     pages: List<AntPagerLayoutItem>,
-    animated: Boolean = false
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
@@ -47,7 +46,7 @@ fun AntPagerLayout(
             },
             modifier = Modifier
                 .height(35.dp)
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = Ant.spacing.default)
                 .clip(shape = Ant.shapes.default),
         ) {
             pages.forEachIndexed { index, page ->

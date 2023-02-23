@@ -7,13 +7,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DriveFileRenameOutline
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,11 +26,11 @@ fun AntDateInput(
             .fillMaxWidth()
             .clip(shape = Ant.shapes.default)
             .background(color = Ant.colors.gray_1,)
+            .clickable(onClick = onClick)
             .padding(
                 vertical = Ant.spacing.small,
                 horizontal = Ant.spacing.default
-            )
-            .clickable(onClick = onClick),
+            ),
         horizontalArrangement = Arrangement.spacedBy(Ant.spacing.default),
         verticalAlignment = Alignment.CenterVertically
     ){
