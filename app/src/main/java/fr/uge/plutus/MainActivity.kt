@@ -4,15 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
+import fr.uge.plutus.data.DataStorageProvider
 import fr.uge.plutus.ui.ant.AntTheme
 import fr.uge.plutus.navigation.NavigationRouter
 
@@ -24,14 +22,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val defaultMode = isSystemInDarkTheme()
-            val darkMode = remember { mutableStateOf(defaultMode) }
+            val dark = DataStorageProvider.getInstance(LocalContext.current).getTheme()
+                .collectAsState(initial = null)
             val navController = rememberAnimatedNavController()
             AntTheme(
-                darkTheme = darkMode.value,
+                dark = dark.value
             ) {
                 NavigationRouter(
-                    darkMode = darkMode,
                     navController = navController
                 )
             }
@@ -46,14 +43,13 @@ class MainActivity : ComponentActivity() {
 )
 @Composable
 fun DefaultPreview() {
-    val defaultMode = isSystemInDarkTheme()
-    val darkMode = remember { mutableStateOf(defaultMode) }
+    val dark = DataStorageProvider.getInstance(LocalContext.current).getTheme()
+        .collectAsState(initial = null)
     val navController = rememberNavController()
     AntTheme(
-        darkTheme = darkMode.value
-    ){
+        dark = dark.value
+    ) {
         NavigationRouter(
-            darkMode = darkMode,
             navController = navController
         )
     }
