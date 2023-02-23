@@ -9,8 +9,8 @@ data class Transaction(
 
     @PrimaryKey(autoGenerate = true)
     val id: Int?,
-    val desc: String,
-    // val data
+    val title: String,
+    val description: String,
     @Embedded
     val price: Price,
     val timestamp: Double

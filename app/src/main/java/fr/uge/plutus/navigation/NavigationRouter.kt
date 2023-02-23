@@ -23,16 +23,16 @@ import fr.uge.plutus.ui.ant.Ant
 sealed class NavigationRoute(
     val route: String,
 ) {
-    object Home: NavigationRoute(route = "home")
-    object Research: NavigationRoute(route = "research")
-    object Wallets: NavigationRoute(route = "wallets")
-    object Settings: NavigationRoute(route = "settings")
-    object Transaction: NavigationRoute(route = "transactions")
-    object NewTransaction: NavigationRoute(route = "newTransaction")
-    object Price: NavigationRoute(route = "price")
-    object Tag: NavigationRoute(route = "tag")
-    object Note: NavigationRoute(route = "note")
-    object Date: NavigationRoute(route = "date")
+    object Home : NavigationRoute(route = "home")
+    object Research : NavigationRoute(route = "research")
+    object Wallets : NavigationRoute(route = "wallets")
+    object Settings : NavigationRoute(route = "settings")
+    object Transaction : NavigationRoute(route = "transactions")
+    object NewTransaction : NavigationRoute(route = "newTransaction")
+    object Price : NavigationRoute(route = "price")
+    object Tag : NavigationRoute(route = "tag")
+    object TitleAndDescription : NavigationRoute(route = "titleAndDescription")
+    object Date : NavigationRoute(route = "date")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -158,12 +158,12 @@ fun NavigationRouteHost(
 fun navigationRouterEnterAnimation(
     initialState: NavBackStackEntry
 ): EnterTransition? {
-    return when(initialState.destination.route) {
+    return when (initialState.destination.route) {
         NavigationRoute.Home.route,
         NavigationRoute.Research.route,
         NavigationRoute.Wallets.route,
         NavigationRoute.Settings.route -> slideInVertically(
-            initialOffsetY = { height -> height/15 },
+            initialOffsetY = { height -> height / 15 },
             animationSpec = tween(300)
         ) + fadeIn(
             animationSpec = tween(150)
@@ -175,12 +175,12 @@ fun navigationRouterEnterAnimation(
 fun navigationRouterExitAnimation(
     targetState: NavBackStackEntry
 ): ExitTransition? {
-    return when(targetState.destination.route) {
+    return when (targetState.destination.route) {
         NavigationRoute.Home.route,
         NavigationRoute.Research.route,
         NavigationRoute.Wallets.route,
         NavigationRoute.Settings.route -> slideOutVertically(
-            targetOffsetY = { height -> height/15 },
+            targetOffsetY = { height -> height / 15 },
             animationSpec = tween(300)
         ) + fadeOut(
             animationSpec = tween(150)

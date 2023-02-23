@@ -25,11 +25,15 @@ class TransactionNewViewModel @Inject constructor(
     init {
         savedStateHandle.get<Int>("transactionId")?.let { transactionId ->
             Log.println(Log.ASSERT, "DEBUG", "id= $transactionId")
-            if(transactionId != -1) {
+            if (transactionId != -1) {
                 viewModelScope.launch {
                     transactionRepository.retrieveTransaction(transactionId)?.also { transaction ->
                         currentTransactionId = transaction.id
-                        _state.value = state.value.copy(price = transaction.price)
+                        _state.value = state.value.copy(
+                            title = transaction.title,
+                            description = transaction.description,
+                            price = transaction.price,
+                        )
                     }
                 }
             }
@@ -38,14 +42,22 @@ class TransactionNewViewModel @Inject constructor(
 
     fun onEvent(event: TransactionNewEvent) {
         when (event) {
-//            is TransactionNewEvent.EditDate -> TODO()
-//            is TransactionNewEvent.EditDescription -> TODO()
-//            is TransactionNewEvent.EditLocation -> TODO()
+            is TransactionNewEvent.EditTitle -> {
+                _state.value = state.value.copy(title = event.title)
+            }
+            is TransactionNewEvent.EditDescription -> {
+                _state.value = state.value.copy(description = event.description)
+
+            }
             is TransactionNewEvent.EditPrice -> {
                 _state.value = state.value.copy(price = event.price)
             }
-//            is TransactionNewEvent.EditTags -> TODO()
-//            is TransactionNewEvent.EditTitle -> TODO()
+            is TransactionNewEvent.SubmitTransaction -> {
+                viewModelScope.launch {
+                    //TODO: add some verifications before storing in the database
+                    transactionRepository.createTransaction(event.transaction)
+                }
+            }
         }
     }
 }

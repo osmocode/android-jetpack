@@ -15,16 +15,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import fr.uge.plutus.data.model.Transaction
 import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.navigation.NavigationRouteHost
-import fr.uge.plutus.pages.DatePage
-import fr.uge.plutus.pages.NotePage
-import fr.uge.plutus.pages.PricePage
-import fr.uge.plutus.pages.TagPage
+import fr.uge.plutus.pages.*
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
 import fr.uge.plutus.ui.input.AntNoteInput
+import java.util.*
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -33,7 +32,6 @@ fun TransactionNewScreen(
     viewModel: TransactionNewViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    val price = state.price
     val sheetVisible = remember { mutableStateOf(false) }
     val subNavController = rememberAnimatedNavController()
 
@@ -63,31 +61,58 @@ fun TransactionNewScreen(
                     sheetContent = {}
                 ) {
                     Column(
-                        modifier = Modifier.padding(horizontal = Ant.spacing.default),
-                        verticalArrangement = Arrangement.spacedBy(Ant.spacing.default)
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(Ant.spacing.default),
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Spacer(modifier = Modifier.size(Ant.spacing.default))
-                        AntAmountInput(
-                            price = price,
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(Ant.spacing.default)
+                        ) {
+                            Spacer(modifier = Modifier.size(Ant.spacing.default))
+                            AntAmountInput(
+                                price = state.price,
+                                onClick = {
+                                    subNavController.navigate(NavigationRoute.Price.route)
+                                }
+                            )
+                            AntTagInput(
+                                onClick = {
+                                    subNavController.navigate(NavigationRoute.Tag.route)
+                                }
+                            )
+                            AntNoteInput(
+                                title = state.title,
+                                description = state.description,
+                                onClick = {
+                                    subNavController.navigate(NavigationRoute.TitleAndDescription.route)
+                                }
+                            )
+                            AntDateInput(
+                                onClick = {
+                                    subNavController.navigate(NavigationRoute.Date.route)
+                                }
+                            )
+                        }
+
+                        CustomButton(
+                            title = "Submit",
+                            type = CustomButtonType.PRIMARY,
                             onClick = {
-                                subNavController.navigate(NavigationRoute.Price.route)
-                            }
-                        )
-                        AntTagInput (
-                            onClick = {
-                                subNavController.navigate(NavigationRoute.Tag.route)
-                            }
-                        )
-                        AntNoteInput (
-                            onClick = {
-                                subNavController.navigate(NavigationRoute.Note.route)
-                            }
-                        )
-                        AntDateInput (
-                            onClick = {
-                                subNavController.navigate(NavigationRoute.Date.route)
-                            }
-                        )
+                                viewModel.onEvent(
+                                    TransactionNewEvent.SubmitTransaction(
+                                        Transaction(
+                                            id = null,
+                                            title = state.title,
+                                            description = state.description,
+                                            price = state.price,
+                                            timestamp = Date().time.toDouble()
+                                        )
+                                    )
+                                )
+                                navController.popBackStack()
+                            })
+
                     }
                 }
             }
@@ -97,7 +122,7 @@ fun TransactionNewScreen(
             content = {
                 PricePage(
                     navController = subNavController,
-                    price = price,
+                    price = state.price,
                     onSubmit = { newPrice ->
                         viewModel.onEvent(TransactionNewEvent.EditPrice(newPrice))
                     }
@@ -113,10 +138,18 @@ fun TransactionNewScreen(
             }
         )
         composable(
-            route = NavigationRoute.Note.route,
+            route = NavigationRoute.TitleAndDescription.route,
             content = {
-                NotePage(
-                    navController = subNavController
+                TitleAndDescriptionPage(
+                    navController = subNavController,
+                    previousTitle = state.title,
+                    previousDescription = state.description,
+                    onTitleSubmit = { newTitle ->
+                        viewModel.onEvent(TransactionNewEvent.EditTitle(newTitle))
+                    },
+                    onDescriptionSubmit = { newDescription ->
+                        viewModel.onEvent(TransactionNewEvent.EditDescription(newDescription))
+                    }
                 )
             }
         )
