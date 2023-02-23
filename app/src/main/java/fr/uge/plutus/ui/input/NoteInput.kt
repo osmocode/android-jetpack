@@ -18,6 +18,8 @@ import fr.uge.plutus.ui.ant.Ant
 
 @Composable
 fun AntNoteInput(
+    title: String,
+    description: String,
     onClick: () -> Unit
 ) {
     Row(
@@ -32,7 +34,7 @@ fun AntNoteInput(
             ),
         horizontalArrangement = Arrangement.spacedBy(Ant.spacing.default),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -50,10 +52,10 @@ fun AntNoteInput(
         }
         Column {
             Text(
-                text = "Write note",
+                text = title,
                 color = Ant.colors.secondary_text
             )
-            Text(text = "")
+            Text(text = description)
         }
     }
 }
@@ -65,6 +67,8 @@ fun AntNoteInputPreview(
 
 ) {
     AntNoteInput(
+        title = "Lorem",
+        description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         onClick = {}
     )
 }
