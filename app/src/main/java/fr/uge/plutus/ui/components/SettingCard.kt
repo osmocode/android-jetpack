@@ -7,11 +7,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import fr.uge.plutus.data.DataStorageProvider
+import androidx.hilt.navigation.compose.hiltViewModel
+import fr.uge.plutus.storage.LocalStorage
+import fr.uge.plutus.storage.LocalStorageProvider
 import fr.uge.plutus.ui.ant.Ant
 import kotlinx.coroutines.launch
 
@@ -19,9 +20,8 @@ import kotlinx.coroutines.launch
 fun SettingCard(
     label: String,
     desc: String = "",
+    localStorage: LocalStorage = hiltViewModel()
 ) {
-    val dataStorage = DataStorageProvider.getInstance(LocalContext.current)
-    val dark by dataStorage.getTheme().collectAsState(initial = null)
     val scope = rememberCoroutineScope()
 
     Row(
@@ -57,10 +57,10 @@ fun SettingCard(
                 uncheckedTrackColor = Ant.colors.gray_6,
                 uncheckedTrackAlpha = 0.38f
             ),
-            checked = if (dark == null) false else dark!!,
+            checked = LocalStorageProvider.dark,
             onCheckedChange = {
                 scope.launch {
-                    dataStorage.setTheme(it)
+                    localStorage.setDark(it)
                 }
             }
         )
@@ -73,10 +73,8 @@ fun SettingCard(
 fun SettingCardPreview(
 
 ) {
-    val state  = remember { mutableStateOf(false) }
     SettingCard(
         label = "Dark mode",
         desc = "By default use system mode",
-        //state = state
     )
 }
