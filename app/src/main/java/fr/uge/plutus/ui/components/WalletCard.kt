@@ -40,9 +40,9 @@ fun AntWalletCardList(
         HorizontalPager(
             state = pagerState,
             count = items.size,
-            contentPadding = PaddingValues(Ant.spacing.default),
+            contentPadding = PaddingValues(Ant.spacing.small),
             modifier = Modifier.height(230.dp),
-            content = {index ->
+            content = { index ->
                 AntWalletCard(
                     item = items[index],
                 )
@@ -75,7 +75,7 @@ fun AntWalletCard(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .aspectRatio(ratio = 1.59f)
             .padding(Ant.spacing.small)
             .clip(Ant.shapes.default)
             .background(
@@ -108,7 +108,7 @@ fun AntWalletCard(
                             shape = CircleShape
                         )
                         .padding(
-                            vertical = Ant.spacing.small/2,
+                            vertical = Ant.spacing.small / 2,
                             horizontal = Ant.spacing.small
                         )
                 ) {
