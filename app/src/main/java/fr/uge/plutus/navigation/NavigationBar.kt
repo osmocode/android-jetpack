@@ -1,9 +1,13 @@
 package fr.uge.plutus.navigation
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.FindInPage
@@ -13,8 +17,10 @@ import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.FindInPage
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import fr.uge.plutus.ui.components.AntBottomBar
 import fr.uge.plutus.ui.components.AntBottomBarItem
@@ -64,11 +70,13 @@ fun NavigationBar(
         exit = slideOutVertically(
             targetOffsetY = { height -> height * 2 / 3 },
             animationSpec = tween(300)
-        )
-    ) {
-        AntBottomBar(
-            navController = navController,
-            items = items
-        )
-    }
+        ),
+        content = {
+            AntBottomBar(
+                navController = navController,
+                items = items
+            )
+        }
+    )
+
 }
