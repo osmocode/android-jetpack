@@ -1,8 +1,8 @@
 package fr.uge.plutus.ui.ant
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import fr.uge.plutus.storage.LocalStorageProvider
 
 private val LightAntColors = defaultAntColors()
 
@@ -40,19 +40,10 @@ private val DarkAntColors = defaultAntColors().copy(
 
 @Composable
 fun AntTheme(
-    dark: Boolean?,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val colors = if (dark == null) {
-        if (isSystemInDarkTheme()) DarkAntColors else LightAntColors
-    } else if (dark == true) {
-        DarkAntColors
-    } else {
-        LightAntColors
-    }
-
     Ant(
-        colors = colors,
+        colors = if (LocalStorageProvider.dark) DarkAntColors else LightAntColors,
         content = content
     )
 }

@@ -14,7 +14,7 @@ import fr.uge.plutus.ui.components.SettingCard
 
 @Composable
 fun SettingsPage(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
 
     val sheetVisible = remember { mutableStateOf(false) }

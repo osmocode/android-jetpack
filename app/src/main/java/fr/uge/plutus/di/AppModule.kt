@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import fr.uge.plutus.data.DataBase
 import fr.uge.plutus.data.dao.TransactionDao
 import fr.uge.plutus.data.repository.TransactionRepository
+import fr.uge.plutus.storage.LocalStorage
 import javax.inject.Singleton
 
 
@@ -38,4 +39,13 @@ object AppModule {
     fun provideTransactionRepository(dao: TransactionDao): TransactionRepository {
         return TransactionRepository(dao)
     }
+
+    @Singleton
+    @Provides
+    fun provideLocalStorage(
+        @ApplicationContext context: Context
+    ): LocalStorage {
+        return LocalStorage(context)
+    }
+
 }
