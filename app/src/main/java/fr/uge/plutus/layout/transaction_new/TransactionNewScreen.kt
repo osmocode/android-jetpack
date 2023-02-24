@@ -35,6 +35,7 @@ fun TransactionNewScreen(
     val sheetVisible = remember { mutableStateOf(false) }
     val subNavController = rememberAnimatedNavController()
 
+    Box(modifier = Modifier.fillMaxSize())
     NavigationRouteHost(
         navController = subNavController,
         startDestination = NavigationRoute.NewTransaction.route
@@ -50,6 +51,7 @@ fun TransactionNewScreen(
                                 AntActionButton(
                                     icon = Icons.Outlined.ArrowBack,
                                     onClick = {
+                                        subNavController.popBackStack()
                                         navController.popBackStack()
                                     }
                                 )
