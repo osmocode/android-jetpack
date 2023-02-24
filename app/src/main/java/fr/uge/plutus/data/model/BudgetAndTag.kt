@@ -5,11 +5,11 @@ import androidx.room.Relation
 
 data class BudgetAndTag(
     @Embedded
-    val tag: Tag,
+    val budget: Budget,
 
     @Relation(
-        parentColumn = "id",
-        entityColumn = "tag"
+        parentColumn = "tag",
+        entityColumn = "id"
     )
-    val budget: Budget
+    val tag: Tag
 )
