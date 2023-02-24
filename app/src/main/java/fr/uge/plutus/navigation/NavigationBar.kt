@@ -14,15 +14,15 @@ import androidx.compose.material.icons.outlined.FindInPage
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import fr.uge.plutus.ui.components.AntBottomBar
 import fr.uge.plutus.ui.components.AntBottomBarItem
 
 @Composable
 fun NavigationBar(
-    navController: NavHostController
+    isVisible: MutableState<Boolean>,
+    navController: NavHostController,
 ) {
     val items = listOf (
         AntBottomBarItem(
@@ -51,12 +51,12 @@ fun NavigationBar(
         )
     )
 
-    val navStackBackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navStackBackEntry?.destination
-    val selected = items.any { it.route == currentDestination?.route }
+    //val navStackBackEntry by navController.currentBackStackEntryAsState()
+    //val currentDestination = navStackBackEntry?.destination
+    //val selected = items.any { it.route == currentDestination?.route }
 
     AnimatedVisibility(
-        visible = selected,
+        visible = isVisible.value,
         enter = slideInVertically(
             initialOffsetY = { height -> height * 2 / 3  },
             animationSpec = tween(300)

@@ -1,8 +1,7 @@
 package fr.uge.plutus.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,12 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import fr.uge.plutus.data.DataStorageProvider
 import fr.uge.plutus.ui.ant.Ant
-import kotlinx.coroutines.launch
 
 @Composable
 fun SettingCard(
     label: String,
     desc: String = "",
+    onClick: () -> Unit
 ) {
     val dataStorage = DataStorageProvider.getInstance(LocalContext.current)
     val dark by dataStorage.getTheme().collectAsState(initial = null)
@@ -27,6 +26,7 @@ fun SettingCard(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(
                 horizontal = Ant.spacing.default,
                 vertical = Ant.spacing.small
@@ -48,6 +48,7 @@ fun SettingCard(
                 color = Ant.colors.secondary_text
             )
         }
+        /*
         Switch(
             colors = SwitchDefaults.colors(
                 checkedThumbColor = Ant.colors.primary_color_5,
@@ -64,6 +65,7 @@ fun SettingCard(
                 }
             }
         )
+         */
     }
 }
 
@@ -73,10 +75,9 @@ fun SettingCard(
 fun SettingCardPreview(
 
 ) {
-    val state  = remember { mutableStateOf(false) }
     SettingCard(
         label = "Dark mode",
         desc = "By default use system mode",
-        //state = state
+        onClick = { }
     )
 }
