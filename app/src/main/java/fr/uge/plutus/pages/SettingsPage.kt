@@ -22,6 +22,7 @@ fun SettingsPage(
     navBarController: MutableState<Boolean>,
     navController: NavHostController
 ) {
+
     val sheetVisible = remember { mutableStateOf(false) }
     val currentBottomSheet = remember { mutableStateOf("default") }
 
