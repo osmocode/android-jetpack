@@ -5,6 +5,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -37,11 +39,15 @@ sealed class NavigationRoute(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationRouter(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
+
+    val bottomSheetVisible = remember { mutableStateOf(true) }
+
     Scaffold(
         bottomBar = {
             NavigationBar(
+                isVisible = bottomSheetVisible,
                 navController = navController
             )
         }
@@ -79,7 +85,10 @@ fun NavigationRouter(
                 enterTransition = { navigationRouterEnterAnimation(initialState) },
                 exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
-                    SettingsPage(navController = navController)
+                    SettingsPage(
+                        navBarController = bottomSheetVisible,
+                        navController = navController
+                    )
                 }
             )
             composable(
