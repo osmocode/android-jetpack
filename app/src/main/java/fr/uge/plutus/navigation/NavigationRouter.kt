@@ -17,6 +17,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import fr.uge.plutus.layout.transaction_list.TransactionListScreen
 import fr.uge.plutus.layout.transaction_new.TransactionNewScreen
+import fr.uge.plutus.layout.wallet_list.WalletListPage
 import fr.uge.plutus.pages.*
 import fr.uge.plutus.ui.ant.Ant
 
@@ -34,6 +35,7 @@ sealed class NavigationRoute(
     object Tag : NavigationRoute(route = "tag")
     object TitleAndDescription : NavigationRoute(route = "titleAndDescription")
     object Date : NavigationRoute(route = "date")
+    object NewWallet: NavigationRoute(route = "newWallet")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -118,6 +120,14 @@ fun NavigationRouter(
                 ),
                 content = {
                     TransactionNewScreen(
+                        navController = navController
+                    )
+                }
+            )
+            composable(
+                route = NavigationRoute.NewWallet.route,
+                content = {
+                    WalletListPage(
                         navController = navController
                     )
                 }

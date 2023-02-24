@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 
@@ -40,7 +41,7 @@ fun WalletPage(
                         type = AntActionButtonType.PRIMARY,
                         title = "Add",
                         onClick = {
-
+                            navController.navigate(NavigationRoute.NewWallet.route)
                         }
                     )
                 }
