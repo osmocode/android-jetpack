@@ -91,8 +91,15 @@ fun NavigationRouter(
                 }
             )
             composable(
-                route = NavigationRoute.NewTransaction.route + "?transactionId={transactionId}",
+                route = NavigationRoute.NewTransaction.route
+                        + "?transactionType={transactionType}"
+                        + "?transactionId={transactionId}",
                 arguments = listOf(
+                    navArgument(
+                        name = "transactionType"
+                    ) {
+                        type = NavType.StringType
+                    },
                     navArgument(
                         name = "transactionId"
                     ) {

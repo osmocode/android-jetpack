@@ -106,7 +106,8 @@ fun TransactionNewScreen(
                                             title = state.title,
                                             description = state.description,
                                             price = state.price,
-                                            timestamp = Date().time.toDouble()
+                                            timestamp = Date().time.toDouble(),
+                                            type = state.type
                                         )
                                     )
                                 )

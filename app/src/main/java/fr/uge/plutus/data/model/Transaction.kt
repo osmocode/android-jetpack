@@ -4,6 +4,12 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+enum class TransactionType {
+    CREDIT,
+    DEBIT,
+    TRANSFER
+}
+
 @Entity
 data class Transaction(
 
@@ -11,6 +17,7 @@ data class Transaction(
     val id: Int?,
     val title: String,
     val description: String,
+    val type: String,
     @Embedded
     val price: Price,
     val timestamp: Double
