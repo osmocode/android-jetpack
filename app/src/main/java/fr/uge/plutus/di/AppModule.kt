@@ -17,7 +17,6 @@ import fr.uge.plutus.data.interfaces.ITransactionRepository
 import fr.uge.plutus.data.repository.BudgetRepository
 import fr.uge.plutus.data.repository.TagRepository
 import fr.uge.plutus.data.dao.WalletDao
-import fr.uge.plutus.data.interfaces.ITransactionRepository
 import fr.uge.plutus.data.interfaces.IWalletRepository
 import fr.uge.plutus.data.repository.TransactionRepository
 import fr.uge.plutus.storage.LocalDateStore
@@ -59,7 +58,6 @@ object AppModule {
         return LocalDateStore(context = context)
     }
 
-
     @Singleton
     @Provides
     fun provideWalletDao(db: DataBase): WalletDao {
@@ -71,8 +69,6 @@ object AppModule {
     fun provideWalletRepository(dao: WalletDao): IWalletRepository {
         return WalletRepository(dao)
     }
-
-
 
     @Singleton
     @Provides

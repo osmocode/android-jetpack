@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
-import fr.uge.plutus.data.model.TransactionType
+import fr.uge.plutus.data.model.Transaction
 import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
@@ -78,7 +78,7 @@ fun TransactionListScreen(
                     onClick = {
                         navController.navigate(
                             NavigationRoute.NewTransaction.route
-                                    + "?transactionType=${TransactionType.CREDIT.name}"
+                                    + "?transactionType=${Transaction.Type.CREDIT}"
                                     + "?transactionId=${-1}"
                         )
                     }
@@ -90,7 +90,7 @@ fun TransactionListScreen(
                     onClick = {
                         navController.navigate(
                             NavigationRoute.NewTransaction.route
-                                    + "?transactionType=${TransactionType.DEBIT.name}"
+                                    + "?transactionType=${Transaction.Type.DEBIT}"
                                     + "?transactionId=${-1}"
                         )
                     }
@@ -102,7 +102,7 @@ fun TransactionListScreen(
                     onClick = {
                         navController.navigate(
                             NavigationRoute.NewTransaction.route
-                                    + "?transactionType=${TransactionType.TRANSFER.name}"
+                                    + "?transactionType=${Transaction.Type.TRANSFER}"
                                     + "?transactionId=${-1}"
                         )
                     }
@@ -154,7 +154,11 @@ fun TransactionListScreen(
                                                 icon = Icons.Outlined.FileCopy,
                                                 color = Ant.colors.primary_text,
                                                 onClick = {
-                                                    navController.navigate(NavigationRoute.NewTransaction.route + "?transactionId=${transaction.id}")
+                                                    navController.navigate(
+                                                        route = NavigationRoute.NewTransaction.route
+                                                                + "?transactionType=${transaction.type}"
+                                                                + "?transactionId=${transaction.id}"
+                                                    )
                                                 },
                                             )
                                         )

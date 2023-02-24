@@ -3,12 +3,13 @@ package fr.uge.plutus.data.repository
 import fr.uge.plutus.data.dao.TagDao
 import fr.uge.plutus.data.interfaces.ITagRepository
 import fr.uge.plutus.data.model.Tag
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TagRepository @Inject constructor(
     private val tagDao: TagDao
 ) : ITagRepository {
-    override fun retrieveAllTag() = tagDao.retrieveAll()
+    override fun retrieveAllTag(): Flow<List<Tag>> = tagDao.retrieveAll()
 
     override suspend fun createTag(tag: Tag) = tagDao.create(tag)
 
