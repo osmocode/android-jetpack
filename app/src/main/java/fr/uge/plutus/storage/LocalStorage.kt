@@ -1,58 +1,54 @@
 package fr.uge.plutus.storage
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
+class LocalStorage @Inject constructor(
+    private val localDateStore: LocalDateStore
+) : ViewModel() {
 
-class LocalStorage(
-    context: Context
-) {
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("Plutus")
-    private val localStorage = context.dataStore
+    private val _buffer = mutableStateOf(LocalStorageState())
+    var buffer: State<LocalStorageState> = _buffer
+    val ready = mutableStateOf(false)
 
-    companion object {
-        val DARK = booleanPreferencesKey("dark")
-        val WALLET = intPreferencesKey("wallet")
-    }
-
-    suspend fun getDark(): Boolean? {
-        val storage = localStorage.data.first()
-        return storage[DARK]
-    }
-
-    fun getDarkAsState() = localStorage.data.map { storage ->
-        storage[DARK]
-    }
-
-    suspend fun setDark(value: Boolean?) = localStorage.edit { storage ->
-        if (value == null) {
-            storage.remove(DARK)
-        } else {
-            storage[DARK] = value
+    fun loader() {
+        viewModelScope.launch {
+            val dark = localDateStore.getDark().first()
+            val wallet = localDateStore.getWallet().first()
+            _buffer.value = buffer.value.copy(
+                dark = dark,
+                wallet = wallet
+            )
+            ready.value = true
         }
     }
 
-    suspend fun getWallet(): Int? {
-        val storage = localStorage.data.first()
-        return storage[WALLET]
+    @Composable
+    fun getDark(): State<Boolean?> =
+        localDateStore.getDark().collectAsState(initial = buffer.value.dark)
+
+    @Composable
+    fun getWallet(): State<Int?> =
+        localDateStore.getWallet().collectAsState(initial = buffer.value.wallet)
+
+    fun setDark(value: Boolean?) {
+        viewModelScope.launch {
+            localDateStore.setDark(value)
+        }
     }
 
-    fun getWalletAsState() = localStorage.data.map { storage ->
-        storage[WALLET] ?: -1
-    }
-
-    suspend fun setWallet(value: Int?) = localStorage.edit { storage ->
-        if (value == null) {
-            storage.remove(WALLET)
-        } else {
-            storage[WALLET] = value
+    fun setWallet(value: Int?) {
+        viewModelScope.launch {
+            localDateStore.setWallet(value)
         }
     }
 

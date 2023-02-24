@@ -11,8 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import fr.uge.plutus.storage.LocalStorage
 import fr.uge.plutus.storage.LocalStorageProvider
-import fr.uge.plutus.storage.LocalStorageViewModel
 import fr.uge.plutus.ui.ant.Ant
 import kotlinx.coroutines.launch
 
@@ -20,9 +20,8 @@ import kotlinx.coroutines.launch
 fun SettingCard(
     label: String,
     desc: String = "",
-    localStorage: LocalStorageViewModel = hiltViewModel()
+    localStorage: LocalStorage = hiltViewModel()
 ) {
-
     val scope = rememberCoroutineScope()
 
     Row(
@@ -74,10 +73,8 @@ fun SettingCard(
 fun SettingCardPreview(
 
 ) {
-    val state  = remember { mutableStateOf(false) }
     SettingCard(
         label = "Dark mode",
         desc = "By default use system mode",
-        //state = state
     )
 }

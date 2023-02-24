@@ -1,59 +1,57 @@
 package fr.uge.plutus.storage
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.*
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LocalStorageProvider(
-    localStorage: LocalStorageViewModel = hiltViewModel(),
+    localStorage: LocalStorage = hiltViewModel(),
+    system: Boolean = isSystemInDarkTheme(),
+    splashScreen: @Composable (loading: Boolean) -> Unit,
     content: @Composable () -> Unit
 ) {
-
-    val system = isSystemInDarkTheme()
+    // Start to provide value when set
     val ready = remember { mutableStateOf(false) }
-    val dark = remember { mutableStateOf(false) }
+    // Sub provided values
+    val dark = remember { mutableStateOf(system) }
+    val wallet = remember { mutableStateOf<Int?>(null) }
 
-    val darkState = localStorage.getDarkAsState()
+    val darkProvider = localStorage.getDark()
+    val walletBuffer = localStorage.getWallet()
 
-    LaunchedEffect(localStorage.loaded.value) {
-        if (localStorage.loaded.value) {
+    LaunchedEffect(darkProvider.value) {
+        dark.value = if (darkProvider.value == null) system else darkProvider.value!!
+    }
+
+    LaunchedEffect(walletBuffer.value) {
+        wallet.value = walletBuffer.value
+    }
+
+    // Local Storage initial load handler
+    LaunchedEffect(localStorage.ready.value) {
+        if (localStorage.ready.value) {
+            // Set default value of provider values
+            dark.value =
+                if (localStorage.buffer.value.dark == null) system else localStorage.buffer.value.dark!!
+            wallet.value = localStorage.buffer.value.wallet
             ready.value = true
         }
     }
 
-    LaunchedEffect(darkState.value) {
-        dark.value = if (darkState.value == null) system else darkState.value!!
-    }
-
-    localStorage.load()
+    // Start to load from local storage
+    localStorage.loader()
 
     if (ready.value) {
         CompositionLocalProvider(
             LocalStorageDark provides dark.value,
-            LocalStorageWallet provides null,
+            LocalStorageWallet provides wallet.value,
             content = content
         )
     } else {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.LightGray)
-        ) {
-            Text(
-                text = "Loading...",
-                fontSize = 50.sp,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        splashScreen(!ready.value)
     }
 }
 

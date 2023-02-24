@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import fr.uge.plutus.data.DataBase
 import fr.uge.plutus.data.dao.TransactionDao
 import fr.uge.plutus.data.repository.TransactionRepository
-import fr.uge.plutus.storage.LocalStorage
+import fr.uge.plutus.storage.LocalDateStore
 import javax.inject.Singleton
 
 
@@ -42,10 +42,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLocalStorage(
+    fun provideLocalDataStore(
         @ApplicationContext context: Context
-    ): LocalStorage {
-        return LocalStorage(context)
+    ): LocalDateStore {
+        return LocalDateStore(context = context)
     }
 
 }
