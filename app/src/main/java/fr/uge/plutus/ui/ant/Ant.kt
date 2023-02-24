@@ -3,6 +3,7 @@ package fr.uge.plutus.ui.ant
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 
 @Composable
 fun Ant(
@@ -13,10 +14,10 @@ fun Ant(
 ) {
 
     // Explicit creation disabled
-    //var rememberedColors = remember { colors.copy() }.apply { updateColorsFrom(colors) }
+    var rememberedColors = remember { colors.copy() }.apply { updateColorsFrom(colors) }
 
     CompositionLocalProvider(
-        LocalColors provides colors,
+        LocalColors provides rememberedColors,
         LocalSpacing provides spacing,
         LocalShaping provides shapes,
         content = content
