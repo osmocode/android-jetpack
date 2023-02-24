@@ -5,6 +5,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -15,6 +17,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import fr.uge.plutus.layout.transaction_list.TransactionListScreen
 import fr.uge.plutus.layout.transaction_new.TransactionNewScreen
+import fr.uge.plutus.layout.wallet_list.WalletListPage
 import fr.uge.plutus.pages.*
 import fr.uge.plutus.ui.ant.Ant
 
@@ -32,16 +35,21 @@ sealed class NavigationRoute(
     object Tag : NavigationRoute(route = "tag")
     object TitleAndDescription : NavigationRoute(route = "titleAndDescription")
     object Date : NavigationRoute(route = "date")
+    object NewWallet: NavigationRoute(route = "newWallet")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationRouter(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
+
+    val bottomSheetVisible = remember { mutableStateOf(true) }
+
     Scaffold(
         bottomBar = {
             NavigationBar(
+                isVisible = bottomSheetVisible,
                 navController = navController
             )
         }
@@ -79,7 +87,10 @@ fun NavigationRouter(
                 enterTransition = { navigationRouterEnterAnimation(initialState) },
                 exitTransition = { navigationRouterExitAnimation(targetState) },
                 content = {
-                    SettingsPage(navController = navController)
+                    SettingsPage(
+                        navBarController = bottomSheetVisible,
+                        navController = navController
+                    )
                 }
             )
             composable(
@@ -91,8 +102,15 @@ fun NavigationRouter(
                 }
             )
             composable(
-                route = NavigationRoute.NewTransaction.route + "?transactionId={transactionId}",
+                route = NavigationRoute.NewTransaction.route
+                        + "?transactionType={transactionType}"
+                        + "?transactionId={transactionId}",
                 arguments = listOf(
+                    navArgument(
+                        name = "transactionType"
+                    ) {
+                        type = NavType.StringType
+                    },
                     navArgument(
                         name = "transactionId"
                     ) {
@@ -102,6 +120,14 @@ fun NavigationRouter(
                 ),
                 content = {
                     TransactionNewScreen(
+                        navController = navController
+                    )
+                }
+            )
+            composable(
+                route = NavigationRoute.NewWallet.route,
+                content = {
+                    WalletListPage(
                         navController = navController
                     )
                 }

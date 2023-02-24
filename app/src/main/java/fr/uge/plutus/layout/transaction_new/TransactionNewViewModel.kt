@@ -23,18 +23,23 @@ class TransactionNewViewModel @Inject constructor(
     private var currentTransactionId: Int? = null
 
     init {
+        savedStateHandle.get<String>("transactionType")?.let { transactionType ->
+            Log.println(Log.ASSERT, "DEBUG", "type= $transactionType")
+            _state.value = state.value.copy(type = transactionType)
+        }
         savedStateHandle.get<Int>("transactionId")?.let { transactionId ->
             Log.println(Log.ASSERT, "DEBUG", "id= $transactionId")
             if (transactionId != -1) {
                 viewModelScope.launch {
-                    transactionRepository.retrieveTransaction(transactionId)?.also { transaction ->
-                        currentTransactionId = transaction.id
-                        _state.value = state.value.copy(
-                            title = transaction.title,
-                            description = transaction.description,
-                            price = transaction.price,
-                        )
-                    }
+                    transactionRepository.retrieveTransaction(transactionId)
+                        ?.also { transaction ->
+                            currentTransactionId = transaction.id
+                            _state.value = state.value.copy(
+                                title = transaction.title,
+                                description = transaction.description,
+                                price = transaction.price,
+                            )
+                        }
                 }
             }
         }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -74,6 +75,7 @@ fun AntPagerLayout(
             state = pagerState,
             count = pages.size,
             modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.Top,
             content = { page ->
                 AntPagerLayoutPage(
                     page = page,

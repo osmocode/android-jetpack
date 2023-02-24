@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
+import fr.uge.plutus.data.model.Transaction
 import fr.uge.plutus.navigation.NavigationRoute
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
@@ -75,20 +76,36 @@ fun TransactionListScreen(
                     desc = "Create new income",
                     icon = Icons.Outlined.TrendingUp,
                     onClick = {
-                        navController.navigate(NavigationRoute.NewTransaction.route)
+                        navController.navigate(
+                            NavigationRoute.NewTransaction.route
+                                    + "?transactionType=${Transaction.Type.CREDIT}"
+                                    + "?transactionId=${-1}"
+                        )
                     }
                 )
                 AntActionCard(
                     label = "Debit",
                     desc = "Create new expense",
                     icon = Icons.Outlined.TrendingDown,
-                    onClick = {}
+                    onClick = {
+                        navController.navigate(
+                            NavigationRoute.NewTransaction.route
+                                    + "?transactionType=${Transaction.Type.DEBIT}"
+                                    + "?transactionId=${-1}"
+                        )
+                    }
                 )
                 AntActionCard(
                     label = "Transfer",
                     desc = "Create new transfer",
                     icon = Icons.Outlined.SyncAlt,
-                    onClick = {}
+                    onClick = {
+                        navController.navigate(
+                            NavigationRoute.NewTransaction.route
+                                    + "?transactionType=${Transaction.Type.TRANSFER}"
+                                    + "?transactionId=${-1}"
+                        )
+                    }
                 )
             }
         }
@@ -137,7 +154,11 @@ fun TransactionListScreen(
                                                 icon = Icons.Outlined.FileCopy,
                                                 color = Ant.colors.primary_text,
                                                 onClick = {
-                                                    navController.navigate(NavigationRoute.NewTransaction.route + "?transactionId=${transaction.id}")
+                                                    navController.navigate(
+                                                        route = NavigationRoute.NewTransaction.route
+                                                                + "?transactionType=${transaction.type}"
+                                                                + "?transactionId=${transaction.id}"
+                                                    )
                                                 },
                                             )
                                         )

@@ -1,9 +1,13 @@
 package fr.uge.plutus.navigation
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.FindInPage
@@ -13,16 +17,18 @@ import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.FindInPage
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import fr.uge.plutus.ui.components.AntBottomBar
 import fr.uge.plutus.ui.components.AntBottomBarItem
 
 @Composable
 fun NavigationBar(
-    navController: NavHostController
+    isVisible: MutableState<Boolean>,
+    navController: NavHostController,
 ) {
     val items = listOf (
         AntBottomBarItem(
@@ -51,12 +57,12 @@ fun NavigationBar(
         )
     )
 
-    val navStackBackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navStackBackEntry?.destination
-    val selected = items.any { it.route == currentDestination?.route }
+    //val navStackBackEntry by navController.currentBackStackEntryAsState()
+    //val currentDestination = navStackBackEntry?.destination
+    //val selected = items.any { it.route == currentDestination?.route }
 
     AnimatedVisibility(
-        visible = selected,
+        visible = isVisible.value,
         enter = slideInVertically(
             initialOffsetY = { height -> height * 2 / 3  },
             animationSpec = tween(300)
@@ -64,11 +70,13 @@ fun NavigationBar(
         exit = slideOutVertically(
             targetOffsetY = { height -> height * 2 / 3 },
             animationSpec = tween(300)
-        )
-    ) {
-        AntBottomBar(
-            navController = navController,
-            items = items
-        )
-    }
+        ),
+        content = {
+            AntBottomBar(
+                navController = navController,
+                items = items
+            )
+        }
+    )
+
 }

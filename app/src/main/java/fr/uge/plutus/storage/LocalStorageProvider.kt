@@ -5,7 +5,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LocalStorageProvider(
     localStorage: LocalStorage = hiltViewModel(),
