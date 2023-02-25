@@ -16,7 +16,8 @@ import com.google.accompanist.navigation.animation.composable
 import fr.uge.plutus.SplashScreen
 import fr.uge.plutus.layout.transaction_list.TransactionListScreen
 import fr.uge.plutus.layout.transaction_new.TransactionNewScreen
-import fr.uge.plutus.layout.wallet_list.WalletListPage
+import fr.uge.plutus.layout.wallet_list.WalletListScreen
+import fr.uge.plutus.layout.wallet_overview.WalletOverviewScreen
 import fr.uge.plutus.pages.*
 import fr.uge.plutus.storage.LocalStorage
 import fr.uge.plutus.storage.LocalStorageProvider
@@ -145,7 +146,7 @@ fun NavigationRouter(
                                 enterTransition = { navigationRouterEnterAnimation(initialState) },
                                 exitTransition = { navigationRouterExitAnimation(targetState) },
                                 content = {
-                                    WalletPage(navController = navController)
+                                    WalletOverviewScreen(navController = navController)
                                 }
                             )
                             composable(
@@ -193,7 +194,7 @@ fun NavigationRouter(
                             composable(
                                 route = NavigationRoute.NewWallet.route,
                                 content = {
-                                    WalletListPage(
+                                    WalletListScreen(
                                         navController = navController
                                     )
                                 }

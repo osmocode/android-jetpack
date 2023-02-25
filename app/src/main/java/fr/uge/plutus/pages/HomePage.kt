@@ -21,7 +21,6 @@ import fr.uge.plutus.widget.TransactionWidget
 fun HomePage(
     navController: NavHostController
 ) {
-
     val sheetVisible = remember { mutableStateOf(false) }
 
     AntBottomSheetScaffold(

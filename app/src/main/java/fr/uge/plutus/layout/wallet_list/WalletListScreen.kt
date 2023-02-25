@@ -26,7 +26,7 @@ import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.field.AntTextField
 
 @Composable
-fun WalletListPage(
+fun WalletListScreen(
     navController: NavHostController,
     viewModel: WalletListViewModel = hiltViewModel(),
     localStorage: LocalStorage = hiltViewModel()
@@ -169,7 +169,7 @@ fun WalletListPagePreview(
 
 ) {
     val navController = rememberNavController()
-    WalletListPage(
+    WalletListScreen(
         navController = navController
     )
 }
