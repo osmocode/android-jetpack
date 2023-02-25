@@ -108,6 +108,7 @@ fun WalletListPage(
                         title = wallet.name,
                         description = "Wallet id: ${wallet.id}",
                         extras = "",
+                        icon = Icons.Outlined.AccountBalanceWallet,
                         leadingIcon = listOf(
                             AntCardActionItem(
                                 icon = Icons.Outlined.Delete,
