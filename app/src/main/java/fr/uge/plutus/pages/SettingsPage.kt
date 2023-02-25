@@ -32,7 +32,9 @@ fun SettingsPage(
 
     AntBottomSheetScaffold(
         topBar = {
-            AntTopBar(title = "Settings",)
+            AntTopBar(
+                title = "Settings"
+            )
         },
         sheetPeekHeight = 0.dp,
         sheetVisible = sheetVisible,

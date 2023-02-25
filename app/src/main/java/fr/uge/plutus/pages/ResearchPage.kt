@@ -13,7 +13,6 @@ import androidx.navigation.NavHostController
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.AntBottomSheetScaffold
 import fr.uge.plutus.ui.components.AntTopBar
-import fr.uge.plutus.ui.components.SettingCard
 
 @Composable
 fun ResearchPage(
@@ -23,7 +22,9 @@ fun ResearchPage(
 
     AntBottomSheetScaffold(
         topBar = {
-            AntTopBar(title = "Search Transaction",)
+            AntTopBar(
+                title = "Search Transaction"
+            )
         },
         sheetPeekHeight = 0.dp,
         sheetVisible = sheetVisible,
