@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
@@ -131,6 +132,7 @@ fun TransactionListScreen(
                                         title = transaction.title,
                                         description = formatter.format(Date(transaction.timestamp.toLong())),
                                         extras = "${transaction.price}",
+                                        icon = cardIcon(type = transaction.type),
                                         leadingIcon = listOf(
                                             AntCardActionItem(
                                                 icon = Icons.Outlined.Delete,
@@ -176,5 +178,18 @@ fun TransactionListScreen(
                 )
             )
         }
+    }
+}
+
+
+@Composable
+fun cardIcon(
+    type: String
+): ImageVector {
+    return when (type) {
+        "CREDIT" -> Icons.Outlined.TrendingUp
+        "DEBIT" -> Icons.Outlined.TrendingDown
+        "TRANSFER" -> Icons.Outlined.SyncAlt
+        else -> Icons.Outlined.Paid
     }
 }

@@ -52,7 +52,6 @@ class TransactionNewViewModel @Inject constructor(
             }
             is TransactionNewEvent.EditDescription -> {
                 _state.value = state.value.copy(description = event.description)
-
             }
             is TransactionNewEvent.EditPrice -> {
                 _state.value = state.value.copy(price = event.price)

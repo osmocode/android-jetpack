@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
+import fr.uge.plutus.widget.BudgetWidget
 import fr.uge.plutus.widget.TransactionWidget
 
 @Composable
@@ -56,34 +57,49 @@ fun HomePage(
                     }
                 ),
                 ScrollablePagerLayoutItem(
-                    label = "Budget",
+                    label = "Incoming",
                     content = {
-                        Box(modifier = Modifier.fillMaxSize()){
-                            Text(text = "Budget", modifier = Modifier.align(Alignment.Center))
+                        Column(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Spacer(modifier = Modifier.size(10.dp))
+                            BudgetWidget(
+                                title = "Incoming",
+                                data = listOf(
+                                    DonutChartItem(
+                                        label = "Gift",
+                                        value = 1450.99
+                                    ),
+                                    DonutChartItem(
+                                        label = "Salary",
+                                        value = 45.99
+                                    ),
+                                    DonutChartItem(
+                                        label = "Interest Money",
+                                        value = 99.50
+                                    ),
+                                    DonutChartItem(
+                                        label = "Demonstration",
+                                        value = 249.00
+                                    )
+                                )
+                            )
                         }
                     }
                 ),
                 ScrollablePagerLayoutItem(
-                    label = "Actions",
+                    label = "Expends",
                     content = {
-                        Box(modifier = Modifier.fillMaxSize()){
+                        Box(modifier = Modifier.fillMaxSize()) {
                             Text(text = "Actions", modifier = Modifier.align(Alignment.Center))
                         }
                     }
                 ),
                 ScrollablePagerLayoutItem(
-                    label = "Statistics",
+                    label = "Transfers",
                     content = {
-                        Box(modifier = Modifier.fillMaxSize()){
+                        Box(modifier = Modifier.fillMaxSize()) {
                             Text(text = "Statistics", modifier = Modifier.align(Alignment.Center))
-                        }
-                    }
-                ),
-                ScrollablePagerLayoutItem(
-                    label = "New Feature",
-                    content = {
-                        Box(modifier = Modifier.fillMaxSize()){
-                            Text(text = "New Feature in dev", modifier = Modifier.align(Alignment.Center))
                         }
                     }
                 )

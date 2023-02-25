@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Wallpaper
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,7 @@ fun AntCard(
     title: String,
     description: String,
     extras: String,
+    icon: ImageVector,
     leadingIcon: List<AntCardActionItem> = listOf(),
     trailingIcon: List<AntCardActionItem> = listOf(),
 ) {
@@ -138,10 +140,16 @@ fun AntCard(
                             color = Ant.colors.gray_5,
                             shape = CircleShape
                         )
-                )
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
                 Column(
                     modifier = Modifier.weight(1f)
-                ){
+                ) {
                     Text(
                         text = title,
                         fontSize = 18.sp,
@@ -209,6 +217,7 @@ fun AntCardPreview(){
         title = "Nouveau",
         description = "07/02/23",
         extras = "3,25€",
+        icon = Icons.Outlined.Wallpaper,
         leadingIcon = listOf(
             AntCardActionItem(
                 icon = Icons.Outlined.Delete,

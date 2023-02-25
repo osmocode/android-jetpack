@@ -5,26 +5,30 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import fr.uge.plutus.SplashScreen
 import fr.uge.plutus.layout.transaction_list.TransactionListScreen
 import fr.uge.plutus.layout.transaction_new.TransactionNewScreen
 import fr.uge.plutus.layout.wallet_list.WalletListPage
 import fr.uge.plutus.pages.*
+import fr.uge.plutus.storage.LocalStorage
+import fr.uge.plutus.storage.LocalStorageProvider
+import fr.uge.plutus.storage.LocalStorageWallet
 import fr.uge.plutus.ui.ant.Ant
+import fr.uge.plutus.ui.ant.AntTheme
 
 
 sealed class NavigationRoute(
     val route: String,
 ) {
+    object SplashScreen : NavigationRoute(route = "splash")
     object Home : NavigationRoute(route = "home")
     object Research : NavigationRoute(route = "research")
     object Wallets : NavigationRoute(route = "wallets")
@@ -42,98 +46,164 @@ sealed class NavigationRoute(
 @Composable
 fun NavigationRouter(
     navController: NavHostController,
+    localStorage: LocalStorage = hiltViewModel()
 ) {
+    val isLoading = remember { mutableStateOf(true) }
+    val bottomSheetVisible = remember { mutableStateOf(false) }
+    val wallet = localStorage.getWallet()
 
-    val bottomSheetVisible = remember { mutableStateOf(true) }
+    LaunchedEffect(wallet.value) {
+        LocalStorageWallet.provides(
+            value = if (wallet.value == null) -1 else wallet.value!!
+        )
+    }
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar(
-                isVisible = bottomSheetVisible,
-                navController = navController
-            )
-        }
-    ) {
-        NavigationRouteHost(
-            navController = navController,
-            startDestination = NavigationRoute.Home.route
-        ) {
-            composable(
-                route = NavigationRoute.Home.route,
-                enterTransition = { navigationRouterEnterAnimation(initialState) },
-                exitTransition = { navigationRouterExitAnimation(targetState) },
-                content = {
-                    HomePage(navController = navController)
-                }
-            )
-            composable(
-                route = NavigationRoute.Research.route,
-                enterTransition = { navigationRouterEnterAnimation(initialState) },
-                exitTransition = { navigationRouterExitAnimation(targetState) },
-                content = {
-                    ResearchPage(navController = navController)
-                }
-            )
-            composable(
-                route = NavigationRoute.Wallets.route,
-                enterTransition = { navigationRouterEnterAnimation(initialState) },
-                exitTransition = { navigationRouterExitAnimation(targetState) },
-                content = {
-                    WalletPage(navController = navController)
-                }
-            )
-            composable(
-                route = NavigationRoute.Settings.route,
-                enterTransition = { navigationRouterEnterAnimation(initialState) },
-                exitTransition = { navigationRouterExitAnimation(targetState) },
-                content = {
-                    SettingsPage(
-                        navBarController = bottomSheetVisible,
-                        navController = navController
-                    )
-                }
-            )
-            composable(
-                route = NavigationRoute.Transaction.route,
-                content = {
-                    TransactionListScreen(
-                        navController = navController
-                    )
-                }
-            )
-            composable(
-                route = NavigationRoute.NewTransaction.route
-                        + "?transactionType={transactionType}"
-                        + "?transactionId={transactionId}",
-                arguments = listOf(
-                    navArgument(
-                        name = "transactionType"
-                    ) {
-                        type = NavType.StringType
-                    },
-                    navArgument(
-                        name = "transactionId"
-                    ) {
-                        type = NavType.IntType
-                        defaultValue = -1
-                    }
-                ),
-                content = {
-                    TransactionNewScreen(
-                        navController = navController
-                    )
-                }
-            )
-            composable(
-                route = NavigationRoute.NewWallet.route,
-                content = {
-                    WalletListPage(
-                        navController = navController
-                    )
-                }
-            )
+    LaunchedEffect(isLoading.value) {
+        if (!isLoading.value) {
+            bottomSheetVisible.value = true
         }
     }
+
+    LocalStorageProvider(
+        localStorage = localStorage,
+        isReady = { ready ->
+            isLoading.value = !ready
+        },
+        content = {
+            AntTheme(
+                content = {
+                    Scaffold(
+                        bottomBar = {
+                            NavigationBar(
+                                isVisible = bottomSheetVisible,
+                                navController = navController
+                            )
+                        }
+                    ) {
+                        val current = LocalStorageWallet.current
+                        LaunchedEffect(isLoading.value, current) {
+                            if (!isLoading.value) {
+                                navController.popBackStack()
+                                navController.navigate(route = if (current == -1) NavigationRoute.NewWallet.route else NavigationRoute.Home.route)
+                            }
+                        }
+                        /*
+                        LaunchedEffect(current.value, isReady.value) {
+                            if (isReady.value) {
+                                navController.popBackStack()
+                                navController.navigate(route = )
+                                //navController.navigate(route = NavigationRoute.Home.route)
+                                /*
+                                navController.navigate(
+                                    route = if (wallet.value == null) NavigationRoute.NewWallet.route else NavigationRoute.Home.route,
+                                    navOptions {
+                                        popUpTo(
+                                            route = NavigationRoute.SplashScreen.route,
+                                            popUpToBuilder = {
+                                                inclusive = true
+                                            }
+                                        )
+                                    }
+                                )
+
+                                 */
+                            }
+                        }
+                         */
+                        NavigationRouteHost(
+                            navController = navController,
+                            startDestination = NavigationRoute.SplashScreen.route
+                            //startDestination = NavigationRoute.Home.route
+                        ) {
+                            composable(
+                                route = NavigationRoute.SplashScreen.route,
+                                content = {
+                                    SplashScreen(
+                                        navController = navController,
+                                        isLoading = isLoading
+                                    )
+                                }
+                            )
+                            composable(
+                                route = NavigationRoute.Home.route,
+                                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                                exitTransition = { navigationRouterExitAnimation(targetState) },
+                                content = {
+                                    HomePage(navController = navController)
+                                }
+                            )
+                            composable(
+                                route = NavigationRoute.Research.route,
+                                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                                exitTransition = { navigationRouterExitAnimation(targetState) },
+                                content = {
+                                    ResearchPage(navController = navController)
+                                }
+                            )
+                            composable(
+                                route = NavigationRoute.Wallets.route,
+                                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                                exitTransition = { navigationRouterExitAnimation(targetState) },
+                                content = {
+                                    WalletPage(navController = navController)
+                                }
+                            )
+                            composable(
+                                route = NavigationRoute.Settings.route,
+                                enterTransition = { navigationRouterEnterAnimation(initialState) },
+                                exitTransition = { navigationRouterExitAnimation(targetState) },
+                                content = {
+                                    SettingsPage(
+                                        navBarController = bottomSheetVisible,
+                                        navController = navController
+                                    )
+                                }
+                            )
+                            composable(
+                                route = NavigationRoute.Transaction.route,
+                                content = {
+                                    TransactionListScreen(
+                                        navController = navController
+                                    )
+                                }
+                            )
+                            composable(
+                                route = NavigationRoute.NewTransaction.route
+                                        + "?transactionType={transactionType}"
+                                        + "?transactionId={transactionId}",
+                                arguments = listOf(
+                                    navArgument(
+                                        name = "transactionType"
+                                    ) {
+                                        type = NavType.StringType
+                                    },
+                                    navArgument(
+                                        name = "transactionId"
+                                    ) {
+                                        type = NavType.IntType
+                                        defaultValue = -1
+                                    }
+                                ),
+                                content = {
+                                    TransactionNewScreen(
+                                        navController = navController
+                                    )
+                                }
+                            )
+                            composable(
+                                route = NavigationRoute.NewWallet.route,
+                                content = {
+                                    WalletListPage(
+                                        navController = navController
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            )
+        }
+    )
 }
 
 @OptIn(ExperimentalAnimationApi::class)
