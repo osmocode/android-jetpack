@@ -18,22 +18,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.theme.*
-
 import kotlin.math.PI
 import kotlin.math.atan2
 
-data class DonutChartArc(
-    val description: String,
+data class DonutChartItem(
+    val label: String,
     val value: Double,
     val isTapped: Boolean = false
 )
 
 @Composable
 fun DonutChart(
-    items: List<DonutChartArc>,
+    items: List<DonutChartItem>,
     donutBarWidth: Dp = 15.dp,
 ) {
     val colors = listOf(
@@ -48,14 +46,14 @@ fun DonutChart(
 
     var circleCenter by remember { mutableStateOf(Offset.Zero) }
 
-    val radius = donutBarWidth * 6
+    val radius = donutBarWidth * 4
 
     val sumValue = data.value.sumOf { it.value }
     val anglePerValue = 360f / sumValue
     var currentAngle = 0f
 
     data.value.forEachIndexed { index, donutChartInput ->
-        val scale = if (donutChartInput.isTapped) 1.1f else 1.0f
+        val scale = if (donutChartInput.isTapped) 1.17f else 1.0f
         val stroke = if (donutChartInput.isTapped) donutBarWidth * 2f else donutBarWidth
         val angleToDraw = donutChartInput.value * anglePerValue
         Box(
@@ -64,7 +62,7 @@ fun DonutChart(
         ) {
             Canvas(
                 modifier = Modifier
-                    .size(250.dp)
+                    .size(180.dp)
                     .aspectRatio(1f)
                     .pointerInput(Unit) {
                         detectTapGestures(
@@ -78,9 +76,9 @@ fun DonutChart(
                                 data.value.forEach { donutChartInput ->
                                     currAngle += (donutChartInput.value * anglePerValue).toFloat()
                                     if (tapAngleInDegrees < currAngle) {
-                                        val description = donutChartInput.description
+                                        val description = donutChartInput.label
                                         data.value = data.value.map {
-                                            if (description == it.description) {
+                                            if (description == it.label) {
                                                 it.copy(isTapped = !it.isTapped)
                                             } else {
                                                 it.copy(isTapped = false)
@@ -92,40 +90,39 @@ fun DonutChart(
                             }
                         )
                     }
-        ) {
-            circleCenter = Offset(x = size.width / 2f, y = size.height / 2f)
-            scale(scale) {
-                drawArc(
-                    color = colors[index],
-                    startAngle = currentAngle,
-                    sweepAngle = angleToDraw.toFloat(),
-                    useCenter = false,
-                    size = Size(
-                        width = radius.toPx() * 2f,
-                        height = radius.toPx() * 2f
-                    ),
-                    topLeft = Offset(
-                        (size.width - radius.toPx() * 2f) / 2f,
-                        (size.height - radius.toPx() * 2f) / 2f
-                    ),
-                    style = Stroke(
-                        width = stroke.toPx()
+            ) {
+                circleCenter = Offset(x = size.width / 2f, y = size.height / 2f)
+                scale(scale) {
+                    drawArc(
+                        color = colors[(index % colors.size)],
+                        startAngle = currentAngle,
+                        sweepAngle = angleToDraw.toFloat(),
+                        useCenter = false,
+                        size = Size(
+                            width = radius.toPx() * 2f,
+                            height = radius.toPx() * 2f
+                        ),
+                        topLeft = Offset(
+                            (size.width - radius.toPx() * 2f) / 2f,
+                            (size.height - radius.toPx() * 2f) / 2f
+                        ),
+                        style = Stroke(
+                            width = stroke.toPx()
+                        )
                     )
-                )
-                currentAngle += angleToDraw.toFloat()
+                    currentAngle += angleToDraw.toFloat()
+                }
             }
-            }
-
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = if (donutChartInput.isTapped) "${donutChartInput.value}€" else "",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
                     color = Ant.colors.primary_text
                 )
                 Text(
-                    text = if (donutChartInput.isTapped) donutChartInput.description else "",
-                    fontSize = 20.sp,
+                    text = if (donutChartInput.isTapped) donutChartInput.label else "",
+                    fontSize = 14.sp,
                     color = Ant.colors.secondary_text
                 )
             }
@@ -141,24 +138,24 @@ fun DonutChartPreview(
 ) {
     val data = remember {
         listOf(
-            DonutChartArc(
-                description = "Sample-1",
+            DonutChartItem(
+                label = "Sample-1",
                 value = 200.0
             ),
-            DonutChartArc(
-                description = "Sample-2",
+            DonutChartItem(
+                label = "Sample-2",
                 value = 150.0
             ),
-            DonutChartArc(
-                description = "Sample-3",
+            DonutChartItem(
+                label = "Sample-3",
                 value = 100.0
             ),
-            DonutChartArc(
-                description = "Sample-4",
+            DonutChartItem(
+                label = "Sample-4",
                 value = 50.0
             ),
-            DonutChartArc(
-                description = "Sample-5",
+            DonutChartItem(
+                label = "Sample-5",
                 value = 20.0
             )
         )
