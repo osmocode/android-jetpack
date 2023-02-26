@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import fr.uge.plutus.ui.ant.Ant
 
 @Composable
@@ -55,7 +56,11 @@ fun AntNoteInput(
                 text = title,
                 color = Ant.colors.secondary_text
             )
-            Text(text = description)
+            Text(
+                text = description,
+                fontSize = 10.sp,
+                color = Ant.colors.secondary_text
+            )
         }
     }
 }

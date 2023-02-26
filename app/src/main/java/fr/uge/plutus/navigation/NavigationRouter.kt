@@ -88,29 +88,6 @@ fun NavigationRouter(
                                 navController.navigate(route = if (current == -1) NavigationRoute.NewWallet.route else NavigationRoute.Home.route)
                             }
                         }
-                        /*
-                        LaunchedEffect(current.value, isReady.value) {
-                            if (isReady.value) {
-                                navController.popBackStack()
-                                navController.navigate(route = )
-                                //navController.navigate(route = NavigationRoute.Home.route)
-                                /*
-                                navController.navigate(
-                                    route = if (wallet.value == null) NavigationRoute.NewWallet.route else NavigationRoute.Home.route,
-                                    navOptions {
-                                        popUpTo(
-                                            route = NavigationRoute.SplashScreen.route,
-                                            popUpToBuilder = {
-                                                inclusive = true
-                                            }
-                                        )
-                                    }
-                                )
-
-                                 */
-                            }
-                        }
-                         */
                         NavigationRouteHost(
                             navController = navController,
                             startDestination = NavigationRoute.SplashScreen.route

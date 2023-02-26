@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,15 +24,21 @@ import fr.uge.plutus.ui.ant.Ant
 
 open class AntWalletCardItem(
     val label: String,
-    val desc: String
+    val desc: String,
+    val selected: Boolean
 )
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AntWalletCardList(
-    items: List<AntWalletCardItem>
+    items: List<AntWalletCardItem>,
+    selected: (index: Int) -> Unit
 ) {
     val pagerState = rememberPagerState()
+
+    LaunchedEffect(pagerState.currentPage) {
+        selected.invoke(pagerState.currentPage)
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -71,7 +78,7 @@ fun AntWalletCardList(
 
 @Composable
 fun AntWalletCard(
-    item: AntWalletCardItem
+    item: AntWalletCardItem,
 ) {
     Box(
         modifier = Modifier
@@ -101,22 +108,24 @@ fun AntWalletCard(
                     fontSize = 18.sp,
                     color = Color.White
                 )
-                Box(
-                    modifier = Modifier
-                        .background(
-                            color = Color.Black.copy(alpha = 0.3f),
-                            shape = CircleShape
+                if (item.selected) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = Color.Black.copy(alpha = 0.3f),
+                                shape = CircleShape
+                            )
+                            .padding(
+                                vertical = Ant.spacing.small / 2,
+                                horizontal = Ant.spacing.small
+                            )
+                    ) {
+                        Text(
+                            text = "Selected",
+                            fontSize = 10.sp,
+                            color = Color.White
                         )
-                        .padding(
-                            vertical = Ant.spacing.small / 2,
-                            horizontal = Ant.spacing.small
-                        )
-                ) {
-                    Text(
-                        text = "Selected",
-                        fontSize = 10.sp,
-                        color = Color.White
-                    )
+                    }
                 }
             }
             Text(
@@ -139,14 +148,17 @@ fun AntWalletCardPreview(
     val wallets = listOf(
         AntWalletCardItem(
             label = "Personal",
-            desc = "Current"
+            desc = "Current",
+            selected = true
         ),
         AntWalletCardItem(
             label = "Pro",
-            desc = "Not used"
+            desc = "Not used",
+            selected = false
         ),
     )
     AntWalletCardList(
-        items = wallets
+        items = wallets,
+        selected = {}
     )
 }
