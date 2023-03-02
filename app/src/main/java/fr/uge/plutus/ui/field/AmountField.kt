@@ -22,7 +22,8 @@ import java.util.regex.Pattern
 @Composable
 fun AntAmountField(
     prefix: MutableState<String>,
-    amount: MutableState<Double>
+    amount: MutableState<Double>,
+    disabled: MutableState<Boolean>
 ) {
     val text = remember { mutableStateOf("${amount.value}") }
 
@@ -41,11 +42,11 @@ fun AntAmountField(
             }
         },
         cursorBrush = SolidColor(
-            value = Ant.colors.primary_color_3
+            value = Ant.colors.primary_color_5
         ),
         singleLine = true,
         textStyle = LocalTextStyle.current.copy(
-            color = Ant.colors.primary_color_3,
+            color = if (disabled.value) Ant.colors.primary_color_3 else Ant.colors.primary_color_5,
             fontSize = 50.sp,
             textAlign = TextAlign.Center
         ),
@@ -87,6 +88,7 @@ fun AntAmountFieldPreview() {
     val amount = remember { mutableStateOf(10.0) }
     AntAmountField(
         prefix = prefix,
-        amount = amount
+        amount = amount,
+        disabled = remember { mutableStateOf(false) }
     )
 }

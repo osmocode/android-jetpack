@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
-import fr.uge.plutus.navigation.NavigationRouter
+import fr.uge.plutus.navigation.NavigationRoot
 
 @AndroidEntryPoint
 @OptIn(ExperimentalAnimationApi::class)
@@ -18,9 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberAnimatedNavController()
-            NavigationRouter(
-                navController = navController
-            )
+            NavigationRoot(navController = navController)
         }
     }
 }
@@ -33,8 +31,10 @@ class MainActivity : ComponentActivity() {
 )
 @Composable
 fun DefaultPreview() {
+    /*
     val navController = rememberAnimatedNavController()
     NavigationRouter(
         navController = navController
     )
+     */
 }

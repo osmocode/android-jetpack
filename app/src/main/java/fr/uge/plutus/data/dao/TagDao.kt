@@ -11,6 +11,9 @@ interface TagDao {
     @Query("SELECT * FROM `Tag`")
     fun retrieveAll(): Flow<List<Tag>>
 
+    @Query("SELECT * FROM `Tag` WHERE type=:type")
+    fun retrieveAll(type: String): Flow<List<Tag>>
+
     @Query("SELECT * FROM `Tag` WHERE id=:id")
     suspend fun retrieveById(id: Int): Tag?
 

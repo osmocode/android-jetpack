@@ -2,12 +2,9 @@
 
 ## Description
 
-L'utilisateur doit pouvoir visualiser ses transaction du plus récent au plus ancien
+L'utilisateur peut visualiser ses transaction de la plus récente à la plus ancienne
 
 ## Sub use-case
 
-- [ ] filtrer sur une fourchette de date
-- [ ] filtrer sur une fourchette de montant
 - [ ] résultats triable sur montant et/ou date
 - [ ] exploitation d'index sur étiquettes
-- [ ] production de rapport synthétiques -> diagramme des montants selon temps avec comparaison avec le budjet + répartition transactions selon étiquettes

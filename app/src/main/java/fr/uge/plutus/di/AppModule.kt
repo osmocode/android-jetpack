@@ -19,8 +19,8 @@ import fr.uge.plutus.data.repository.TagRepository
 import fr.uge.plutus.data.dao.WalletDao
 import fr.uge.plutus.data.interfaces.IWalletRepository
 import fr.uge.plutus.data.repository.TransactionRepository
-import fr.uge.plutus.storage.LocalDateStore
 import fr.uge.plutus.data.repository.WalletRepository
+import fr.uge.plutus.storage.StorageRepository
 import javax.inject.Singleton
 
 
@@ -40,6 +40,14 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideStorageRepository(
+        @ApplicationContext context: Context
+    ): StorageRepository {
+        return StorageRepository(context = context)
+    }
+
+    @Singleton
+    @Provides
     fun provideTransactionDao(db: DataBase): TransactionDao {
         return db.transactionDao()
     }
@@ -50,13 +58,6 @@ object AppModule {
         return TransactionRepository(dao)
     }
 
-    @Singleton
-    @Provides
-    fun provideLocalDataStore(
-        @ApplicationContext context: Context
-    ): LocalDateStore {
-        return LocalDateStore(context = context)
-    }
 
     @Singleton
     @Provides
