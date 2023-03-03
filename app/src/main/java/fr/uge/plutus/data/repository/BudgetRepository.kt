@@ -12,6 +12,9 @@ class BudgetRepository @Inject constructor(
 ) : IBudgetRepository {
     override fun retrieveAllBudget(): Flow<List<BudgetAndTag>> = budgetDao.retrieveAll()
 
+    override fun retrieveAllBudget(wallet: Int): Flow<List<BudgetAndTag>> =
+        budgetDao.retrieveAll(wallet)
+
     override suspend fun createBudget(budget: Budget) = budgetDao.create(budget)
 
     override suspend fun retrieveBudget(id: Int) = budgetDao.retrieveById(id)

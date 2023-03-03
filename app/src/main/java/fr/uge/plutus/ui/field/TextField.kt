@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,9 +31,8 @@ fun AntTextField(
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
     placeHolder: String = "Placeholder",
-    onChange: (value: String) -> Unit
+    text: MutableState<String>
 ) {
-    val text = remember { mutableStateOf("") }
     val interactionSource = remember { MutableInteractionSource() }
     BasicTextField(
         modifier = modifier
@@ -48,7 +48,6 @@ fun AntTextField(
         value = text.value,
         onValueChange = {
             text.value = it
-            onChange(text.value)
         },
         singleLine = true,
         cursorBrush = SolidColor(
@@ -76,7 +75,7 @@ fun AntTextField(
                         Text(
                             text = placeHolder,
                             style = LocalTextStyle.current.copy(
-                                color = Ant.colors.gray_9,
+                                color = Ant.colors.secondary_text,
                             )
                         )
                     }
@@ -126,10 +125,10 @@ fun AntTextFieldPreview(
     ) {
         AntTextField(
             leadingIcon = Icons.Outlined.Search,
-            onChange = {}
+            text = remember { mutableStateOf("") }
         )
         AntTextField(
-            onChange = {}
+            text = remember { mutableStateOf("") }
         )
     }
 

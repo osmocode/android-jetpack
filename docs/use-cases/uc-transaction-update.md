@@ -1,11 +1,17 @@
 # Modification d'une transction
 
 ## Description
-Dans ce use case on peut faire :
 
-- [ ] Modification d'une transaction <0>
-    - [ ] motant
-    - [ ] étiquettes
-    - [ ] date 
-    - [ ] location
-    
+L'objectif de ce use case est de modifier une transaction
+
+## Sub use-cases
+
+### Modification d'une transaction <0>
+
+- [x] description
+- [ ] description au format markdown
+- [x] motant
+- [ ] étiquettes
+- [x] date
+- [ ] gélocalisation
+- [ ] éléments mutltimédias

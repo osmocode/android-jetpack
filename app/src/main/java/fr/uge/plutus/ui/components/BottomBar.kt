@@ -14,9 +14,7 @@ import androidx.compose.material.icons.filled.FindInPage
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.FindInPage
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,11 +39,20 @@ open class AntBottomBarItem(
 
 @Composable
 fun AntBottomBar(
+    bottomBarVisible: MutableState<Boolean>,
     navController: NavHostController,
     items: List<AntBottomBarItem>
 ) {
     val navStackBackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navStackBackEntry?.destination
+
+    LaunchedEffect(navStackBackEntry) {
+        bottomBarVisible.value = currentDestination?.hierarchy?.any { current ->
+            items.any {
+                it.route == current.route
+            }
+        } == true
+    }
 
     Row(
         modifier = Modifier
@@ -90,7 +97,7 @@ fun AntBottomBar(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun RowScope.AntBottomBarItem (
+fun AntBottomBarItem(
     item: AntBottomBarItem,
     currentDestination: NavDestination?,
     navController: NavHostController
@@ -183,8 +190,8 @@ fun AntBottomBarPreview(
         )
     )
 
-
     AntBottomBar(
+        bottomBarVisible = remember { mutableStateOf(true) },
         navController = navController,
         items = items
     )
