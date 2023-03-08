@@ -11,6 +11,18 @@ class TransactionRepository @Inject constructor(
 ) : ITransactionRepository {
     override fun retrieveAllTransaction(): Flow<List<Transaction>> = transactionDao.retrieveAll()
 
+    override fun retrieveAllTransaction(wallet: Int): Flow<List<Transaction>> =
+        transactionDao.retrieveAll(wallet)
+
+    override fun retrieveLastTransaction(wallet: Int, limit: Int): Flow<List<Transaction>> =
+        transactionDao.retrieveLast(wallet, limit)
+
+    override fun retrieveAllPastTransaction(wallet: Int): Flow<List<Transaction>> =
+        transactionDao.retrieveAllPast(wallet)
+
+    override fun retrieveAllComingTransaction(wallet: Int): Flow<List<Transaction>> =
+        transactionDao.retrieveAllComing(wallet)
+
     override suspend fun createTransaction(transaction: Transaction) {
         transactionDao.create(transaction)
     }

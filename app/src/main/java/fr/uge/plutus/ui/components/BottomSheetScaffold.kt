@@ -1,8 +1,6 @@
 package fr.uge.plutus.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -78,22 +76,17 @@ fun AntBottomSheetScaffold(
                 if (state.bottomSheetState.isCollapsed)
                     sheetVisible.value = false
             }
+            val alpha = animateFloatAsState(
+                targetValue = if (sheetVisible.value) 0.6f else 0.0f
+            )
             Box {
                 content.invoke()
-                AnimatedVisibility(
-                    visible = sheetVisible.value,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
+                if (sheetVisible.value) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .alpha(0.6f)
-                            .background(color = Color.Black)
-                            .clickable {
-                                if (sheetVisible.value)
-                                    sheetVisible.value = false
-                            }
+                            .background(color = Color.Black.copy(alpha = alpha.value))
+                            .clickable { if (sheetVisible.value) sheetVisible.value = false }
                     )
                 }
             }

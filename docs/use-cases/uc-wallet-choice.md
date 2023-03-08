@@ -4,4 +4,4 @@
 Choix de wallet  
 
 ## Sub use-case
-- [ ] la possicilité que le user choisisse son wallet 
+- [x] la possibilité que le user choisisse son wallet 

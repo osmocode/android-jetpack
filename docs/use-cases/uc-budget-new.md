@@ -2,13 +2,16 @@
 
 ## Description
 
-L'objectif de ce use case est de pouvoir créer un budget pour une etiquette donnée 
+L'objectif de ce use case est de pouvoir créer un budget pour une etiquette donnée.
+Un budget est un objectif de dépenses ou de revenus pour une période (semaine, mois, année)
 
-exemple :  depense : 200 €
+exemple :  depense : 200 € sur 3 mois
 
 ## Sub use-case
 
-L'utilisateur doit :
-  -  [ ]  pouvoir créer un budget sur une etiquette
-  - [ ] pouvoir créer un budget avec un montant précis
- - [ ]  être notifié lorsque son budget est atteint
+L'utilisateur peut créer un budget:
+
+- [ ]  sur une etiquette
+- [ ]  avec un montant précis
+- [ ]  pour une période
+

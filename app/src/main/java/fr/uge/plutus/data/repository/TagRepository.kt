@@ -11,6 +11,8 @@ class TagRepository @Inject constructor(
 ) : ITagRepository {
     override fun retrieveAllTag(): Flow<List<Tag>> = tagDao.retrieveAll()
 
+    override fun retrieveAllTag(type: String): Flow<List<Tag>> = tagDao.retrieveAll(type)
+
     override suspend fun createTag(tag: Tag) = tagDao.create(tag)
 
     override suspend fun retrieveTag(id: Int) = tagDao.retrieveById(id)

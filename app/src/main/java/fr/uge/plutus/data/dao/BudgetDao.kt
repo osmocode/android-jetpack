@@ -13,6 +13,10 @@ interface BudgetDao {
     fun retrieveAll(): Flow<List<BudgetAndTag>>
 
     @Transaction
+    @Query("SELECT * FROM `Budget` WHERE wallet=:wallet")
+    fun retrieveAll(wallet: Int): Flow<List<BudgetAndTag>>
+
+    @Transaction
     @Query("SELECT * FROM `Budget` WHERE id=:id")
     suspend fun retrieveById(id: Int): BudgetAndTag?
 
