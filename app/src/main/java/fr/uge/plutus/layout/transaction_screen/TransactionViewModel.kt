@@ -1,6 +1,5 @@
 package fr.uge.plutus.layout.transaction_screen
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -8,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uge.plutus.data.model.Tag
-import fr.uge.plutus.data.model.TransactionWithTags
 import fr.uge.plutus.data.repository.TagRepository
 import fr.uge.plutus.data.repository.TransactionRepository
 import kotlinx.coroutines.flow.launchIn
@@ -48,12 +46,8 @@ class TransactionViewModel @Inject constructor(
             if (id != -1) transactionRepository.retrieveTransactionWithTag(id)
                 ?.let { transactionWithTags ->
                     _state.value = state.value.copy(
-                        transactionWithTags = transactionWithTags
-                    )
-                    Log.println(
-                        Log.ASSERT,
-                        "tags",
-                        "${_state.value.transactionWithTags?.tags?.size}"
+                        transaction = transactionWithTags.transaction,
+                        ttags = transactionWithTags.tags
                     )
                 }
 
@@ -97,18 +91,16 @@ class TransactionViewModel @Inject constructor(
                          )*/
 
                         transactionRepository.createTransactionWithTags(
-                            transactionWithTags = TransactionWithTags(
-                                transaction = state.value.transaction.copy(
-                                    transactionId = null,
-                                    wallet = event.wallet,
-                                    type = state.value.type
-                                ),
-                                tags = listOf(
-                                    Tag(
-                                        tagId = null,
-                                        type = "DEBIT",
-                                        label = "toto"
-                                    )
+                            transaction = state.value.transaction.copy(
+                                transactionId = null,
+                                wallet = event.wallet,
+                                type = state.value.type
+                            ),
+                            ttags = listOf(
+                                Tag(
+                                    tagId = 1,
+                                    type = "CREDIT",
+                                    label = "manger"
                                 )
                             )
                         )

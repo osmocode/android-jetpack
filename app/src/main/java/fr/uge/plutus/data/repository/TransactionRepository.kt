@@ -43,7 +43,7 @@ class TransactionRepository @Inject constructor(
 //    override suspend fun createTransactionAndTags(transactionAndTags: TransactionAndTags) =
 //        transactionDao.createTransactionAndTags(transactionAndTags)
 
-    override suspend fun createTransactionWithTags(transactionWithTags: TransactionWithTags) {
+    /*override suspend fun createTransactionWithTags(transactionWithTags: TransactionWithTags) {
         val id = transactionDao.create(transactionWithTags.transaction)
 
         transactionWithTags.tags.forEach { tag ->
@@ -54,19 +54,61 @@ class TransactionRepository @Inject constructor(
                 )
             )
         }
+    }*/
+
+    override suspend fun createTransactionWithTags(transaction: Transaction, ttags: List<Tag>) {
+        val id = transactionDao.create(transaction)
+
+        ttags.forEach { tag ->
+            transactionDao.createTransactionAndTags(
+                TransactionAndTags(
+                    transactionId = id,
+                    tagId = tag.tagId!!
+                )
+            )
+        }
     }
 
 
+    /* override suspend fun updateTransactionTag(
+         transactionWithTags: TransactionWithTags,
+         previousTags: List<Tag>
+     ) {
+         // new tag list to previous tag list --> INSERT
+         transactionWithTags.tags.forEach {
+             if (!previousTags.contains(it))
+                 transactionDao.createTransactionAndTags(
+                     TransactionAndTags(
+                         transactionId = transactionWithTags.transaction.transactionId!!,
+                         tagId = it.tagId!!
+                     )
+                 )
+         }
+
+         // previous tag list to new tag list --> DELETE
+         previousTags.forEach {
+             if (!transactionWithTags.tags.contains(it))
+                 transactionDao.deleteTransactionAndTags(
+                     TransactionAndTags(
+                         transactionId = transactionWithTags.transaction.transactionId!!,
+                         tagId = it.tagId!!
+                     )
+                 )
+         }
+     }*/
+
+
     override suspend fun updateTransactionTag(
-        transactionWithTags: TransactionWithTags,
+        transaction: Transaction,
+        ttags: List<Tag>,
         previousTags: List<Tag>
     ) {
         // new tag list to previous tag list --> INSERT
-        transactionWithTags.tags.forEach {
+        ttags.forEach {
             if (!previousTags.contains(it))
                 transactionDao.createTransactionAndTags(
                     TransactionAndTags(
-                        transactionId = transactionWithTags.transaction.transactionId!!,
+                        transactionId = transaction.transactionId!!,
                         tagId = it.tagId!!
                     )
                 )
@@ -74,10 +116,10 @@ class TransactionRepository @Inject constructor(
 
         // previous tag list to new tag list --> DELETE
         previousTags.forEach {
-            if (!transactionWithTags.tags.contains(it))
+            if (!ttags.contains(it))
                 transactionDao.deleteTransactionAndTags(
                     TransactionAndTags(
-                        transactionId = transactionWithTags.transaction.transactionId!!,
+                        transactionId = transaction.transactionId!!,
                         tagId = it.tagId!!
                     )
                 )

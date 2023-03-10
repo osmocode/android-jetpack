@@ -2,6 +2,7 @@ package fr.uge.plutus.layout.transaction_screen.layout
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -18,6 +19,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import fr.uge.plutus.data.model.Tag
 import fr.uge.plutus.layout.transaction_screen.TransactionEvent
 import fr.uge.plutus.layout.transaction_screen.TransactionViewModel
 import fr.uge.plutus.ui.ant.Ant
@@ -32,6 +34,7 @@ fun TagLayout(
     viewModel: TransactionViewModel
 ) {
 
+    val selected = remember { mutableStateListOf<Tag>() }
     val disabled = remember { mutableStateOf(true) }
     val tag = remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -100,20 +103,16 @@ fun TagLayout(
             ) {
                 val tags = viewModel.state.value.tags
                 items(tags.size) { index ->
-                    Box(
-                        modifier = Modifier
-                            .height(100.dp)
-                            .padding(Ant.spacing.small)
-                            .clip(Ant.shapes.default)
-                            .background(color = Ant.colors.gray_1)
-                            .clickable { }
-                    ) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            text = tags[index].label,
-                            fontSize = 18.sp
-                        )
-                    }
+                    TagCard(
+                        tag = tags[index],
+                        selected = selected.contains(tags[index]),
+                        onClick = {
+                            if (selected.contains(tags[index]))
+                                selected.remove(tags[index])
+                            else
+                                selected.add(tags[index])
+                        }
+                    )
                 }
             }
             CustomButton(
@@ -124,3 +123,29 @@ fun TagLayout(
     }
 }
 
+@Composable
+fun TagCard(
+    tag: Tag,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .height(100.dp)
+            .padding(Ant.spacing.small)
+            .clip(Ant.shapes.default)
+            .background(color = Ant.colors.gray_1)
+            .border(
+                width = 2.dp,
+                color = if (selected) Ant.colors.primary_color_5 else Ant.colors.gray_1,
+                shape = Ant.shapes.default
+            )
+            .clickable(onClick = onClick)
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = tag.label,
+            fontSize = 18.sp
+        )
+    }
+}
