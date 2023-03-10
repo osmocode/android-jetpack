@@ -27,6 +27,7 @@ import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
 import fr.uge.plutus.ui.input.AntNoteInput
+import fr.uge.plutus.ui.input.AntTagInput
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -149,6 +150,7 @@ fun TransactionScreenOverview(
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.AmountLayout.route) }
                 )
                 AntTagInput(
+                    tags = viewModel.state.value.ttags,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.TagLayout.route) }
                 )
                 AntNoteInput(

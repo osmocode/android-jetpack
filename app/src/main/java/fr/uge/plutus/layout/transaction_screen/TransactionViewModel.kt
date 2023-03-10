@@ -78,6 +78,11 @@ class TransactionViewModel @Inject constructor(
                     )
                 )
             }
+            is TransactionEvent.TransactionUpdateTags -> viewModelScope.launch {
+                _state.value = state.value.copy(
+                    ttags = event.tags
+                )
+            }
             is TransactionEvent.TransactionSubmit -> viewModelScope.launch {
                 when (state.value.action) {
                     "CREATE", "DUPLICATE" -> {

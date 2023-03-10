@@ -33,8 +33,9 @@ fun TagLayout(
     sheetVisible: MutableState<Boolean> = remember { mutableStateOf(false) },
     viewModel: TransactionViewModel
 ) {
-
-    val selected = remember { mutableStateListOf<Tag>() }
+    val selected =
+        remember { mutableStateListOf<Tag>().apply { this.addAll(viewModel.state.value.ttags) } }
+    val submit = remember { mutableStateOf(false) }
     val disabled = remember { mutableStateOf(true) }
     val tag = remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -47,6 +48,13 @@ fun TagLayout(
 
     LaunchedEffect(tag.value) {
         disabled.value = tag.value.isEmpty() || tag.value.isBlank()
+    }
+
+    LaunchedEffect(selected.size) {
+        submit.value =
+            selected.containsAll(viewModel.state.value.ttags) && viewModel.state.value.ttags.containsAll(
+                selected
+            )
     }
 
     AntBottomSheetScaffold(
@@ -93,13 +101,14 @@ fun TagLayout(
             )
         }
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(Ant.spacing.small),
         ) {
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
                 cells = GridCells.Fixed(2),
-                contentPadding = PaddingValues(Ant.spacing.small)
             ) {
                 val tags = viewModel.state.value.tags
                 items(tags.size) { index ->
@@ -114,11 +123,25 @@ fun TagLayout(
                         }
                     )
                 }
+                items(2) {
+                    Spacer(modifier = Modifier.size(50.dp))
+                }
             }
-            CustomButton(
-                title = "Submit",
-                onClick = { }
-            )
+            Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+                CustomButton(
+                    title = "Submit",
+                    type = CustomButtonType.PRIMARY,
+                    disabled = submit,
+                    onClick = {
+                        viewModel.onEvent(
+                            TransactionEvent.TransactionUpdateTags(
+                                tags = selected.toList()
+                            )
+                        )
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
     }
 }
