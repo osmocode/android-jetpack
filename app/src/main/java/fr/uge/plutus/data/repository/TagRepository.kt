@@ -13,7 +13,7 @@ class TagRepository @Inject constructor(
 
     override fun retrieveAllTag(type: String): Flow<List<Tag>> = tagDao.retrieveAll(type)
 
-    override suspend fun createTag(tag: Tag) = tagDao.create(tag)
+    override suspend fun createTag(tag: Tag): Long = tagDao.create(tag)
 
     override suspend fun retrieveTag(id: Int) = tagDao.retrieveById(id)
 

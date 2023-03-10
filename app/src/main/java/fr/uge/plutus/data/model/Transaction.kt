@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(
     foreignKeys = [ForeignKey(
         entity = Wallet::class,
-        parentColumns = arrayOf("id"),
+        parentColumns = arrayOf("walletId"),
         childColumns = arrayOf("wallet"),
         onDelete = ForeignKey.CASCADE
     )]
@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 data class Transaction(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    val transactionId: Long?,
     val title: String,
     val description: String,
     val type: String,

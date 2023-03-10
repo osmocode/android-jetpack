@@ -8,18 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fr.uge.plutus.data.DataBase
-import fr.uge.plutus.data.dao.BudgetDao
-import fr.uge.plutus.data.dao.TagDao
-import fr.uge.plutus.data.dao.TransactionDao
-import fr.uge.plutus.data.interfaces.IBudgetRepository
-import fr.uge.plutus.data.interfaces.ITagRepository
-import fr.uge.plutus.data.interfaces.ITransactionRepository
-import fr.uge.plutus.data.repository.BudgetRepository
-import fr.uge.plutus.data.repository.TagRepository
-import fr.uge.plutus.data.dao.WalletDao
-import fr.uge.plutus.data.interfaces.IWalletRepository
-import fr.uge.plutus.data.repository.TransactionRepository
-import fr.uge.plutus.data.repository.WalletRepository
+import fr.uge.plutus.data.dao.*
+import fr.uge.plutus.data.interfaces.*
+import fr.uge.plutus.data.repository.*
 import fr.uge.plutus.storage.StorageRepository
 import javax.inject.Singleton
 

@@ -29,17 +29,17 @@ sealed class NavigationRoute(
 
             fun updateTransaction(transaction: Transaction): String {
                 return when (transaction.type as Transaction.Type) {
-                    Transaction.Type.CREDIT -> "transaction/UPDATE/CREDIT/${transaction.id}"
-                    Transaction.Type.DEBIT -> "transaction/UPDATE/DEBIT/${transaction.id}"
-                    Transaction.Type.TRANSFER -> "transaction/UPDATE/TRANSFER/${transaction.id}"
+                    Transaction.Type.CREDIT -> "transaction/UPDATE/CREDIT/${transaction.transactionId}"
+                    Transaction.Type.DEBIT -> "transaction/UPDATE/DEBIT/${transaction.transactionId}"
+                    Transaction.Type.TRANSFER -> "transaction/UPDATE/TRANSFER/${transaction.transactionId}"
                 }
             }
 
             fun duplicateTransaction(transaction: Transaction): String {
                 return when (transaction.type as Transaction.Type) {
-                    Transaction.Type.CREDIT -> "transaction/DUPLICATE/CREDIT/${transaction.id}"
-                    Transaction.Type.DEBIT -> "transaction/DUPLICATE/DEBIT/${transaction.id}"
-                    Transaction.Type.TRANSFER -> "transaction/DUPLICATE/TRANSFER/${transaction.id}"
+                    Transaction.Type.CREDIT -> "transaction/DUPLICATE/CREDIT/${transaction.transactionId}"
+                    Transaction.Type.DEBIT -> "transaction/DUPLICATE/DEBIT/${transaction.transactionId}"
+                    Transaction.Type.TRANSFER -> "transaction/DUPLICATE/TRANSFER/${transaction.transactionId}"
                 }
             }
 

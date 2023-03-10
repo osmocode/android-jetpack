@@ -1,6 +1,8 @@
 package fr.uge.plutus.data.interfaces
 
+import fr.uge.plutus.data.model.Tag
 import fr.uge.plutus.data.model.Transaction
+import fr.uge.plutus.data.model.TransactionWithTags
 import kotlinx.coroutines.flow.Flow
 
 
@@ -16,11 +18,20 @@ interface ITransactionRepository {
 
     fun retrieveAllComingTransaction(wallet: Int): Flow<List<Transaction>>
 
-    suspend fun createTransaction(transaction: Transaction)
+    suspend fun createTransaction(transaction: Transaction): Long
 
     suspend fun retrieveTransaction(id: Int): Transaction?
 
     suspend fun updateTransaction(transaction: Transaction): Int
 
     suspend fun deleteTransaction(transaction: Transaction): Int
+
+    suspend fun retrieveTransactionWithTag(id: Int): TransactionWithTags?
+
+    suspend fun createTransactionWithTags(transactionWithTags: TransactionWithTags)
+
+    suspend fun updateTransactionTag(
+        transactionWithTags: TransactionWithTags,
+        previousTags: List<Tag>
+    )
 }

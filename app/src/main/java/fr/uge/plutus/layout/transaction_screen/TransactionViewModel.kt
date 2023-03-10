@@ -1,5 +1,6 @@
 package fr.uge.plutus.layout.transaction_screen
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uge.plutus.data.model.Tag
+import fr.uge.plutus.data.model.TransactionWithTags
 import fr.uge.plutus.data.repository.TagRepository
 import fr.uge.plutus.data.repository.TransactionRepository
 import kotlinx.coroutines.flow.launchIn
@@ -36,30 +38,43 @@ class TransactionViewModel @Inject constructor(
                 id = id!!
             )
 
+
             if (id != -1) transactionRepository.retrieveTransaction(id)?.let { transaction ->
                 _state.value = state.value.copy(
                     transaction = transaction
                 )
             }
 
+            if (id != -1) transactionRepository.retrieveTransactionWithTag(id)
+                ?.let { transactionWithTags ->
+                    _state.value = state.value.copy(
+                        transactionWithTags = transactionWithTags
+                    )
+                    Log.println(
+                        Log.ASSERT,
+                        "tags",
+                        "${_state.value.transactionWithTags?.tags?.size}"
+                    )
+                }
+
             tagRepository.retrieveAllTag(type).onEach { tags ->
                 _state.value = state.value.copy(
                     tags = tags
                 )
             }.launchIn(viewModelScope)
-
         }
 
     }
 
     fun onEvent(event: TransactionEvent) {
+
         when (event) {
             is TransactionEvent.TransactionUpdateDesc -> viewModelScope.launch {
                 _state.value = state.value.copy(
                     transaction = state.value.transaction.copy(
                         title = event.title,
                         description = event.desc
-                    )
+                    ),
                 )
             }
             is TransactionEvent.TransactionUpdatePrice -> viewModelScope.launch {
@@ -72,11 +87,29 @@ class TransactionViewModel @Inject constructor(
             is TransactionEvent.TransactionSubmit -> viewModelScope.launch {
                 when (state.value.action) {
                     "CREATE", "DUPLICATE" -> {
-                        transactionRepository.createTransaction(
-                            state.value.transaction.copy(
-                                id = null,
-                                wallet = event.wallet,
-                                type = state.value.type
+
+                        /*transactionRepository.createTransaction(
+                             state.value.transaction.copy(
+                                 transactionId = null,
+                                 wallet = event.wallet,
+                                 type = state.value.type
+                             )
+                         )*/
+
+                        transactionRepository.createTransactionWithTags(
+                            transactionWithTags = TransactionWithTags(
+                                transaction = state.value.transaction.copy(
+                                    transactionId = null,
+                                    wallet = event.wallet,
+                                    type = state.value.type
+                                ),
+                                tags = listOf(
+                                    Tag(
+                                        tagId = null,
+                                        type = "DEBIT",
+                                        label = "toto"
+                                    )
+                                )
                             )
                         )
                     }
@@ -87,7 +120,7 @@ class TransactionViewModel @Inject constructor(
                     "DEBIT" -> {
                         tagRepository.createTag(
                             Tag(
-                                id = null,
+                                tagId = null,
                                 type = "DEBIT",
                                 label = event.name
                             )
@@ -96,7 +129,7 @@ class TransactionViewModel @Inject constructor(
                     "CREDIT" -> {
                         tagRepository.createTag(
                             Tag(
-                                id = null,
+                                tagId = null,
                                 type = "CREDIT",
                                 label = event.name
                             )
@@ -105,7 +138,7 @@ class TransactionViewModel @Inject constructor(
                     "TRANSFER" -> {
                         tagRepository.createTag(
                             Tag(
-                                id = null,
+                                tagId = null,
                                 type = "TRANSFER",
                                 label = event.name
                             )

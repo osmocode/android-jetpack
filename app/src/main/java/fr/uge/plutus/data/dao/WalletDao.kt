@@ -10,7 +10,7 @@ interface WalletDao {
     @Query("SELECT * FROM `Wallet`")
     fun retrieveAll(): Flow<List<Wallet>>
 
-    @Query("SELECT * FROM `Wallet` WHERE id=:id")
+    @Query("SELECT * FROM `Wallet` WHERE walletId=:id")
     suspend fun retrieveById(id: Int): Wallet?
 
     @Insert
