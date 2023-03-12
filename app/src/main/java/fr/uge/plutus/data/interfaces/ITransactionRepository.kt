@@ -26,17 +26,16 @@ interface ITransactionRepository {
 
     suspend fun deleteTransaction(transaction: Transaction): Int
 
-    suspend fun retrieveTransactionWithTag(id: Int): TransactionWithTags?
-
-    //suspend fun createTransactionWithTags(transactionWithTags: TransactionWithTags)
+    suspend fun retrieveTransactionWithTag(id: Long): TransactionWithTags?
 
     suspend fun createTransactionWithTags(transaction: Transaction, ttags: List<Tag>)
 
 //    suspend fun updateTransactionTag(transactionWithTags: TransactionWithTags, previousTags: List<Tag>)
 
-    suspend fun updateTransactionTag(
+    suspend fun updateTransactionWithTag(
         transaction: Transaction,
         ttags: List<Tag>,
         previousTags: List<Tag>
     )
+
 }

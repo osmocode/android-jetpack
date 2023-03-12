@@ -18,7 +18,7 @@ interface BudgetDao {
 
     @Transaction
     @Query("SELECT * FROM `Budget` WHERE budgetId=:id")
-    suspend fun retrieveById(id: Int): BudgetAndTag?
+    suspend fun retrieveById(id: Long): BudgetAndTag?
 
     @Insert
     suspend fun create(budget: Budget)

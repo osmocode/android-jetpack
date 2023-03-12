@@ -17,7 +17,7 @@ class BudgetRepository @Inject constructor(
 
     override suspend fun createBudget(budget: Budget) = budgetDao.create(budget)
 
-    override suspend fun retrieveBudget(id: Int) = budgetDao.retrieveById(id)
+    override suspend fun retrieveBudget(id: Long) = budgetDao.retrieveById(id)
 
     override suspend fun updateBudget(budget: Budget) = budgetDao.update(budget)
 

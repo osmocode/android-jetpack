@@ -10,7 +10,7 @@ interface ITagRepository {
 
     suspend fun createTag(tag: Tag): Long
 
-    suspend fun retrieveTag(id: Int): Tag?
+    suspend fun retrieveTag(id: Long): Tag?
 
     suspend fun updateTag(tag: Tag): Int
 

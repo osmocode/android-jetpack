@@ -39,23 +39,6 @@ class TransactionRepository @Inject constructor(
     override suspend fun deleteTransaction(transaction: Transaction): Int =
         transactionDao.delete(transaction)
 
-
-//    override suspend fun createTransactionAndTags(transactionAndTags: TransactionAndTags) =
-//        transactionDao.createTransactionAndTags(transactionAndTags)
-
-    /*override suspend fun createTransactionWithTags(transactionWithTags: TransactionWithTags) {
-        val id = transactionDao.create(transactionWithTags.transaction)
-
-        transactionWithTags.tags.forEach { tag ->
-            transactionDao.createTransactionAndTags(
-                TransactionAndTags(
-                    transactionId = id,
-                    tagId = tag.tagId!!
-                )
-            )
-        }
-    }*/
-
     override suspend fun createTransactionWithTags(transaction: Transaction, ttags: List<Tag>) {
         val id = transactionDao.create(transaction)
 
@@ -98,11 +81,13 @@ class TransactionRepository @Inject constructor(
      }*/
 
 
-    override suspend fun updateTransactionTag(
+    override suspend fun updateTransactionWithTag(
         transaction: Transaction,
         ttags: List<Tag>,
         previousTags: List<Tag>
     ) {
+        transactionDao.update(transaction)
+
         // new tag list to previous tag list --> INSERT
         ttags.forEach {
             if (!previousTags.contains(it))
@@ -127,6 +112,6 @@ class TransactionRepository @Inject constructor(
     }
 
 
-    override suspend fun retrieveTransactionWithTag(id: Int): TransactionWithTags? =
+    override suspend fun retrieveTransactionWithTag(id: Long): TransactionWithTags? =
         transactionDao.retrieveWithTagById(id)
 }

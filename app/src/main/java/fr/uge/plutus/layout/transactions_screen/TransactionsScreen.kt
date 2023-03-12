@@ -51,7 +51,11 @@ fun TransactionsScreen(
                     label = "Credit",
                     desc = "Create new income",
                     onClick = {
-                        navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.createCredit())
+                        navController.navigate(
+                            route = NavigationRoute.MainScreen.TransactionScreen.createTransaction(
+                                Transaction.Type.CREDIT
+                            )
+                        )
                     }
                 )
                 AntActionCard(
@@ -59,7 +63,11 @@ fun TransactionsScreen(
                     label = "Debit",
                     desc = "Create new expense",
                     onClick = {
-                        navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.createDebit())
+                        navController.navigate(
+                            route = NavigationRoute.MainScreen.TransactionScreen.createTransaction(
+                                Transaction.Type.DEBIT
+                            )
+                        )
                     }
                 )
                 AntActionCard(
@@ -67,7 +75,11 @@ fun TransactionsScreen(
                     label = "Transfer",
                     desc = "Create new transfer",
                     onClick = {
-                        navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.createTransfer())
+                        navController.navigate(
+                            route = NavigationRoute.MainScreen.TransactionScreen.createTransaction(
+                                Transaction.Type.TRANSFER
+                            )
+                        )
                     }
                 )
             }
@@ -107,7 +119,9 @@ fun TransactionsScreen(
                         label = "Past",
                         content = {
                             TransactionScreenContent(
-                                transactions = viewModel.state.value.past
+                                navController = navController,
+                                transactions = viewModel.state.value.past,
+                                viewModel = viewModel
                             )
                         }
                     ),
@@ -115,7 +129,9 @@ fun TransactionsScreen(
                         label = "Coming",
                         content = {
                             TransactionScreenContent(
-                                transactions = viewModel.state.value.coming
+                                navController = navController,
+                                transactions = viewModel.state.value.coming,
+                                viewModel = viewModel
                             )
                         }
                     ),
@@ -127,7 +143,9 @@ fun TransactionsScreen(
 
 @Composable
 fun TransactionScreenContent(
-    transactions: List<Transaction>?
+    navController: NavHostController,
+    transactions: List<Transaction>?,
+    viewModel: TransactionsViewModel
 ) {
     if (transactions == null) return
     val formatter = DateFormat.getDateInstance()
@@ -144,19 +162,33 @@ fun TransactionScreenContent(
                     AntCardActionItem(
                         icon = Icons.Outlined.Delete,
                         color = Ant.colors.primary_text,
-                        onClick = {},
+                        onClick = {
+                            viewModel.onEvent(TransactionsEvent.TransactionsDelete(transaction.transactionId!!))
+                        },
                     )
                 ),
                 trailingIcon = listOf(
                     AntCardActionItem(
                         icon = Icons.Outlined.Edit,
                         color = Ant.colors.primary_text,
-                        onClick = {},
+                        onClick = {
+                            navController.navigate(
+                                route = NavigationRoute.MainScreen.TransactionScreen.updateTransaction(
+                                    transaction = transaction
+                                )
+                            )
+                        },
                     ),
                     AntCardActionItem(
                         icon = Icons.Outlined.FileCopy,
                         color = Ant.colors.primary_text,
-                        onClick = {},
+                        onClick = {
+                            navController.navigate(
+                                route = NavigationRoute.MainScreen.TransactionScreen.duplicateTransaction(
+                                    transaction = transaction
+                                )
+                            )
+                        },
                     )
                 )
             )

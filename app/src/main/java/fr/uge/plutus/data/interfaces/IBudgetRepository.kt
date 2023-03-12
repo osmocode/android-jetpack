@@ -11,7 +11,7 @@ interface IBudgetRepository {
 
     suspend fun createBudget(budget: Budget)
 
-    suspend fun retrieveBudget(id: Int): BudgetAndTag?
+    suspend fun retrieveBudget(id: Long): BudgetAndTag?
 
     suspend fun updateBudget(budget: Budget): Int
 

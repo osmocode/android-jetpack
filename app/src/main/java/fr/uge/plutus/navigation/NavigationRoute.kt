@@ -17,18 +17,17 @@ sealed class NavigationRoute(
         }
 
         object TransactionScreen : NavigationRoute(route = "transaction/{action}/{type}/{id}") {
-            enum class Type {
-                CREATE, UPDATE, DUPLICATE;
 
-                override fun toString() = this.name
+            fun createTransaction(type: Transaction.Type): String {
+                return when (type) {
+                    Transaction.Type.CREDIT -> "transaction/CREATE/CREDIT/-1"
+                    Transaction.Type.DEBIT -> "transaction/CREATE/DEBIT/-1"
+                    Transaction.Type.TRANSFER -> "transaction/CREATE/TRANSFER/-1"
+                }
             }
 
-            fun createCredit() = "transaction/CREATE/CREDIT/-1"
-            fun createDebit() = "transaction/CREATE/DEBIT/-1"
-            fun createTransfer() = "transaction/CREATE/TRANSFER/-1"
-
             fun updateTransaction(transaction: Transaction): String {
-                return when (transaction.type as Transaction.Type) {
+                return when (Transaction.Type.valueOf(transaction.type)) {
                     Transaction.Type.CREDIT -> "transaction/UPDATE/CREDIT/${transaction.transactionId}"
                     Transaction.Type.DEBIT -> "transaction/UPDATE/DEBIT/${transaction.transactionId}"
                     Transaction.Type.TRANSFER -> "transaction/UPDATE/TRANSFER/${transaction.transactionId}"
@@ -36,7 +35,7 @@ sealed class NavigationRoute(
             }
 
             fun duplicateTransaction(transaction: Transaction): String {
-                return when (transaction.type as Transaction.Type) {
+                return when (Transaction.Type.valueOf(transaction.type)) {
                     Transaction.Type.CREDIT -> "transaction/DUPLICATE/CREDIT/${transaction.transactionId}"
                     Transaction.Type.DEBIT -> "transaction/DUPLICATE/DEBIT/${transaction.transactionId}"
                     Transaction.Type.TRANSFER -> "transaction/DUPLICATE/TRANSFER/${transaction.transactionId}"

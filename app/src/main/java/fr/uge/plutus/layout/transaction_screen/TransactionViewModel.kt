@@ -37,17 +37,11 @@ class TransactionViewModel @Inject constructor(
             )
 
 
-            if (id != -1) transactionRepository.retrieveTransaction(id)?.let { transaction ->
-                _state.value = state.value.copy(
-                    transaction = transaction
-                )
-            }
-
-            if (id != -1) transactionRepository.retrieveTransactionWithTag(id)
+            if (id != -1) transactionRepository.retrieveTransactionWithTag(id.toLong())
                 ?.let { transactionWithTags ->
                     _state.value = state.value.copy(
-                        transaction = transactionWithTags.transaction,
-                        ttags = transactionWithTags.tags
+                        transactionWithTags = transactionWithTags,
+                        newTags = transactionWithTags.tags
                     )
                 }
 
@@ -65,49 +59,45 @@ class TransactionViewModel @Inject constructor(
         when (event) {
             is TransactionEvent.TransactionUpdateDesc -> viewModelScope.launch {
                 _state.value = state.value.copy(
-                    transaction = state.value.transaction.copy(
-                        title = event.title,
-                        description = event.desc
+                    transactionWithTags = state.value.transactionWithTags.copy(
+                        transaction = state.value.transactionWithTags.transaction.copy(
+                            title = event.title,
+                            description = event.desc
+                        )
                     ),
                 )
             }
             is TransactionEvent.TransactionUpdatePrice -> viewModelScope.launch {
                 _state.value = state.value.copy(
-                    transaction = state.value.transaction.copy(
-                        price = event.price
+                    transactionWithTags = state.value.transactionWithTags.copy(
+                        transaction = state.value.transactionWithTags.transaction.copy(
+                            price = event.price
+                        )
                     )
                 )
             }
             is TransactionEvent.TransactionUpdateTags -> viewModelScope.launch {
                 _state.value = state.value.copy(
-                    ttags = event.tags
+                    newTags = event.tags
                 )
             }
             is TransactionEvent.TransactionSubmit -> viewModelScope.launch {
                 when (state.value.action) {
                     "CREATE", "DUPLICATE" -> {
-
-                        /*transactionRepository.createTransaction(
-                             state.value.transaction.copy(
-                                 transactionId = null,
-                                 wallet = event.wallet,
-                                 type = state.value.type
-                             )
-                         )*/
-
                         transactionRepository.createTransactionWithTags(
-                            transaction = state.value.transaction.copy(
+                            transaction = state.value.transactionWithTags.transaction.copy(
                                 transactionId = null,
                                 wallet = event.wallet,
                                 type = state.value.type
                             ),
-                            ttags = listOf(
-                                Tag(
-                                    tagId = 1,
-                                    type = "CREDIT",
-                                    label = "manger"
-                                )
-                            )
+                            ttags = state.value.newTags
+                        )
+                    }
+                    "UPDATE" -> {
+                        transactionRepository.updateTransactionWithTag(
+                            transaction = state.value.transactionWithTags.transaction,
+                            ttags = state.value.newTags,
+                            previousTags = state.value.transactionWithTags.tags,
                         )
                     }
                 }

@@ -34,7 +34,7 @@ fun TagLayout(
     viewModel: TransactionViewModel
 ) {
     val selected =
-        remember { mutableStateListOf<Tag>().apply { this.addAll(viewModel.state.value.ttags) } }
+        remember { mutableStateListOf<Tag>().apply { this.addAll(viewModel.state.value.newTags) } }
     val submit = remember { mutableStateOf(false) }
     val disabled = remember { mutableStateOf(true) }
     val tag = remember { mutableStateOf("") }
@@ -52,7 +52,7 @@ fun TagLayout(
 
     LaunchedEffect(selected.size) {
         submit.value =
-            selected.containsAll(viewModel.state.value.ttags) && viewModel.state.value.ttags.containsAll(
+            selected.containsAll(viewModel.state.value.newTags) && viewModel.state.value.newTags.containsAll(
                 selected
             )
     }

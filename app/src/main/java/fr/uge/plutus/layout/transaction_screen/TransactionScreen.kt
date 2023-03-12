@@ -144,18 +144,18 @@ fun TransactionScreenOverview(
             ) {
                 AntAmountInput(
                     price = Price(
-                        currency = viewModel.state.value.transaction.price.currency,
-                        amount = viewModel.state.value.transaction.price.amount
+                        currency = viewModel.state.value.transactionWithTags.transaction.price.currency,
+                        amount = viewModel.state.value.transactionWithTags.transaction.price.amount
                     ),
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.AmountLayout.route) }
                 )
                 AntTagInput(
-                    tags = viewModel.state.value.ttags,
+                    tags = viewModel.state.value.newTags,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.TagLayout.route) }
                 )
                 AntNoteInput(
-                    title = viewModel.state.value.transaction.title.ifEmpty { "Title" },
-                    description = viewModel.state.value.transaction.description.ifEmpty { "Description" },
+                    title = viewModel.state.value.transactionWithTags.transaction.title.ifEmpty { "Title" },
+                    description = viewModel.state.value.transactionWithTags.transaction.description.ifEmpty { "Description" },
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route) }
                 )
                 AntDateInput(

@@ -45,12 +45,13 @@ interface TransactionDao {
 
     @androidx.room.Transaction
     @Query("SELECT * FROM `Transaction` WHERE transactionId=:id")
-    suspend fun retrieveWithTagById(id: Int): TransactionWithTags?
+    suspend fun retrieveWithTagById(id: Long): TransactionWithTags?
 
     @Insert
     suspend fun createTransactionAndTags(transactionAndTags: TransactionAndTags)
 
     @Delete
     suspend fun deleteTransactionAndTags(transactionAndTags: TransactionAndTags): Int
+
 
 }

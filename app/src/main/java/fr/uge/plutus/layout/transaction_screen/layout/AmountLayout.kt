@@ -21,13 +21,16 @@ fun AmountLayout(
     sheetVisible: MutableState<Boolean> = remember { mutableStateOf(false) },
     viewModel: TransactionViewModel
 ) {
-    val currency = remember { mutableStateOf(viewModel.state.value.transaction.price.currency) }
-    val amount = remember { mutableStateOf(viewModel.state.value.transaction.price.amount) }
+    val currency =
+        remember { mutableStateOf(viewModel.state.value.transactionWithTags.transaction.price.currency) }
+    val amount =
+        remember { mutableStateOf(viewModel.state.value.transactionWithTags.transaction.price.amount) }
     val disabled = remember { mutableStateOf(false) }
 
     LaunchedEffect(currency.value, amount.value) {
-        disabled.value = currency.value == viewModel.state.value.transaction.price.currency &&
-                amount.value == viewModel.state.value.transaction.price.amount
+        disabled.value =
+            currency.value == viewModel.state.value.transactionWithTags.transaction.price.currency &&
+                    amount.value == viewModel.state.value.transactionWithTags.transaction.price.amount
     }
 
     AntBottomSheetScaffold(
