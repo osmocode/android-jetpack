@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
@@ -25,12 +26,43 @@ import kotlin.math.atan2
 
 data class DonutChartItem(
     val label: String,
-    val value: Double,
+    val current: Double,
+    val target: Double,
+    val id: Long,
     val isTapped: Boolean = false
 )
 
 @Composable
-fun DonutChart(
+fun DonutChartEmpty(
+    donutBarWidth: Dp = 15.dp
+) {
+    val radius = donutBarWidth * 4
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(
+            modifier = Modifier
+                .size(180.dp)
+                .aspectRatio(1f)
+        ) {
+            drawCircle(
+                color = Color.Gray,
+                radius = radius.toPx(),
+                style = Stroke(width = donutBarWidth.toPx())
+            )
+        }
+        Text(
+            text = "Empty budget",
+            fontSize = 14.sp,
+            color = Ant.colors.secondary_text
+        )
+    }
+
+}
+
+@Composable
+fun DonutChartWithBudget(
     items: List<DonutChartItem>,
     donutBarWidth: Dp = 15.dp,
 ) {
@@ -48,14 +80,14 @@ fun DonutChart(
 
     val radius = donutBarWidth * 4
 
-    val sumValue = data.value.sumOf { it.value }
+    val sumValue = data.value.sumOf { it.current }
     val anglePerValue = 360f / sumValue
     var currentAngle = 0f
 
-    data.value.forEachIndexed { index, donutChartInput ->
-        val scale = if (donutChartInput.isTapped) 1.17f else 1.0f
-        val stroke = if (donutChartInput.isTapped) donutBarWidth * 2f else donutBarWidth
-        val angleToDraw = donutChartInput.value * anglePerValue
+    data.value.forEachIndexed { index, donutChartItem ->
+        val scale = if (donutChartItem.isTapped) 1.17f else 1.0f
+        val stroke = if (donutChartItem.isTapped) donutBarWidth * 2f else donutBarWidth
+        val angleToDraw = donutChartItem.current * anglePerValue
         Box(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
@@ -73,12 +105,12 @@ fun DonutChart(
                                 ) * (180f / PI).toFloat() - 90f).mod(360f)
 
                                 var currAngle = 0f
-                                data.value.forEach { donutChartInput ->
-                                    currAngle += (donutChartInput.value * anglePerValue).toFloat()
+                                data.value.forEach { donutChartItem ->
+                                    currAngle += (donutChartItem.current * anglePerValue).toFloat()
                                     if (tapAngleInDegrees < currAngle) {
-                                        val description = donutChartInput.label
+                                        val id = donutChartItem.id
                                         data.value = data.value.map {
-                                            if (description == it.label) {
+                                            if (id == it.id) {
                                                 it.copy(isTapped = !it.isTapped)
                                             } else {
                                                 it.copy(isTapped = false)
@@ -91,7 +123,10 @@ fun DonutChart(
                         )
                     }
             ) {
-                circleCenter = Offset(x = size.width / 2f, y = size.height / 2f)
+                circleCenter = Offset(
+                    x = size.width / 2f,
+                    y = size.height / 2f
+                )
                 scale(scale) {
                     drawArc(
                         color = colors[(index % colors.size)],
@@ -115,18 +150,32 @@ fun DonutChart(
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = if (donutChartInput.isTapped) "${donutChartInput.value}€" else "",
+                    text = if (donutChartItem.isTapped) "${donutChartItem.current}€" else "",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
                     color = Ant.colors.primary_text
                 )
                 Text(
-                    text = if (donutChartInput.isTapped) donutChartInput.label else "",
+                    text = if (donutChartItem.isTapped) donutChartItem.label else "",
                     fontSize = 14.sp,
                     color = Ant.colors.secondary_text
                 )
             }
         }
+    }
+}
+
+
+@Composable
+fun DonutChart(
+    items: List<DonutChartItem>,
+) {
+    val exist = items.any { item -> item.current > 0.0 }
+
+    if (items.isEmpty() || !exist) {
+        DonutChartEmpty()
+    } else {
+        DonutChartWithBudget(items = items)
     }
 }
 
@@ -140,23 +189,33 @@ fun DonutChartPreview(
         listOf(
             DonutChartItem(
                 label = "Sample-1",
-                value = 200.0
+                current = 130.0,
+                target = 200.0,
+                id = 1
             ),
             DonutChartItem(
                 label = "Sample-2",
-                value = 150.0
+                current = 70.0,
+                target = 150.0,
+                id = 2
             ),
             DonutChartItem(
                 label = "Sample-3",
-                value = 100.0
+                current = 50.0,
+                target = 100.0,
+                id = 3
             ),
             DonutChartItem(
                 label = "Sample-4",
-                value = 50.0
+                current = 30.0,
+                target = 50.0,
+                id = 4
             ),
             DonutChartItem(
                 label = "Sample-5",
-                value = 20.0
+                current = 20.0,
+                target = 20.0,
+                id = 5
             )
         )
     }

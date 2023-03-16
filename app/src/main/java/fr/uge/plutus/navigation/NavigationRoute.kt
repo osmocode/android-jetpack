@@ -49,5 +49,20 @@ sealed class NavigationRoute(
             object DateLayout : NavigationRoute(route = "date")
 
         }
+
+        object TransactionBudgetScreen : NavigationRoute(route = "budget/{wallet}/{type}") {
+
+            fun createBudgetCredit(wallet: Int) = "budget/$wallet/CREDIT"
+            fun createBudgetDebit(wallet: Int) = "budget/$wallet/DEBIT"
+            fun createBudgetTransfer(wallet: Int) = "budget/$wallet/TRANSFER"
+
+            object TransactionBudgetOverview : NavigationRoute(route = "overview")
+            object AmountLayout : NavigationRoute(route = "amount")
+            object TagLayout : NavigationRoute(route = "tags")
+            object StartDateLayout : NavigationRoute(route = "startDate")
+            object EndDateLayout : NavigationRoute(route = "endDate")
+
+        }
+
     }
 }

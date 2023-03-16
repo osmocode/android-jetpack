@@ -87,7 +87,7 @@ class TransactionViewModel @Inject constructor(
                         transactionRepository.createTransactionWithTags(
                             transaction = state.value.transactionWithTags.transaction.copy(
                                 transactionId = null,
-                                wallet = event.wallet,
+                                walletId = event.wallet,
                                 type = state.value.type
                             ),
                             ttags = state.value.newTags

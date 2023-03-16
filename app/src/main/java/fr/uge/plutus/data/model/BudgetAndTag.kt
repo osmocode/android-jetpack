@@ -8,7 +8,7 @@ data class BudgetAndTag(
     val budget: Budget,
 
     @Relation(
-        parentColumn = "tag",
+        parentColumn = "tagId",
         entityColumn = "tagId"
     )
     val tag: Tag

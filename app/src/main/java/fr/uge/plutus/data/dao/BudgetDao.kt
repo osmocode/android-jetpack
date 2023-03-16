@@ -1,8 +1,8 @@
 package fr.uge.plutus.data.dao
 
 import androidx.room.*
-import fr.uge.plutus.data.model.Budget
-import fr.uge.plutus.data.model.BudgetAndTag
+import androidx.room.Transaction
+import fr.uge.plutus.data.model.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,8 +13,26 @@ interface BudgetDao {
     fun retrieveAll(): Flow<List<BudgetAndTag>>
 
     @Transaction
-    @Query("SELECT * FROM `Budget` WHERE wallet=:wallet")
+    @Query("SELECT * FROM `Budget` WHERE walletId=:wallet")
     fun retrieveAll(wallet: Int): Flow<List<BudgetAndTag>>
+
+    @Transaction
+    @Query("SELECT * FROM `Budget` NATURAL JOIN `Tag` WHERE walletId=:wallet AND type=:type")
+    fun retrieveAll(wallet: Int, type: Tag.Type): Flow<List<BudgetAndTag>>
+
+    @Transaction
+    @Query(
+        """SELECT budgetId, Budget.tagId, label, dateStart, dateEnd, Budget.currency, Budget.amount as target, SUM(IFNULL(`Transaction`.amount, 0)) as current
+            FROM Budget
+            NATURAL LEFT JOIN Tag
+            NATURAL LEFT JOIN TransactionAndTags
+            LEFT JOIN `Transaction` 
+            ON `Transaction`.transactionId = TransactionAndTags.transactionId
+            AND timestamp BETWEEN dateStart AND dateEnd 
+            WHERE Budget.walletId=:wallet AND Tag.type=:type
+            GROUP BY Budget.budgetId"""
+    )
+    fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetStatus>>
 
     @Transaction
     @Query("SELECT * FROM `Budget` WHERE budgetId=:id")

@@ -61,15 +61,30 @@ fun HomeScreen(
                 ),
                 ScrollablePagerLayoutItem(
                     label = "Incoming",
-                    content = { IncomingLayout() }
+                    content = {
+                        IncomingLayout(
+                            navController = navController,
+                            viewModel = viewModel
+                        )
+                    }
                 ),
                 ScrollablePagerLayoutItem(
                     label = "Expend",
-                    content = { ExpendLayout() }
+                    content = {
+                        ExpendLayout(
+                            navController = navController,
+                            viewModel = viewModel
+                        )
+                    }
                 ),
                 ScrollablePagerLayoutItem(
                     label = "Transfer",
-                    content = { TransferLayout() }
+                    content = {
+                        TransferLayout(
+                            navController = navController,
+                            viewModel = viewModel
+                        )
+                    }
                 )
             )
         )

@@ -27,6 +27,7 @@ import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import fr.uge.plutus.layout.budget_screen.BudgetScreen
 import fr.uge.plutus.layout.transaction_screen.TransactionScreen
 import fr.uge.plutus.layout.home_screen.HomeScreen
 import fr.uge.plutus.layout.settings_screen.SettingsScreen
@@ -196,7 +197,19 @@ fun NavigationMain(
                     )
                 }
             )
-
+            composable(
+                route = NavigationRoute.MainScreen.TransactionBudgetScreen.route,
+                arguments = listOf(
+                    navArgument(name = "wallet") { type = NavType.IntType },
+                    navArgument(name = "type") { type = NavType.StringType }
+                ),
+                content = {
+                    BudgetScreen(
+                        navHostController = navController,
+                        sheetVisible = sheetVisible
+                    )
+                }
+            )
         }
     }
 }

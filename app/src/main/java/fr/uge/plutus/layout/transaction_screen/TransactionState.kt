@@ -16,8 +16,8 @@ data class TransactionState(
                 currency = "$",
                 amount = 0.0
             ),
-            timestamp = 0.0,
-            wallet = -1
+            timestamp = 0L,
+            walletId = -1
         ),
         tags = emptyList()
     ),
