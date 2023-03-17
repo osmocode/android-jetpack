@@ -43,6 +43,7 @@ fun TagLayout(
     LaunchedEffect(sheetVisible.value) {
         if (!sheetVisible.value) {
             focusManager.clearFocus()
+            tag.value = ""
         }
     }
 
