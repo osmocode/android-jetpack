@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.input.pointer.pointerInput
@@ -20,7 +19,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.uge.plutus.ui.ant.Ant
-import fr.uge.plutus.ui.theme.*
 import kotlin.math.PI
 import kotlin.math.atan2
 
@@ -29,6 +27,7 @@ data class DonutChartItem(
     val current: Double,
     val target: Double,
     val id: Long,
+    val color: Color,
     val isTapped: Boolean = false
 )
 
@@ -66,14 +65,6 @@ fun DonutChartWithBudget(
     items: List<DonutChartItem>,
     donutBarWidth: Dp = 15.dp,
 ) {
-    val colors = listOf(
-        Purple200,
-        Purple500,
-        Teal200,
-        Purple700,
-        Blue
-    )
-
     val data = remember { mutableStateOf(items) }
 
     var circleCenter by remember { mutableStateOf(Offset.Zero) }
@@ -129,7 +120,7 @@ fun DonutChartWithBudget(
                 )
                 scale(scale) {
                     drawArc(
-                        color = colors[(index % colors.size)],
+                        color = donutChartItem.color,
                         startAngle = currentAngle,
                         sweepAngle = angleToDraw.toFloat(),
                         useCenter = false,
@@ -180,6 +171,7 @@ fun DonutChart(
 }
 
 
+/*
 @Preview
 @Composable
 fun DonutChartPreview(
@@ -191,7 +183,7 @@ fun DonutChartPreview(
                 label = "Sample-1",
                 current = 130.0,
                 target = 200.0,
-                id = 1
+                id = 1,
             ),
             DonutChartItem(
                 label = "Sample-2",
@@ -221,4 +213,4 @@ fun DonutChartPreview(
     }
 
     DonutChart(items = data)
-}
+}*/

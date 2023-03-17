@@ -70,6 +70,7 @@ fun BudgetWidget(
                     label = item.label,
                     current = item.current,
                     target = item.target,
+                    color = item.color,
                     onClick = {}
                 )
             }
@@ -80,6 +81,7 @@ fun BudgetWidget(
     )
 }
 
+/*
 @Preview
 @Composable
 fun BudgetWidgetPreview() {
@@ -110,6 +112,4 @@ fun BudgetWidgetPreview() {
         title = "Incoming",
         add = {}
     )
-
-
-}
+}*/

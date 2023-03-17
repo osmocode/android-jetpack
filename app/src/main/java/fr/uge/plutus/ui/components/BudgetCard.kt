@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -19,6 +20,7 @@ fun AntBudgetCard(
     label: String,
     current: Double,
     target: Double,
+    color: Color,
     onClick: () -> Unit
 ) {
 
@@ -76,7 +78,7 @@ fun AntBudgetCard(
                         .fillMaxWidth(percent)
                         .fillMaxHeight()
                         .clip(Ant.shapes.default)
-                        .background(color = Ant.colors.primary_color_5)
+                        .background(color = color)
                         .animateContentSize()
                 )
             }
@@ -93,6 +95,7 @@ fun AntBudgetCardPreview(
         label = "voiture",
         current = 189.0,
         target = 1000.0,
+        color = Ant.colors.primary_color_5,
         onClick = {}
     )
 }
