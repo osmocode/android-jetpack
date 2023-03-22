@@ -1,6 +1,12 @@
 package fr.uge.plutus.di
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -86,4 +92,43 @@ object AppModule {
     fun provideBudgetRepository(dao: BudgetDao): IBudgetRepository {
         return BudgetRepository(dao)
     }
+
+    @Singleton
+    @Provides
+    fun provideNotificationAlarm(
+        @ApplicationContext context: Context
+    ): AlarmManager {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        return alarmManager
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationManager(
+        @ApplicationContext context: Context
+    ): NotificationManagerCompat {
+        val notificationManager = NotificationManagerCompat.from(context)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channel = NotificationChannel(
+                "NOTIFICATION_CHANNEL",
+                "Plutus notification",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+        return notificationManager
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationBuilder(
+        @ApplicationContext context: Context
+    ): NotificationCompat.Builder {
+        return NotificationCompat.Builder(context, "NOTIFICATION_CHANNEL")
+            .setContentTitle("Plutus")
+            .setSmallIcon(android.R.drawable.ic_menu_info_details)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+    }
+
 }

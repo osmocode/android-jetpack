@@ -4,6 +4,7 @@ import fr.uge.plutus.data.model.Price
 import fr.uge.plutus.data.model.Tag
 import fr.uge.plutus.data.model.Transaction
 import fr.uge.plutus.data.model.TransactionWithTags
+import java.util.*
 
 data class TransactionState(
     val transactionWithTags: TransactionWithTags = TransactionWithTags(
@@ -16,7 +17,7 @@ data class TransactionState(
                 currency = "$",
                 amount = 0.0
             ),
-            timestamp = 0,
+            timestamp = Calendar.getInstance().timeInMillis,
             walletId = -1
         ),
         tags = emptyList()

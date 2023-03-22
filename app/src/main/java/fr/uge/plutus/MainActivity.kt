@@ -6,13 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.NotificationManagerCompat
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.uge.plutus.navigation.NavigationRoot
+import javax.inject.Inject
 
 @AndroidEntryPoint
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var notificationManager: NotificationManagerCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,5 +1,7 @@
 package fr.uge.plutus.layout.transaction_screen
 
+
+import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideOutHorizontally
@@ -10,6 +12,7 @@ import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -28,7 +31,6 @@ import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
 import fr.uge.plutus.ui.input.AntNoteInput
 import fr.uge.plutus.ui.input.AntTagInput
-import java.util.Calendar
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -111,7 +113,8 @@ fun TransactionScreenOverview(
     navHostController: NavHostController,
     navController: NavHostController,
     sheetVisible: MutableState<Boolean>,
-    viewModel: TransactionViewModel
+    viewModel: TransactionViewModel,
+    context: Context = LocalContext.current.applicationContext
 ) {
     val wallet = SettingsWallet.current
 
@@ -160,7 +163,7 @@ fun TransactionScreenOverview(
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route) }
                 )
                 AntDateInput(
-                    timestamp = if (viewModel.state.value.transactionWithTags.transaction.timestamp == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.transactionWithTags.transaction.timestamp,
+                    timestamp = viewModel.state.value.transactionWithTags.transaction.timestamp,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route) }
                 )
             }

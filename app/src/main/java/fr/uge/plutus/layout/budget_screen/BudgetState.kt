@@ -3,6 +3,7 @@ package fr.uge.plutus.layout.budget_screen
 import fr.uge.plutus.data.model.Budget
 import fr.uge.plutus.data.model.Price
 import fr.uge.plutus.data.model.Tag
+import java.util.*
 
 data class BudgetState(
     val budget: Budget = Budget(
@@ -11,8 +12,8 @@ data class BudgetState(
             currency = "$",
             amount = 0.0
         ),
-        dateStart = 0L,
-        dateEnd = 0L,
+        dateStart = Calendar.getInstance().timeInMillis,
+        dateEnd = Calendar.getInstance().timeInMillis,
         tagId = -1,
         walletId = -1
     ),
