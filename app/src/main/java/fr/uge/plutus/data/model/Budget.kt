@@ -27,5 +27,5 @@ data class Budget(
     @ColumnInfo(index = false)
     val tagId: Long,
     @ColumnInfo(index = false)
-    val walletId: Int
+    val walletId: Long
 )

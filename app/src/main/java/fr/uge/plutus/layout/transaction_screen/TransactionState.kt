@@ -16,7 +16,7 @@ data class TransactionState(
                 currency = "$",
                 amount = 0.0
             ),
-            timestamp = 0L,
+            timestamp = 0,
             walletId = -1
         ),
         tags = emptyList()
@@ -25,5 +25,5 @@ data class TransactionState(
     val tags: List<Tag> = emptyList(),
     val action: String = "",
     val type: String = "",
-    val id: Int = -1
+    val id: Long = -1L
 )

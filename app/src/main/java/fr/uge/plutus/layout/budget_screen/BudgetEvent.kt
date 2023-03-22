@@ -9,7 +9,11 @@ sealed class BudgetEvent {
 
     data class BudgetUpdateTag(val tag: List<Tag>) : BudgetEvent()
 
-    data class BudgetSubmit(val wallet: Int) : BudgetEvent()
+    data class BudgetSubmit(val wallet: Long) : BudgetEvent()
 
     data class BudgetTagCreate(val label: String) : BudgetEvent()
+
+    data class BudgetUpdateDateStart(val timestamp: Long): BudgetEvent()
+
+    data class BudgetUpdateDateEnd(val timestamp: Long): BudgetEvent()
 }

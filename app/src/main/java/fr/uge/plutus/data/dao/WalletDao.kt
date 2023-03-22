@@ -11,7 +11,7 @@ interface WalletDao {
     fun retrieveAll(): Flow<List<Wallet>>
 
     @Query("SELECT * FROM `Wallet` WHERE walletId=:id")
-    suspend fun retrieveById(id: Int): Wallet?
+    suspend fun retrieveById(id: Long): Wallet?
 
     @Insert
     suspend fun create(wallet: Wallet)

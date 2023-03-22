@@ -28,6 +28,7 @@ import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
 import fr.uge.plutus.ui.input.AntNoteInput
 import fr.uge.plutus.ui.input.AntTagInput
+import java.util.Calendar
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -159,6 +160,7 @@ fun TransactionScreenOverview(
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route) }
                 )
                 AntDateInput(
+                    timestamp = if (viewModel.state.value.transactionWithTags.transaction.timestamp == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.transactionWithTags.transaction.timestamp,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route) }
                 )
             }

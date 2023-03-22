@@ -20,19 +20,19 @@ interface TransactionDao {
     fun retrieveAll(): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet")
-    fun retrieveAll(wallet: Int): Flow<List<Transaction>>
+    fun retrieveAll(wallet: Long): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet ORDER BY transactionId DESC LIMIT :limit")
-    fun retrieveLast(wallet: Int, limit: Int): Flow<List<Transaction>>
+    @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet ORDER BY walletId DESC LIMIT :limit")
+    fun retrieveLast(wallet: Long, limit: Int): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet ORDER BY timestamp DESC")
-    fun retrieveAllPast(wallet: Int): Flow<List<Transaction>>
+    @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet AND timestamp <= :today ORDER BY timestamp DESC")
+    fun retrieveAllPast(wallet: Long, today: Long = System.currentTimeMillis()): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet ORDER BY timestamp")
-    fun retrieveAllComing(wallet: Int): Flow<List<Transaction>>
+    @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet AND timestamp >= :today ORDER BY timestamp")
+    fun retrieveAllComing(wallet: Long, today: Long = System.currentTimeMillis()): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE transactionId=:id")
-    suspend fun retrieveById(id: Int): Transaction?
+    suspend fun retrieveById(id: Long): Transaction?
 
     @Insert
     suspend fun create(transaction: Transaction): Long

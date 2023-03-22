@@ -25,7 +25,7 @@ data class Transaction(
     val price: Price,
     val timestamp: Long,
     @ColumnInfo(index = false)
-    val walletId: Int
+    val walletId: Long
 ) {
     enum class Type {
         CREDIT,

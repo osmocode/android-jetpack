@@ -22,7 +22,7 @@ class TransactionsViewModel @Inject constructor(
     val state: State<TransactionsState> = _state
 
     init {
-        savedStateHandle.get<Int>("wallet").let { wallet ->
+        savedStateHandle.get<Long>("wallet").let { wallet ->
             if (wallet != null) {
                 transactionRepository.retrieveAllPastTransaction(wallet).onEach { past ->
                     _state.value = state.value.copy(

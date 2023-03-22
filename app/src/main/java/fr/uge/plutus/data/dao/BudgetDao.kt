@@ -14,11 +14,11 @@ interface BudgetDao {
 
     @Transaction
     @Query("SELECT * FROM `Budget` WHERE walletId=:wallet")
-    fun retrieveAll(wallet: Int): Flow<List<BudgetAndTag>>
+    fun retrieveAll(wallet: Long): Flow<List<BudgetAndTag>>
 
     @Transaction
     @Query("SELECT * FROM `Budget` NATURAL JOIN `Tag` WHERE walletId=:wallet AND type=:type")
-    fun retrieveAll(wallet: Int, type: Tag.Type): Flow<List<BudgetAndTag>>
+    fun retrieveAll(wallet: Long, type: Tag.Type): Flow<List<BudgetAndTag>>
 
     @Transaction
     @Query(
@@ -32,7 +32,7 @@ interface BudgetDao {
             WHERE Budget.walletId=:wallet AND Tag.type=:type
             GROUP BY Budget.budgetId"""
     )
-    fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetStatus>>
+    fun retrieveAllBudget(wallet: Long, type: Tag.Type): Flow<List<BudgetStatus>>
 
     @Transaction
     @Query("SELECT * FROM `Budget` WHERE budgetId=:id")

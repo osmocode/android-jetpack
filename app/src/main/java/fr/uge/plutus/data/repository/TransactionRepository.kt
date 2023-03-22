@@ -10,26 +10,26 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TransactionRepository @Inject constructor(
-    private val transactionDao: TransactionDao,
+    private val transactionDao: TransactionDao
 ) : ITransactionRepository {
     override fun retrieveAllTransaction(): Flow<List<Transaction>> = transactionDao.retrieveAll()
 
-    override fun retrieveAllTransaction(wallet: Int): Flow<List<Transaction>> =
+    override fun retrieveAllTransaction(wallet: Long): Flow<List<Transaction>> =
         transactionDao.retrieveAll(wallet)
 
-    override fun retrieveLastTransaction(wallet: Int, limit: Int): Flow<List<Transaction>> =
+    override fun retrieveLastTransaction(wallet: Long, limit: Int): Flow<List<Transaction>> =
         transactionDao.retrieveLast(wallet, limit)
 
-    override fun retrieveAllPastTransaction(wallet: Int): Flow<List<Transaction>> =
+    override fun retrieveAllPastTransaction(wallet: Long): Flow<List<Transaction>> =
         transactionDao.retrieveAllPast(wallet)
 
-    override fun retrieveAllComingTransaction(wallet: Int): Flow<List<Transaction>> =
+    override fun retrieveAllComingTransaction(wallet: Long): Flow<List<Transaction>> =
         transactionDao.retrieveAllComing(wallet)
 
     override suspend fun createTransaction(transaction: Transaction): Long =
         transactionDao.create(transaction)
 
-    override suspend fun retrieveTransaction(id: Int): Transaction? =
+    override suspend fun retrieveTransaction(id: Long): Transaction? =
         transactionDao.retrieveById(id)
 
 

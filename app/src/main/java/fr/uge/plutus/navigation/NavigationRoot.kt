@@ -31,11 +31,11 @@ fun NavigationRoot(
                 route = NavigationRoute.SplashScreen.route,
                 content = {
                     val ready = remember { mutableStateOf(false) }
-                    val current = remember { mutableStateOf(-1) }
+                    val current = remember { mutableStateOf(-1L) }
                     LaunchedEffect(storageViewModel.ready.value) {
                         if (storageViewModel.ready.value) {
                             current.value =
-                                if (storageViewModel.state.value.wallet == null) -1 else storageViewModel.state.value.wallet!!
+                                if (storageViewModel.state.value.wallet == null) -1L else storageViewModel.state.value.wallet!!
                             ready.value = true
                         }
                     }
@@ -44,7 +44,7 @@ fun NavigationRoot(
                         onFinish = {
                             navController.popBackStack()
                             navController.navigate(
-                                route = if (current.value == -1) NavigationRoute.WalletScreen.route else NavigationRoute.MainScreen.route
+                                route = if (current.value == -1L) NavigationRoute.WalletScreen.route else NavigationRoute.MainScreen.route
                             )
                         }
                     )
@@ -56,7 +56,7 @@ fun NavigationRoot(
                 content = {
                     LaunchedEffect(storageViewModel.state.value.wallet) {
                         val w = storageViewModel.state.value.wallet
-                        if (w != null && w != -1) {
+                        if (w != null && w != -1L) {
                             navController.popBackStack()
                             navController.navigate(route = NavigationRoute.MainScreen.route)
                         }

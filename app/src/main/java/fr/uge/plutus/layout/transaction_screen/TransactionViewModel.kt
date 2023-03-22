@@ -28,7 +28,7 @@ class TransactionViewModel @Inject constructor(
         viewModelScope.launch {
             val action = savedStateHandle.get<String>("action")
             val type = savedStateHandle.get<String>("type")
-            val id = savedStateHandle.get<Int>("id")
+            val id = savedStateHandle.get<Long>("id")
 
             _state.value = state.value.copy(
                 action = action!!,
@@ -37,7 +37,7 @@ class TransactionViewModel @Inject constructor(
             )
 
 
-            if (id != -1) transactionRepository.retrieveTransactionWithTag(id.toLong())
+            if (id != -1L) transactionRepository.retrieveTransactionWithTag(id.toLong())
                 ?.let { transactionWithTags ->
                     _state.value = state.value.copy(
                         transactionWithTags = transactionWithTags,
@@ -55,8 +55,17 @@ class TransactionViewModel @Inject constructor(
     }
 
     fun onEvent(event: TransactionEvent) {
-
         when (event) {
+            is TransactionEvent.TransactionUpdateDate -> viewModelScope.launch {
+                _state.value = state.value.copy(
+                    transactionWithTags = state.value.transactionWithTags.copy(
+                        transaction = state.value.transactionWithTags.transaction.copy(
+                            timestamp = event.timestamp
+                        )
+                    )
+                )
+            }
+
             is TransactionEvent.TransactionUpdateDesc -> viewModelScope.launch {
                 _state.value = state.value.copy(
                     transactionWithTags = state.value.transactionWithTags.copy(

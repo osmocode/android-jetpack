@@ -13,7 +13,7 @@ sealed class NavigationRoute(
         object WalletScreen : NavigationRoute(route = "wallet")
         object SettingsScreen : NavigationRoute(route = "settings")
         object TransactionsScreen : NavigationRoute(route = "transactions/{wallet}") {
-            fun route(wallet: Int) = "transactions/${wallet}"
+            fun route(wallet: Long) = "transactions/${wallet}"
         }
 
         object TransactionScreen : NavigationRoute(route = "transaction/{action}/{type}/{id}") {
@@ -52,9 +52,9 @@ sealed class NavigationRoute(
 
         object TransactionBudgetScreen : NavigationRoute(route = "budget/{wallet}/{type}") {
 
-            fun createBudgetCredit(wallet: Int) = "budget/$wallet/CREDIT"
-            fun createBudgetDebit(wallet: Int) = "budget/$wallet/DEBIT"
-            fun createBudgetTransfer(wallet: Int) = "budget/$wallet/TRANSFER"
+            fun createBudgetCredit(wallet: Long) = "budget/$wallet/CREDIT"
+            fun createBudgetDebit(wallet: Long) = "budget/$wallet/DEBIT"
+            fun createBudgetTransfer(wallet: Long) = "budget/$wallet/TRANSFER"
 
             object TransactionBudgetOverview : NavigationRoute(route = "overview")
             object AmountLayout : NavigationRoute(route = "amount")

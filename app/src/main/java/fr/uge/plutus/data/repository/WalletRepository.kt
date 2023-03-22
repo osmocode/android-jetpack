@@ -14,7 +14,7 @@ class WalletRepository @Inject constructor(
     override suspend fun createWallet(wallet: Wallet) =
         walletDao.create(wallet)
 
-    override suspend fun retrieveWallet(id: Int): Wallet? =
+    override suspend fun retrieveWallet(id: Long): Wallet? =
         walletDao.retrieveById(id)
 
     override suspend fun updateWallet(wallet: Wallet): Int =

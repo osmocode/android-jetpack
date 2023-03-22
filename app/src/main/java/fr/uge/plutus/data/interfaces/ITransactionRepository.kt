@@ -10,17 +10,17 @@ interface ITransactionRepository {
 
     fun retrieveAllTransaction(): Flow<List<Transaction>>
 
-    fun retrieveAllTransaction(wallet: Int): Flow<List<Transaction>>
+    fun retrieveAllTransaction(wallet: Long): Flow<List<Transaction>>
 
-    fun retrieveLastTransaction(wallet: Int, limit: Int): Flow<List<Transaction>>
+    fun retrieveLastTransaction(wallet: Long, limit: Int): Flow<List<Transaction>>
 
-    fun retrieveAllPastTransaction(wallet: Int): Flow<List<Transaction>>
+    fun retrieveAllPastTransaction(wallet: Long): Flow<List<Transaction>>
 
-    fun retrieveAllComingTransaction(wallet: Int): Flow<List<Transaction>>
+    fun retrieveAllComingTransaction(wallet: Long): Flow<List<Transaction>>
 
     suspend fun createTransaction(transaction: Transaction): Long
 
-    suspend fun retrieveTransaction(id: Int): Transaction?
+    suspend fun retrieveTransaction(id: Long): Transaction?
 
     suspend fun updateTransaction(transaction: Transaction): Int
 

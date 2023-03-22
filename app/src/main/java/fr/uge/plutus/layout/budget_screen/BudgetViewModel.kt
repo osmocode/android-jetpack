@@ -51,6 +51,22 @@ class BudgetViewModel @Inject constructor(
 
     fun onEvent(event: BudgetEvent) {
         when (event) {
+            is BudgetEvent.BudgetUpdateDateStart -> viewModelScope.launch {
+                _state.value = state.value.copy(
+                    budget = state.value.budget.copy(
+                        dateStart = event.timestamp
+                    )
+                )
+            }
+
+            is BudgetEvent.BudgetUpdateDateEnd -> viewModelScope.launch {
+                _state.value = state.value.copy(
+                    budget = state.value.budget.copy(
+                        dateEnd = event.timestamp
+                    )
+                )
+            }
+
             is BudgetEvent.BudgetUpdatePrice -> viewModelScope.launch {
                 _state.value = state.value.copy(
                     budget = state.value.budget.copy(

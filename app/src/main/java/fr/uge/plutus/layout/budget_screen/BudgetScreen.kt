@@ -27,6 +27,7 @@ import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
 import fr.uge.plutus.ui.input.AntTagInput
+import java.util.*
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -82,7 +83,8 @@ fun BudgetScreen(
             content = {
                 DateLayout(
                     navController = navController,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    start = true
                 )
             }
         )
@@ -91,7 +93,8 @@ fun BudgetScreen(
             content = {
                 DateLayout(
                     navController = navController,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    start = false
                 )
             }
         )
@@ -149,9 +152,11 @@ fun BudgetScreenOverview(
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionBudgetScreen.TagLayout.route) }
                 )
                 AntDateInput(
+                    timestamp = if (viewModel.state.value.budget.dateStart == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.budget.dateStart,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionBudgetScreen.StartDateLayout.route) }
                 )
                 AntDateInput(
+                    timestamp = if (viewModel.state.value.budget.dateEnd == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.budget.dateEnd,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionBudgetScreen.EndDateLayout.route) }
                 )
             }

@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.Flow
 interface IBudgetRepository {
     fun retrieveAllBudget(): Flow<List<BudgetAndTag>>
 
-    fun retrieveAllBudget(wallet: Int): Flow<List<BudgetAndTag>>
+    fun retrieveAllBudget(wallet: Long): Flow<List<BudgetAndTag>>
 
 //    fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetAndTag>>
 
-    fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetStatus>>
+    fun retrieveAllBudget(wallet: Long, type: Tag.Type): Flow<List<BudgetStatus>>
 
     suspend fun createBudget(budget: Budget)
 
