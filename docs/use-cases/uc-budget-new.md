@@ -10,8 +10,7 @@ exemple :  depense : 200 € sur 3 mois
 ## Sub use-case
 
 L'utilisateur peut créer un budget:
-
-- [ ]  sur une etiquette
-- [ ]  avec un montant précis
-- [ ]  pour une période
+ - [x]  sur une etiquette
+ - [x]  avec un montant précis
+ - [x]  pour une période
 
