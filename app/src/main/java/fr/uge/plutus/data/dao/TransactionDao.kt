@@ -20,11 +20,11 @@ interface TransactionDao {
     @Query("SELECT * FROM `Transaction` WHERE wallet=:wallet ORDER BY id DESC LIMIT :limit")
     fun retrieveLast(wallet: Int, limit: Int): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM `Transaction` WHERE wallet=:wallet ORDER BY timestamp DESC")
-    fun retrieveAllPast(wallet: Int): Flow<List<Transaction>>
+    @Query("SELECT * FROM `Transaction` WHERE wallet=:wallet AND timestamp <= :today ORDER BY timestamp DESC")
+    fun retrieveAllPast(wallet: Int, today: Long = System.currentTimeMillis()): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM `Transaction` WHERE wallet=:wallet ORDER BY timestamp")
-    fun retrieveAllComing(wallet: Int): Flow<List<Transaction>>
+    @Query("SELECT * FROM `Transaction` WHERE wallet=:wallet AND timestamp >= :today ORDER BY timestamp")
+    fun retrieveAllComing(wallet: Int, today: Long = System.currentTimeMillis()): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE id=:id")
     suspend fun retrieveById(id: Int): Transaction?

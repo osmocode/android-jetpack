@@ -23,7 +23,7 @@ data class Transaction(
     val type: String,
     @Embedded
     val price: Price,
-    val timestamp: Double,
+    val timestamp: Long,
     @ColumnInfo(index = false)
     val wallet: Int
 ) {

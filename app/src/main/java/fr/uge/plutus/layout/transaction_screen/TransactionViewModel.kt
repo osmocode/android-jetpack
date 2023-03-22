@@ -2,6 +2,8 @@ package fr.uge.plutus.layout.transaction_screen
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +15,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val tagRepository: TagRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val notificationBuilder: NotificationCompat.Builder,
+    private  val notificationManager: NotificationManagerCompat
 ) : ViewModel() {
 
     private val _state = mutableStateOf(TransactionState())
@@ -69,6 +74,13 @@ class TransactionViewModel @Inject constructor(
                     )
                 )
             }
+            is TransactionEvent.TransactionUpdateDate -> viewModelScope.launch {
+                _state.value = state.value.copy(
+                    transaction = state.value.transaction.copy(
+                        timestamp = event.timestamp
+                    )
+                )
+            }
             is TransactionEvent.TransactionSubmit -> viewModelScope.launch {
                 when (state.value.action) {
                     "CREATE", "DUPLICATE" -> {
@@ -78,6 +90,18 @@ class TransactionViewModel @Inject constructor(
                                 wallet = event.wallet,
                                 type = state.value.type
                             )
+                        )
+                        notificationManager.notify(
+                            Random(System.currentTimeMillis()).nextInt(), notificationBuilder
+                                .setContentTitle(
+                                    "Created " + (
+                                            if (state.value.transaction.title.isBlank() || state.value.transaction.title.isEmpty())
+                                                "Empty name"
+                                            else
+                                                state.value.transaction.title)
+                                    + " transaction"
+                                )
+                                .build()
                         )
                     }
                 }

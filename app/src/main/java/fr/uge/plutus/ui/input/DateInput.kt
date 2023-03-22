@@ -12,15 +12,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fr.uge.plutus.ui.ant.Ant
+import java.text.DateFormat
+import java.util.*
 
 @Composable
 fun AntDateInput(
+    timestamp: Long,
     onClick: () -> Unit
 ) {
+    val formatter = DateFormat.getDateInstance()
+    val date = formatter.format(Date(timestamp))
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,8 +60,8 @@ fun AntDateInput(
                 color = Ant.colors.secondary_text
             )
             Text(
-                text = "Default now",
-                fontSize = 10.sp,
+                text = "$date",
+                fontWeight = FontWeight.SemiBold,
                 color = Ant.colors.secondary_text
             )
         }
@@ -69,6 +74,7 @@ fun AntDateInputPreview(
 
 ) {
     AntDateInput(
+        timestamp = 60000,
         onClick = {}
     )
 }
