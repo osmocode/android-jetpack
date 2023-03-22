@@ -17,17 +17,11 @@ class BudgetRepository @Inject constructor(
     override fun retrieveAllBudget(wallet: Int): Flow<List<BudgetAndTag>> =
         budgetDao.retrieveAll(wallet)
 
-    /* override fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetAndTag>> =
-         budgetDao.retrieveAll(
-             wallet = wallet,
-             type = type
-         )*/
-
     override fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetStatus>> =
-        budgetDao.retrieveAllBudget(
-            wallet = wallet,
-            type = type
-        )
+        budgetDao.retrieveAllBudget(wallet = wallet, type = type)
+
+    override suspend fun duplicateBudget(walletSrc: Int, walletDest: Int) =
+        budgetDao.duplicateBudget(walletSrc, walletDest)
 
     override suspend fun createBudget(budget: Budget) = budgetDao.create(budget)
 

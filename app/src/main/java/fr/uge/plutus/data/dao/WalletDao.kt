@@ -14,7 +14,11 @@ interface WalletDao {
     suspend fun retrieveById(id: Int): Wallet?
 
     @Insert
-    suspend fun create(wallet: Wallet)
+    suspend fun create(wallet: Wallet): Long
+
+    @Transaction
+    @Query("INSERT INTO Wallet VALUES (null, :name)")
+    suspend fun duplicate(name: String): Long
 
     @Update
     suspend fun update(wallet: Wallet): Int

@@ -7,7 +7,9 @@ interface IWalletRepository {
 
     fun retrieveAllWallet(): Flow<List<Wallet>>
 
-    suspend fun createWallet(wallet: Wallet)
+    suspend fun createWallet(wallet: Wallet): Long
+
+    suspend fun duplicateWallet(name: String): Long
 
     suspend fun retrieveWallet(id: Int): Wallet?
 

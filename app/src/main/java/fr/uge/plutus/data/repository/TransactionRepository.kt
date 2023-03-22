@@ -6,7 +6,7 @@ import fr.uge.plutus.data.model.Tag
 import fr.uge.plutus.data.model.Transaction
 import fr.uge.plutus.data.model.TransactionAndTags
 import fr.uge.plutus.data.model.TransactionWithTags
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class TransactionRepository @Inject constructor(
@@ -52,35 +52,6 @@ class TransactionRepository @Inject constructor(
         }
     }
 
-
-    /* override suspend fun updateTransactionTag(
-         transactionWithTags: TransactionWithTags,
-         previousTags: List<Tag>
-     ) {
-         // new tag list to previous tag list --> INSERT
-         transactionWithTags.tags.forEach {
-             if (!previousTags.contains(it))
-                 transactionDao.createTransactionAndTags(
-                     TransactionAndTags(
-                         transactionId = transactionWithTags.transaction.transactionId!!,
-                         tagId = it.tagId!!
-                     )
-                 )
-         }
-
-         // previous tag list to new tag list --> DELETE
-         previousTags.forEach {
-             if (!transactionWithTags.tags.contains(it))
-                 transactionDao.deleteTransactionAndTags(
-                     TransactionAndTags(
-                         transactionId = transactionWithTags.transaction.transactionId!!,
-                         tagId = it.tagId!!
-                     )
-                 )
-         }
-     }*/
-
-
     override suspend fun updateTransactionWithTag(
         transaction: Transaction,
         ttags: List<Tag>,
@@ -111,7 +82,21 @@ class TransactionRepository @Inject constructor(
         }
     }
 
+    override suspend fun duplicateTransactionWithTags(walletSrc: Int, walletDest: Int) {
+        val transactionsSrc = transactionDao.retrieveAllWithTag(walletSrc)
+        val transactionDest = transactionDao.duplicateTransaction(walletSrc, walletDest)
+
+        transactionsSrc.first().forEach { transactionWithTags ->
+            transactionDao.duplicateTransactionAndTags(
+                transactionSrc = transactionWithTags.transaction.transactionId!!,
+                transactionDest = transactionDest
+            )
+        }
+    }
 
     override suspend fun retrieveTransactionWithTag(id: Long): TransactionWithTags? =
         transactionDao.retrieveWithTagById(id)
+
+    override fun retrieveAllTransactionWithTag(wallet: Int): Flow<List<TransactionWithTags>> =
+        transactionDao.retrieveAllWithTag(wallet)
 }

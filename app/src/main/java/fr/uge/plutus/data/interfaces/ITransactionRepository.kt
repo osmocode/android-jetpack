@@ -28,9 +28,11 @@ interface ITransactionRepository {
 
     suspend fun retrieveTransactionWithTag(id: Long): TransactionWithTags?
 
-    suspend fun createTransactionWithTags(transaction: Transaction, ttags: List<Tag>)
+    fun retrieveAllTransactionWithTag(wallet: Int): Flow<List<TransactionWithTags>>
 
-//    suspend fun updateTransactionTag(transactionWithTags: TransactionWithTags, previousTags: List<Tag>)
+    suspend fun duplicateTransactionWithTags(walletSrc: Int, walletDest: Int)
+
+    suspend fun createTransactionWithTags(transaction: Transaction, ttags: List<Tag>)
 
     suspend fun updateTransactionWithTag(
         transaction: Transaction,

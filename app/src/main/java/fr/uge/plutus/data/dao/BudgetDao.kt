@@ -35,8 +35,15 @@ interface BudgetDao {
     fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetStatus>>
 
     @Transaction
-    @Query("SELECT * FROM `Budget` WHERE budgetId=:id")
+    @Query("SELECT * FROM Budget WHERE budgetId=:id")
     suspend fun retrieveById(id: Long): BudgetAndTag?
+
+    @Transaction
+    @Query(
+        """INSERT INTO Budget (currency, amount, dateStart, dateEnd, tagId, walletId)
+        SELECT currency, amount, dateStart, dateEnd, tagId, :walletDest FROM Budget WHERE walletId=:walletSrc"""
+    )
+    suspend fun duplicateBudget(walletSrc: Int, walletDest: Int)
 
     @Insert
     suspend fun create(budget: Budget)

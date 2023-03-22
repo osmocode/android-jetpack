@@ -15,6 +15,8 @@ interface IBudgetRepository {
 
     fun retrieveAllBudget(wallet: Int, type: Tag.Type): Flow<List<BudgetStatus>>
 
+    suspend fun duplicateBudget(walletSrc: Int, walletDest: Int)
+
     suspend fun createBudget(budget: Budget)
 
     suspend fun retrieveBudget(id: Long): BudgetAndTag?

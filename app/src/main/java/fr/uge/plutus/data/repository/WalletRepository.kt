@@ -11,8 +11,11 @@ class WalletRepository @Inject constructor(
 ) : IWalletRepository {
     override fun retrieveAllWallet(): Flow<List<Wallet>> = walletDao.retrieveAll()
 
-    override suspend fun createWallet(wallet: Wallet) =
+    override suspend fun createWallet(wallet: Wallet): Long =
         walletDao.create(wallet)
+
+    override suspend fun duplicateWallet(name: String): Long =
+        walletDao.duplicate(name)
 
     override suspend fun retrieveWallet(id: Int): Wallet? =
         walletDao.retrieveById(id)
@@ -22,5 +25,4 @@ class WalletRepository @Inject constructor(
 
     override suspend fun deleteWallet(wallet: Wallet): Int =
         walletDao.delete(wallet)
-
 }

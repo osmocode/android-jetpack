@@ -35,6 +35,7 @@ fun WalletScreen(
     LaunchedEffect(sheetVisible.value) {
         if (!sheetVisible.value) {
             focusManager.clearFocus()
+            wallet.value = ""
         }
     }
 
@@ -101,6 +102,12 @@ fun WalletScreen(
                         selected = SettingsWallet.current == viewModel.state.value.wallets[focus.value].walletId,
                         onSelect = { wallet ->
                             storageViewModel.setWallet(wallet.walletId)
+                        },
+                        onDelete = { wallet ->
+                            viewModel.onEvent(WalletEvent.DeleteWallet(wallet.walletId!!))
+                        },
+                        onCopy = { wallet ->
+                            viewModel.onEvent(WalletEvent.CopyWallet(wallet.walletId!!))
                         }
                     )
                 }
