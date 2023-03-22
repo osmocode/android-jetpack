@@ -1,10 +1,11 @@
-package fr.uge.plutus.layout.transaction_screen
+package fr.uge.plutus.layout.budget_screen
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
@@ -17,25 +18,23 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import fr.uge.plutus.data.model.Price
-import fr.uge.plutus.layout.transaction_screen.layout.AmountLayout
-import fr.uge.plutus.layout.transaction_screen.layout.DateLayout
-import fr.uge.plutus.layout.transaction_screen.layout.DescLayout
-import fr.uge.plutus.layout.transaction_screen.layout.TagLayout
+import fr.uge.plutus.layout.budget_screen.layout.AmountLayout
+import fr.uge.plutus.layout.budget_screen.layout.DateLayout
+import fr.uge.plutus.layout.budget_screen.layout.TagLayout
 import fr.uge.plutus.navigation.*
 import fr.uge.plutus.storage.SettingsWallet
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
-import fr.uge.plutus.ui.input.AntNoteInput
 import fr.uge.plutus.ui.input.AntTagInput
-import java.util.Calendar
+import java.util.*
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun TransactionScreen(
+fun BudgetScreen(
     navHostController: NavHostController,
     sheetVisible: MutableState<Boolean>,
-    viewModel: TransactionViewModel = hiltViewModel()
+    viewModel: BudgetViewModel = hiltViewModel()
 ) {
     val navController = rememberAnimatedNavController()
 
@@ -48,18 +47,12 @@ fun TransactionScreen(
         exitTransition = exitTransition(),
         popEnterTransition = popEnterTransition(),
         popExitTransition = popExitTransition(),
-        startDestination = NavigationRoute.MainScreen.TransactionScreen.TransactionOverview.route
+        startDestination = NavigationRoute.MainScreen.TransactionBudgetScreen.TransactionBudgetOverview.route
     ) {
         composable(
-            route = NavigationRoute.MainScreen.TransactionScreen.TransactionOverview.route,
-            popExitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { width -> width },
-                    animationSpec = tween(300)
-                )
-            },
+            route = NavigationRoute.MainScreen.TransactionBudgetScreen.TransactionBudgetOverview.route,
             content = {
-                TransactionScreenOverview(
+                BudgetScreenOverview(
                     navHostController = navHostController,
                     navController = navController,
                     sheetVisible = sheetVisible,
@@ -68,7 +61,7 @@ fun TransactionScreen(
             }
         )
         composable(
-            route = NavigationRoute.MainScreen.TransactionScreen.AmountLayout.route,
+            route = NavigationRoute.MainScreen.TransactionBudgetScreen.AmountLayout.route,
             content = {
                 AmountLayout(
                     navController = navController,
@@ -77,7 +70,7 @@ fun TransactionScreen(
             }
         )
         composable(
-            route = NavigationRoute.MainScreen.TransactionScreen.TagLayout.route,
+            route = NavigationRoute.MainScreen.TransactionBudgetScreen.TagLayout.route,
             content = {
                 TagLayout(
                     navController = navController,
@@ -86,32 +79,36 @@ fun TransactionScreen(
             }
         )
         composable(
-            route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route,
+            route = NavigationRoute.MainScreen.TransactionBudgetScreen.StartDateLayout.route,
             content = {
-                DescLayout(
+                DateLayout(
                     navController = navController,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    start = true
                 )
             }
         )
         composable(
-            route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route,
+            route = NavigationRoute.MainScreen.TransactionBudgetScreen.EndDateLayout.route,
             content = {
                 DateLayout(
                     navController = navController,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    start = false
                 )
             }
         )
     }
+
 }
 
+
 @Composable
-fun TransactionScreenOverview(
+fun BudgetScreenOverview(
     navHostController: NavHostController,
     navController: NavHostController,
     sheetVisible: MutableState<Boolean>,
-    viewModel: TransactionViewModel
+    viewModel: BudgetViewModel
 ) {
     val wallet = SettingsWallet.current
 
@@ -122,7 +119,7 @@ fun TransactionScreenOverview(
         topBar = {
             AntTopBar(
                 sheetVisible = sheetVisible,
-                title = transactionScreenTitle(viewModel.state.value.action) + " a transaction",
+                title = "add budget",
                 leadingIcons = listOf {
                     AntActionButton(
                         icon = Icons.Outlined.ArrowBack,
@@ -145,39 +142,33 @@ fun TransactionScreenOverview(
             ) {
                 AntAmountInput(
                     price = Price(
-                        currency = viewModel.state.value.transactionWithTags.transaction.price.currency,
-                        amount = viewModel.state.value.transactionWithTags.transaction.price.amount
+                        currency = viewModel.state.value.budget.targetPrice.currency,
+                        amount = viewModel.state.value.budget.targetPrice.amount
                     ),
-                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.AmountLayout.route) }
+                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionBudgetScreen.AmountLayout.route) }
                 )
                 AntTagInput(
-                    tags = viewModel.state.value.newTags,
-                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.TagLayout.route) }
-                )
-                AntNoteInput(
-                    title = viewModel.state.value.transactionWithTags.transaction.title.ifEmpty { "Title" },
-                    description = viewModel.state.value.transactionWithTags.transaction.description.ifEmpty { "Description" },
-                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route) }
+                    tags = viewModel.state.value.newTag,
+                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionBudgetScreen.TagLayout.route) }
                 )
                 AntDateInput(
-                    timestamp = if (viewModel.state.value.transactionWithTags.transaction.timestamp == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.transactionWithTags.transaction.timestamp,
-                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route) }
+                    timestamp = if (viewModel.state.value.budget.dateStart == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.budget.dateStart,
+                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionBudgetScreen.StartDateLayout.route) }
+                )
+                AntDateInput(
+                    timestamp = if (viewModel.state.value.budget.dateEnd == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.budget.dateEnd,
+                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionBudgetScreen.EndDateLayout.route) }
                 )
             }
             CustomButton(
-                title = transactionScreenTitle(viewModel.state.value.action),
+                title = "add budget",
                 type = CustomButtonType.PRIMARY,
                 onClick = {
-                    viewModel.onEvent(TransactionEvent.TransactionSubmit(wallet = wallet))
+                    viewModel.onEvent(BudgetEvent.BudgetSubmit(wallet = wallet))
                     navHostController.popBackStack()
                 }
             )
         }
     }
-}
 
-fun transactionScreenTitle(
-    action: String
-): String {
-    return action[0].uppercase() + action.substring(1).lowercase()
 }

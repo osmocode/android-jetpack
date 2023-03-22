@@ -1,8 +1,8 @@
 # Plutus Developer Documentation
 
 ## List of UC (Use Case)
-- [ ] [uc-budget-new](./use-cases/uc-budget-new.md)
-- [ ] [uc-etiquette](./use-cases/uc-etiquette.md)
+- [x] [uc-budget-new](./use-cases/uc-budget-new.md)
+- [x] [uc-etiquette](./use-cases/uc-etiquette.md)
 - [ ] [uc-notifier-budget](./use-cases/uc-notifier-budget.md)
 - [ ] [uc-notifier-location](./use-cases/uc-notifier-location.md)
 - [ ] [uc-notifier-todo](./use-cases/uc-notifier-todo.md)

@@ -28,7 +28,7 @@ class TransactionViewModel @Inject constructor(
         viewModelScope.launch {
             val action = savedStateHandle.get<String>("action")
             val type = savedStateHandle.get<String>("type")
-            val id = savedStateHandle.get<Int>("id")
+            val id = savedStateHandle.get<Long>("id")
 
             _state.value = state.value.copy(
                 action = action!!,
@@ -36,48 +36,77 @@ class TransactionViewModel @Inject constructor(
                 id = id!!
             )
 
-            if (id != -1) transactionRepository.retrieveTransaction(id)?.let { transaction ->
-                _state.value = state.value.copy(
-                    transaction = transaction
-                )
-            }
+
+            if (id != -1L) transactionRepository.retrieveTransactionWithTag(id.toLong())
+                ?.let { transactionWithTags ->
+                    _state.value = state.value.copy(
+                        transactionWithTags = transactionWithTags,
+                        newTags = transactionWithTags.tags
+                    )
+                }
 
             tagRepository.retrieveAllTag(type).onEach { tags ->
                 _state.value = state.value.copy(
                     tags = tags
                 )
             }.launchIn(viewModelScope)
-
         }
 
     }
 
     fun onEvent(event: TransactionEvent) {
         when (event) {
+            is TransactionEvent.TransactionUpdateDate -> viewModelScope.launch {
+                _state.value = state.value.copy(
+                    transactionWithTags = state.value.transactionWithTags.copy(
+                        transaction = state.value.transactionWithTags.transaction.copy(
+                            timestamp = event.timestamp
+                        )
+                    )
+                )
+            }
+
             is TransactionEvent.TransactionUpdateDesc -> viewModelScope.launch {
                 _state.value = state.value.copy(
-                    transaction = state.value.transaction.copy(
-                        title = event.title,
-                        description = event.desc
-                    )
+                    transactionWithTags = state.value.transactionWithTags.copy(
+                        transaction = state.value.transactionWithTags.transaction.copy(
+                            title = event.title,
+                            description = event.desc
+                        )
+                    ),
                 )
             }
             is TransactionEvent.TransactionUpdatePrice -> viewModelScope.launch {
                 _state.value = state.value.copy(
-                    transaction = state.value.transaction.copy(
-                        price = event.price
+                    transactionWithTags = state.value.transactionWithTags.copy(
+                        transaction = state.value.transactionWithTags.transaction.copy(
+                            price = event.price
+                        )
                     )
+                )
+            }
+            is TransactionEvent.TransactionUpdateTags -> viewModelScope.launch {
+                _state.value = state.value.copy(
+                    newTags = event.tags
                 )
             }
             is TransactionEvent.TransactionSubmit -> viewModelScope.launch {
                 when (state.value.action) {
                     "CREATE", "DUPLICATE" -> {
-                        transactionRepository.createTransaction(
-                            state.value.transaction.copy(
-                                id = null,
-                                wallet = event.wallet,
+                        transactionRepository.createTransactionWithTags(
+                            transaction = state.value.transactionWithTags.transaction.copy(
+                                transactionId = null,
+                                walletId = event.wallet,
                                 type = state.value.type
-                            )
+                            ),
+                            ttags = state.value.newTags
+                        )
+                    }
+                    "UPDATE" -> {
+                        transactionRepository.updateTransactionWithTag(
+                            transaction = state.value.transactionWithTags.transaction,
+                            ttags = state.value.newTags,
+                            previousTags = state.value.transactionWithTags.tags,
                         )
                     }
                 }
@@ -87,7 +116,7 @@ class TransactionViewModel @Inject constructor(
                     "DEBIT" -> {
                         tagRepository.createTag(
                             Tag(
-                                id = null,
+                                tagId = null,
                                 type = "DEBIT",
                                 label = event.name
                             )
@@ -96,7 +125,7 @@ class TransactionViewModel @Inject constructor(
                     "CREDIT" -> {
                         tagRepository.createTag(
                             Tag(
-                                id = null,
+                                tagId = null,
                                 type = "CREDIT",
                                 label = event.name
                             )
@@ -105,7 +134,7 @@ class TransactionViewModel @Inject constructor(
                     "TRANSFER" -> {
                         tagRepository.createTag(
                             Tag(
-                                id = null,
+                                tagId = null,
                                 type = "TRANSFER",
                                 label = event.name
                             )

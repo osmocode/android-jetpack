@@ -30,7 +30,10 @@ class WalletViewModel @Inject constructor(
             is WalletEvent.CreateWallet -> viewModelScope.launch {
                 walletRepository.createWallet(wallet = event.wallet)
             }
+
+            is WalletEvent.UpdateWallet -> viewModelScope.launch {
+                walletRepository.updateWallet(event.wallet)
+            }
         }
     }
-
 }

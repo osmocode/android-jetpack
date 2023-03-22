@@ -1,4 +1,4 @@
-package fr.uge.plutus.layout.transaction_screen.layout
+package fr.uge.plutus.layout.budget_screen.layout
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import fr.uge.plutus.data.model.Tag
-import fr.uge.plutus.layout.transaction_screen.TransactionEvent
-import fr.uge.plutus.layout.transaction_screen.TransactionViewModel
+import fr.uge.plutus.layout.budget_screen.BudgetEvent
+import fr.uge.plutus.layout.budget_screen.BudgetViewModel
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.field.AntTextField
@@ -31,14 +31,16 @@ import fr.uge.plutus.ui.field.AntTextField
 fun TagLayout(
     navController: NavHostController,
     sheetVisible: MutableState<Boolean> = remember { mutableStateOf(false) },
-    viewModel: TransactionViewModel
+    viewModel: BudgetViewModel
 ) {
+
     val selected =
-        remember { mutableStateListOf<Tag>().apply { this.addAll(viewModel.state.value.newTags) } }
+        remember { mutableStateListOf<Tag>().apply { this.addAll(viewModel.state.value.newTag) } }
     val submit = remember { mutableStateOf(false) }
     val disabled = remember { mutableStateOf(true) }
     val tag = remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
+
 
     LaunchedEffect(sheetVisible.value) {
         if (!sheetVisible.value) {
@@ -49,13 +51,6 @@ fun TagLayout(
 
     LaunchedEffect(tag.value) {
         disabled.value = tag.value.isEmpty() || tag.value.isBlank()
-    }
-
-    LaunchedEffect(selected.size) {
-        submit.value =
-            selected.containsAll(viewModel.state.value.newTags) && viewModel.state.value.newTags.containsAll(
-                selected
-            )
     }
 
     AntBottomSheetScaffold(
@@ -75,7 +70,7 @@ fun TagLayout(
                     type = CustomButtonType.PRIMARY,
                     disabled = disabled,
                     onClick = {
-                        viewModel.onEvent(TransactionEvent.TransactionTagCreate(tag.value))
+                        viewModel.onEvent(BudgetEvent.BudgetTagCreate(tag.value))
                         sheetVisible.value = false
                     }
                 )
@@ -84,7 +79,7 @@ fun TagLayout(
         topBar = {
             AntTopBar(
                 sheetVisible = sheetVisible,
-                title = "Choice tags",
+                title = "Choice tag",
                 leadingIcons = listOf {
                     AntActionButton(
                         icon = Icons.Outlined.ArrowBack,
@@ -117,9 +112,9 @@ fun TagLayout(
                         tag = tags[index],
                         selected = selected.contains(tags[index]),
                         onClick = {
-                            if (selected.contains(tags[index]))
-                                selected.remove(tags[index])
-                            else
+                            if (selected.size == 1) {
+                                selected.replaceAll { tags[index] }
+                            } else
                                 selected.add(tags[index])
                         }
                     )
@@ -135,8 +130,8 @@ fun TagLayout(
                     disabled = submit,
                     onClick = {
                         viewModel.onEvent(
-                            TransactionEvent.TransactionUpdateTags(
-                                tags = selected.toList()
+                            BudgetEvent.BudgetUpdateTag(
+                                tag = selected
                             )
                         )
                         navController.popBackStack()

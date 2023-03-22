@@ -37,7 +37,7 @@ class StorageViewModel @Inject constructor(
         storageRepository.dark(value = value)
     }
 
-    fun setWallet(value: Int?) = viewModelScope.launch {
+    fun setWallet(value: Long?) = viewModelScope.launch {
         storageRepository.wallet(value = value)
     }
 

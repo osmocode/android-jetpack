@@ -9,7 +9,7 @@ interface IWalletRepository {
 
     suspend fun createWallet(wallet: Wallet)
 
-    suspend fun retrieveWallet(id: Int): Wallet?
+    suspend fun retrieveWallet(id: Long): Wallet?
 
     suspend fun updateWallet(wallet: Wallet): Int
 

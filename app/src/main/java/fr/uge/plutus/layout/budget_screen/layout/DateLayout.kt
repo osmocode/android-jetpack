@@ -1,4 +1,4 @@
-package fr.uge.plutus.layout.transaction_screen.layout
+package fr.uge.plutus.layout.budget_screen.layout
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -11,8 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import fr.uge.plutus.layout.transaction_screen.TransactionEvent
-import fr.uge.plutus.layout.transaction_screen.TransactionViewModel
+import fr.uge.plutus.layout.budget_screen.BudgetEvent
+import fr.uge.plutus.layout.budget_screen.BudgetViewModel
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.field.AntDateField
@@ -22,11 +22,14 @@ import java.util.*
 fun DateLayout(
     navController: NavHostController,
     sheetVisible: MutableState<Boolean> = remember { mutableStateOf(false) },
-    viewModel: TransactionViewModel
+    viewModel: BudgetViewModel,
+    start: Boolean,
 ) {
     val date = remember {
         val d = Calendar.getInstance()
-        viewModel.state.value.transactionWithTags.transaction.timestamp.takeIf { it != 0L }?.let {
+        if (start) viewModel.state.value.budget.dateStart.takeIf { it != 0L }?.let {
+            d.timeInMillis = it
+        } else viewModel.state.value.budget.dateEnd.takeIf { it != 0L }?.let {
             d.timeInMillis = it
         }
         mutableStateOf(d)
@@ -37,7 +40,7 @@ fun DateLayout(
         sheetContent = { /*TODO*/ },
         topBar = {
             AntTopBar(
-                title = "Enter date",
+                title = "Enter " + (if (start) "start" else "end") + " date",
                 leadingIcons = listOf {
                     AntActionButton(
                         icon = Icons.Outlined.ArrowBack,
@@ -67,9 +70,8 @@ fun DateLayout(
                 type = CustomButtonType.PRIMARY,
                 onClick = {
                     viewModel.onEvent(
-                        TransactionEvent.TransactionUpdateDate(
-                            date.value.timeInMillis
-                        )
+                        if (start) BudgetEvent.BudgetUpdateDateStart(date.value.timeInMillis)
+                        else BudgetEvent.BudgetUpdateDateEnd(date.value.timeInMillis)
                     )
                     navController.popBackStack()
                 }

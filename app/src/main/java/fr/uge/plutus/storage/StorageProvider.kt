@@ -13,7 +13,7 @@ fun StorageProvider(
 ) {
 
     val dark = remember { mutableStateOf(system) }
-    val wallet = remember { mutableStateOf(-1) }
+    val wallet = remember { mutableStateOf(-1L) }
 
     LaunchedEffect(storageViewModel.state.value) {
         dark.value =
@@ -43,7 +43,7 @@ object StorageProvider {
         @ReadOnlyComposable
         get() = SettingsDark.current
 
-    val wallet: Int
+    val wallet: Long
         @Composable
         @ReadOnlyComposable
         get() = SettingsWallet.current
@@ -51,4 +51,4 @@ object StorageProvider {
 }
 
 internal val SettingsDark = staticCompositionLocalOf { false }
-internal val SettingsWallet = staticCompositionLocalOf<Int> { -1 }
+internal val SettingsWallet = staticCompositionLocalOf { -1L }

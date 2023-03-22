@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uge.plutus.data.repository.TransactionRepository
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +22,7 @@ class TransactionsViewModel @Inject constructor(
     val state: State<TransactionsState> = _state
 
     init {
-        savedStateHandle.get<Int>("wallet").let { wallet ->
+        savedStateHandle.get<Long>("wallet").let { wallet ->
             if (wallet != null) {
                 transactionRepository.retrieveAllPastTransaction(wallet).onEach { past ->
                     _state.value = state.value.copy(
@@ -34,6 +35,17 @@ class TransactionsViewModel @Inject constructor(
                         coming = coming
                     )
                 }.launchIn(viewModelScope)
+            }
+        }
+    }
+
+    fun onEvent(event: TransactionsEvent) {
+        when (event) {
+            is TransactionsEvent.TransactionsDelete -> viewModelScope.launch {
+                val transactionTags = transactionRepository.retrieveTransactionWithTag(event.id)
+                if (transactionTags != null) {
+                    transactionRepository.deleteTransaction(transaction = transactionTags.transaction)
+                }
             }
         }
     }

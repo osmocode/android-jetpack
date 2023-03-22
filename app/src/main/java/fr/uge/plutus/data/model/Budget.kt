@@ -1,33 +1,31 @@
 package fr.uge.plutus.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     foreignKeys = [
         ForeignKey(
             entity = Tag::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("tag"),
+            parentColumns = arrayOf("tagId"),
+            childColumns = arrayOf("tagId"),
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Wallet::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("wallet"),
+            parentColumns = arrayOf("walletId"),
+            childColumns = arrayOf("walletId"),
             onDelete = ForeignKey.CASCADE
         )]
 )
 data class Budget(
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
-    val targetPrice: Double,
-    val dateStart: Double,
-    val dateEnd: Double,
+    val budgetId: Long?,
+    @Embedded
+    val targetPrice: Price,
+    val dateStart: Long,
+    val dateEnd: Long,
     @ColumnInfo(index = false)
-    val tag: Int,
+    val tagId: Long,
     @ColumnInfo(index = false)
-    val wallet: Int
+    val walletId: Long
 )

@@ -14,11 +14,11 @@ interface TagDao {
     @Query("SELECT * FROM `Tag` WHERE type=:type")
     fun retrieveAll(type: String): Flow<List<Tag>>
 
-    @Query("SELECT * FROM `Tag` WHERE id=:id")
-    suspend fun retrieveById(id: Int): Tag?
+    @Query("SELECT * FROM `Tag` WHERE tagId=:id")
+    suspend fun retrieveById(id: Long): Tag?
 
     @Insert
-    suspend fun create(tag: Tag)
+    suspend fun create(tag: Tag): Long
 
     @Update
     suspend fun update(tag: Tag): Int

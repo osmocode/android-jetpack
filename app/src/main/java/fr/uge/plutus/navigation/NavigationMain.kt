@@ -27,6 +27,7 @@ import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import fr.uge.plutus.layout.budget_screen.BudgetScreen
 import fr.uge.plutus.layout.transaction_screen.TransactionScreen
 import fr.uge.plutus.layout.home_screen.HomeScreen
 import fr.uge.plutus.layout.settings_screen.SettingsScreen
@@ -44,13 +45,13 @@ fun NavigationMain(
 ) {
     val bottomBarVisible = remember { mutableStateOf(true) }
     val sheetVisible = remember { mutableStateOf(false) }
-    val wallet = remember { mutableStateOf(-1) }
+    val wallet = remember { mutableStateOf(-1L) }
     val navController = rememberAnimatedNavController()
 
     LaunchedEffect(storageViewModel.state.value.wallet) {
         if (storageViewModel.ready.value) {
             val w = storageViewModel.state.value.wallet
-            if (w == null || w == -1) {
+            if (w == null || w == -1L) {
                 navController.popBackStack(
                     destinationId = navController.graph.findStartDestination().id,
                     inclusive = true
@@ -173,7 +174,7 @@ fun NavigationMain(
             composable(
                 route = NavigationRoute.MainScreen.TransactionsScreen.route,
                 arguments = listOf(
-                    navArgument(name = "wallet") { type = NavType.IntType }
+                    navArgument(name = "wallet") { type = NavType.LongType }
                 ),
                 content = {
                     TransactionsScreen(
@@ -187,7 +188,7 @@ fun NavigationMain(
                 arguments = listOf(
                     navArgument(name = "action") { type = NavType.StringType },
                     navArgument(name = "type") { type = NavType.StringType },
-                    navArgument(name = "id") { type = NavType.IntType; defaultValue = -1 }
+                    navArgument(name = "id") { type = NavType.LongType; defaultValue = -1L }
                 ),
                 content = {
                     TransactionScreen(
@@ -196,7 +197,19 @@ fun NavigationMain(
                     )
                 }
             )
-
+            composable(
+                route = NavigationRoute.MainScreen.TransactionBudgetScreen.route,
+                arguments = listOf(
+                    navArgument(name = "wallet") { type = NavType.IntType },
+                    navArgument(name = "type") { type = NavType.StringType }
+                ),
+                content = {
+                    BudgetScreen(
+                        navHostController = navController,
+                        sheetVisible = sheetVisible
+                    )
+                }
+            )
         }
     }
 }

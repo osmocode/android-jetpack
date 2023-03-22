@@ -20,13 +20,16 @@ fun DescLayout(
     sheetVisible: MutableState<Boolean> = remember { mutableStateOf(false) },
     viewModel: TransactionViewModel
 ) {
-    val title = remember { mutableStateOf(viewModel.state.value.transaction.title) }
-    val desc = remember { mutableStateOf(viewModel.state.value.transaction.description) }
+    val title =
+        remember { mutableStateOf(viewModel.state.value.transactionWithTags.transaction.title) }
+    val desc =
+        remember { mutableStateOf(viewModel.state.value.transactionWithTags.transaction.description) }
     val disabled = remember { mutableStateOf(false) }
 
     LaunchedEffect(title.value, desc.value) {
-        disabled.value = title.value == viewModel.state.value.transaction.title &&
-                desc.value == viewModel.state.value.transaction.description
+        disabled.value =
+            title.value == viewModel.state.value.transactionWithTags.transaction.title &&
+                    desc.value == viewModel.state.value.transactionWithTags.transaction.description
     }
 
     AntBottomSheetScaffold(

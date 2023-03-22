@@ -9,23 +9,23 @@ import androidx.room.PrimaryKey
 @Entity(
     foreignKeys = [ForeignKey(
         entity = Wallet::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("wallet"),
+        parentColumns = arrayOf("walletId"),
+        childColumns = arrayOf("walletId"),
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class Transaction(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    val transactionId: Long?,
     val title: String,
     val description: String,
     val type: String,
     @Embedded
     val price: Price,
-    val timestamp: Double,
+    val timestamp: Long,
     @ColumnInfo(index = false)
-    val wallet: Int
+    val walletId: Long
 ) {
     enum class Type {
         CREDIT,

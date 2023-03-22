@@ -1,4 +1,4 @@
-# Etiquette
+# Etiquette 
 
 ## Description
 
@@ -10,7 +10,6 @@ format `=` = compte sur lequel à lieu la transaction
 ## Sub use-case
 
 L'utilisateur peut :
-
-- [ ] rentrer des mots-clé pour mieux classer la transaction
-- [ ] associer un format à la transaction
-- [ ] ajouter/modifier des étiquettes
+ - [x] rentrer des mots-clé pour mieux classer la transaction
+ - [x] associer un format à la transaction
+ - [x] ajouter/modifier des étiquettes

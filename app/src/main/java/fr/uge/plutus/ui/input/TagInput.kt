@@ -1,8 +1,10 @@
-package fr.uge.plutus.ui.components
+package fr.uge.plutus.ui.input
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -14,10 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import fr.uge.plutus.data.model.Tag
 import fr.uge.plutus.ui.ant.Ant
 
 @Composable
 fun AntTagInput(
+    tags: List<Tag>,
     onClick: () -> Unit
 ) {
     Row(
@@ -53,7 +58,31 @@ fun AntTagInput(
                 text = "Select tag",
                 color = Ant.colors.secondary_text
             )
-            Text(text = "")
+            if (tags.isEmpty()) {
+                Text(
+                    text = "Empty",
+                    fontSize = 10.sp,
+                    color = Ant.colors.secondary_text
+                )
+            } else {
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Ant.spacing.small),
+                    content = {
+                        items(tags) { tag ->
+                            Text(
+                                modifier = Modifier
+                                    .clip(Ant.shapes.default)
+                                    .background(color = Ant.colors.gray_4)
+                                    .padding(horizontal = Ant.spacing.small),
+                                text = tag.label,
+                                fontSize = 10.sp,
+                                color = Ant.colors.secondary_text
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 }
@@ -64,6 +93,18 @@ fun AntTagInputPreview(
 
 ) {
     AntTagInput(
-        onClick = {}
+        onClick = {},
+        tags = listOf(
+            Tag(
+                tagId = null,
+                label = "Demo",
+                type = "CREDIT"
+            ),
+            Tag(
+                tagId = null,
+                label = "Other",
+                type = "CREDIT"
+            )
+        )
     )
 }

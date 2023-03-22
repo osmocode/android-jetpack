@@ -72,7 +72,7 @@ fun WalletScreen(
                         viewModel.onEvent(
                             WalletEvent.CreateWallet(
                                 Wallet(
-                                    id = null,
+                                    walletId = null,
                                     name = wallet.value
                                 )
                             )
@@ -89,8 +89,8 @@ fun WalletScreen(
                     items = viewModel.state.value.wallets.map { wallet ->
                         AntWalletCardItem(
                             label = wallet.name,
-                            desc = wallet.id.toString(),
-                            selected = SettingsWallet.current == wallet.id,
+                            desc = wallet.walletId.toString(),
+                            selected = SettingsWallet.current == wallet.walletId,
                         )
                     },
                     selected = { focus.value = it }
@@ -98,9 +98,9 @@ fun WalletScreen(
                 if (viewModel.state.value.wallets.isNotEmpty()) {
                     WalletDetailScreen(
                         wallet = viewModel.state.value.wallets[focus.value],
-                        selected = SettingsWallet.current == viewModel.state.value.wallets[focus.value].id,
+                        selected = SettingsWallet.current == viewModel.state.value.wallets[focus.value].walletId,
                         onSelect = { wallet ->
-                            storageViewModel.setWallet(wallet.id)
+                            storageViewModel.setWallet(wallet.walletId)
                         }
                     )
                 }
