@@ -1,5 +1,7 @@
 package fr.uge.plutus.layout.transaction_screen
 
+
+import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideOutHorizontally
@@ -10,6 +12,7 @@ import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -17,18 +20,15 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import fr.uge.plutus.data.model.Price
-import fr.uge.plutus.layout.transaction_screen.layout.AmountLayout
-import fr.uge.plutus.layout.transaction_screen.layout.DateLayout
-import fr.uge.plutus.layout.transaction_screen.layout.DescLayout
-import fr.uge.plutus.layout.transaction_screen.layout.TagLayout
+import fr.uge.plutus.layout.transaction_screen.layout.*
 import fr.uge.plutus.navigation.*
 import fr.uge.plutus.storage.SettingsWallet
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
+import fr.uge.plutus.ui.input.AntLocationInput
 import fr.uge.plutus.ui.input.AntNoteInput
 import fr.uge.plutus.ui.input.AntTagInput
-import java.util.Calendar
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -86,6 +86,15 @@ fun TransactionScreen(
             }
         )
         composable(
+            route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route,
+            content = {
+                DateLayout(
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
+        )
+        composable(
             route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route,
             content = {
                 DescLayout(
@@ -95,9 +104,9 @@ fun TransactionScreen(
             }
         )
         composable(
-            route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route,
+            route = NavigationRoute.MainScreen.TransactionScreen.LocationLayout.route,
             content = {
-                DateLayout(
+                LocationLayout(
                     navController = navController,
                     viewModel = viewModel
                 )
@@ -111,7 +120,8 @@ fun TransactionScreenOverview(
     navHostController: NavHostController,
     navController: NavHostController,
     sheetVisible: MutableState<Boolean>,
-    viewModel: TransactionViewModel
+    viewModel: TransactionViewModel,
+    context: Context = LocalContext.current.applicationContext
 ) {
     val wallet = SettingsWallet.current
 
@@ -160,8 +170,11 @@ fun TransactionScreenOverview(
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route) }
                 )
                 AntDateInput(
-                    timestamp = if (viewModel.state.value.transactionWithTags.transaction.timestamp == 0L) Calendar.getInstance().timeInMillis else viewModel.state.value.transactionWithTags.transaction.timestamp,
+                    timestamp = viewModel.state.value.transactionWithTags.transaction.timestamp,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route) }
+                )
+                AntLocationInput (
+                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.LocationLayout.route) }
                 )
             }
             CustomButton(

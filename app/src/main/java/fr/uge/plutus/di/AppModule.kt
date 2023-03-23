@@ -11,6 +11,7 @@ import fr.uge.plutus.data.DataBase
 import fr.uge.plutus.data.dao.*
 import fr.uge.plutus.data.interfaces.*
 import fr.uge.plutus.data.repository.*
+import fr.uge.plutus.notification.TransactionNotification
 import fr.uge.plutus.storage.StorageRepository
 import javax.inject.Singleton
 
@@ -86,4 +87,52 @@ object AppModule {
     fun provideBudgetRepository(dao: BudgetDao): IBudgetRepository {
         return BudgetRepository(dao)
     }
+
+    @Singleton
+    @Provides
+    fun provideTransactionNotification(
+        @ApplicationContext context: Context
+    ): TransactionNotification {
+        return TransactionNotification(context)
+    }
+
+    /*
+    @Singleton
+    @Provides
+    fun provideNotificationAlarm(
+        @ApplicationContext context: Context
+    ): AlarmManager {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        return alarmManager
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationManager(
+        @ApplicationContext context: Context
+    ): NotificationManagerCompat {
+        val notificationManager = NotificationManagerCompat.from(context)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channel = NotificationChannel(
+                "NOTIFICATION_CHANNEL",
+                "Plutus notification",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+        return notificationManager
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationBuilder(
+        @ApplicationContext context: Context
+    ): NotificationCompat.Builder {
+        return NotificationCompat.Builder(context, "NOTIFICATION_CHANNEL")
+            .setContentTitle("Plutus")
+            .setSmallIcon(android.R.drawable.ic_menu_info_details)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+    }
+     */
 }

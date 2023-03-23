@@ -47,6 +47,7 @@ sealed class NavigationRoute(
             object TagLayout : NavigationRoute(route = "tags")
             object DescLayout : NavigationRoute(route = "desc")
             object DateLayout : NavigationRoute(route = "date")
+            object LocationLayout : NavigationRoute(route = "location")
 
         }
 
@@ -61,8 +62,6 @@ sealed class NavigationRoute(
             object TagLayout : NavigationRoute(route = "tags")
             object StartDateLayout : NavigationRoute(route = "startDate")
             object EndDateLayout : NavigationRoute(route = "endDate")
-
         }
-
     }
 }

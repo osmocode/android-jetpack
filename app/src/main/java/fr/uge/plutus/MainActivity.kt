@@ -9,10 +9,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.uge.plutus.navigation.NavigationRoot
+import fr.uge.plutus.notification.TransactionNotification
+import javax.inject.Inject
 
 @AndroidEntryPoint
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var transactionNotification: TransactionNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -39,7 +39,7 @@ class TransactionRepository @Inject constructor(
     override suspend fun deleteTransaction(transaction: Transaction): Int =
         transactionDao.delete(transaction)
 
-    override suspend fun createTransactionWithTags(transaction: Transaction, ttags: List<Tag>) {
+    override suspend fun createTransactionWithTags(transaction: Transaction, ttags: List<Tag>): Long {
         val id = transactionDao.create(transaction)
 
         ttags.forEach { tag ->
@@ -50,6 +50,8 @@ class TransactionRepository @Inject constructor(
                 )
             )
         }
+
+        return id;
     }
 
 

@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uge.plutus.data.model.Tag
 import fr.uge.plutus.data.repository.TagRepository
 import fr.uge.plutus.data.repository.TransactionRepository
+import fr.uge.plutus.notification.TransactionNotification
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class TransactionViewModel @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val tagRepository: TagRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val transactionNotification: TransactionNotification
 ) : ViewModel() {
 
     private val _state = mutableStateOf(TransactionState())
@@ -35,7 +37,6 @@ class TransactionViewModel @Inject constructor(
                 type = type!!,
                 id = id!!
             )
-
 
             if (id != -1L) transactionRepository.retrieveTransactionWithTag(id.toLong())
                 ?.let { transactionWithTags ->
@@ -90,24 +91,27 @@ class TransactionViewModel @Inject constructor(
                     newTags = event.tags
                 )
             }
-            is TransactionEvent.TransactionSubmit -> viewModelScope.launch {
-                when (state.value.action) {
-                    "CREATE", "DUPLICATE" -> {
-                        transactionRepository.createTransactionWithTags(
-                            transaction = state.value.transactionWithTags.transaction.copy(
-                                transactionId = null,
-                                walletId = event.wallet,
-                                type = state.value.type
-                            ),
-                            ttags = state.value.newTags
-                        )
-                    }
-                    "UPDATE" -> {
-                        transactionRepository.updateTransactionWithTag(
-                            transaction = state.value.transactionWithTags.transaction,
-                            ttags = state.value.newTags,
-                            previousTags = state.value.transactionWithTags.tags,
-                        )
+            is TransactionEvent.TransactionSubmit -> {
+                viewModelScope.launch {
+                    when (state.value.action) {
+                        "CREATE", "DUPLICATE" -> {
+                            val id = transactionRepository.createTransactionWithTags(
+                                transaction = state.value.transactionWithTags.transaction.copy(
+                                    transactionId = null,
+                                    walletId = event.wallet,
+                                    type = state.value.type
+                                ),
+                                ttags = state.value.newTags
+                            )
+                            transactionNotification.pushAlarm(state.value.transactionWithTags.transaction.copy(transactionId = id))
+                        }
+                        "UPDATE" -> {
+                            transactionRepository.updateTransactionWithTag(
+                                transaction = state.value.transactionWithTags.transaction,
+                                ttags = state.value.newTags,
+                                previousTags = state.value.transactionWithTags.tags,
+                            )
+                        }
                     }
                 }
             }
@@ -144,5 +148,4 @@ class TransactionViewModel @Inject constructor(
             }
         }
     }
-
 }
