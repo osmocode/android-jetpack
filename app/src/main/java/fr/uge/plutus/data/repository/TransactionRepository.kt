@@ -84,19 +84,30 @@ class TransactionRepository @Inject constructor(
 
     override suspend fun duplicateTransactionWithTags(walletSrc: Int, walletDest: Int) {
         val transactionsSrc = transactionDao.retrieveAllWithTag(walletSrc)
-        val transactionDest = transactionDao.duplicateTransaction(walletSrc, walletDest)
+        //val transactionDest = transactionDao.duplicateTransaction(walletSrc, walletDest)
 
-        transactionsSrc.first().forEach { transactionWithTags ->
-            transactionDao.duplicateTransactionAndTags(
-                transactionSrc = transactionWithTags.transaction.transactionId!!,
-                transactionDest = transactionDest
+        transactionsSrc.map { transactionWithTags ->
+            TransactionWithTags(
+                transaction = transactionWithTags.transaction.copy(walletId = walletDest),
+                tags = transactionWithTags.tags
             )
+        }.forEach {
+            createTransactionWithTags(it.transaction, it.tags)
         }
+
+        /*transactionsSrc.collect{  transactionsWithTags ->
+            transactionsWithTags.forEach { transactionWithTags ->
+                transactionDao.duplicateTransactionAndTags(
+                    transactionSrc = transactionWithTags.transaction.transactionId!!,
+                    transactionDest = transactionDest
+                )
+            }
+        }*/
     }
 
     override suspend fun retrieveTransactionWithTag(id: Long): TransactionWithTags? =
         transactionDao.retrieveWithTagById(id)
 
-    override fun retrieveAllTransactionWithTag(wallet: Int): Flow<List<TransactionWithTags>> =
+    override fun retrieveAllTransactionWithTag(wallet: Int) =
         transactionDao.retrieveAllWithTag(wallet)
 }

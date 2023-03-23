@@ -28,7 +28,7 @@ interface ITransactionRepository {
 
     suspend fun retrieveTransactionWithTag(id: Long): TransactionWithTags?
 
-    fun retrieveAllTransactionWithTag(wallet: Int): Flow<List<TransactionWithTags>>
+    fun retrieveAllTransactionWithTag(wallet: Int): List<TransactionWithTags>
 
     suspend fun duplicateTransactionWithTags(walletSrc: Int, walletDest: Int)
 

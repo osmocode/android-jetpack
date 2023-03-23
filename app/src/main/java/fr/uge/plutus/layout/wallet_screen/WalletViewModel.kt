@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uge.plutus.data.repository.BudgetRepository
 import fr.uge.plutus.data.repository.TransactionRepository
 import fr.uge.plutus.data.repository.WalletRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -55,12 +56,13 @@ class WalletViewModel @Inject constructor(
                         walletSrc = wallet.walletId!!,
                         walletDest = walletDest.toInt()
                     )
-                    transactionRepository.duplicateTransactionWithTags(
-                        walletSrc = wallet.walletId,
-                        walletDest = walletDest.toInt()
-                    )
+                    Dispatchers.IO.apply {
+                        transactionRepository.duplicateTransactionWithTags(
+                            walletSrc = wallet.walletId,
+                            walletDest = walletDest.toInt()
+                        )
+                    }
                 }
-
 
             }
         }

@@ -49,7 +49,7 @@ interface TransactionDao {
 
     @androidx.room.Transaction
     @Query("SELECT * FROM `Transaction` WHERE walletId=:wallet")
-    fun retrieveAllWithTag(wallet: Int): Flow<List<TransactionWithTags>>
+    fun retrieveAllWithTag(wallet: Int): List<TransactionWithTags>
 
     @Query(
         """INSERT INTO `Transaction` (title, description, type, currency, amount, timestamp, walletId)
@@ -61,7 +61,8 @@ interface TransactionDao {
     @androidx.room.Transaction
     @Query(
         """INSERT INTO TransactionAndTags (transactionId, tagId) 
-    SELECT :transactionDest, tagId FROM TransactionAndTags WHERE transactionId=:transactionSrc"""
+    SELECT :transactionDest, tagId FROM TransactionAndTags WHERE transactionId=:transactionSrc
+    """
     )
     suspend fun duplicateTransactionAndTags(transactionSrc: Long, transactionDest: Long)
 
