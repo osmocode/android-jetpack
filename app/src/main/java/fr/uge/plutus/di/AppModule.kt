@@ -1,12 +1,6 @@
 package fr.uge.plutus.di
 
-import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -17,6 +11,7 @@ import fr.uge.plutus.data.DataBase
 import fr.uge.plutus.data.dao.*
 import fr.uge.plutus.data.interfaces.*
 import fr.uge.plutus.data.repository.*
+import fr.uge.plutus.notification.TransactionNotification
 import fr.uge.plutus.storage.StorageRepository
 import javax.inject.Singleton
 
@@ -95,6 +90,15 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideTransactionNotification(
+        @ApplicationContext context: Context
+    ): TransactionNotification {
+        return TransactionNotification(context)
+    }
+
+    /*
+    @Singleton
+    @Provides
     fun provideNotificationAlarm(
         @ApplicationContext context: Context
     ): AlarmManager {
@@ -130,5 +134,5 @@ object AppModule {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
-
+     */
 }

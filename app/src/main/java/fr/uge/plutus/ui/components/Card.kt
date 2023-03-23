@@ -1,6 +1,6 @@
 package fr.uge.plutus.ui.components
 
-import androidx.compose.animation.*
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -12,7 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Wallpaper
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -46,8 +46,15 @@ fun AntCard(
     leadingIcon: List<AntCardActionItem> = listOf(),
     trailingIcon: List<AntCardActionItem> = listOf(),
 ) {
+    var changed by remember {
+        mutableStateOf(false)
+    }
     val size = 50.dp
     val swipe = rememberSwipeableState(initialValue = 0)
+    LaunchedEffect(key1 = changed){
+        swipe.snapTo(0)
+        changed = false
+    }
     val left = with(LocalDensity.current) {
         antCardActionPadding(
             size = size,
@@ -60,7 +67,8 @@ fun AntCard(
             length = trailingIcon.size
         ).toPx()
     }
-    val fraction:Float = if (swipe.progress.from - swipe.progress.to < 0){
+    //var fraction by remember { mutableStateOf(0f) }
+    val fraction = if (swipe.progress.from - swipe.progress.to < 0){
         swipe.progress.fraction
     }
     else if (swipe.progress.from - swipe.progress.to == 0){
@@ -69,6 +77,7 @@ fun AntCard(
     else {
         1 - swipe.progress.fraction
     }
+    Log.println(Log.ASSERT, "swipe state", swipe.currentValue.toString())
 
     Box(
         modifier = Modifier
@@ -103,8 +112,12 @@ fun AntCard(
                     AntCardAction(
                         icon = item.icon,
                         color = item.color,
-                        onClick = item.onClick,
-                        size = fraction
+                        onClick = {
+                            changed = true
+                            item.onClick.invoke()
+                                  },
+                        size = fraction,
+                        enabled = swipe.currentValue == 1
                     )
                 }
             }
@@ -115,12 +128,17 @@ fun AntCard(
                     AntCardAction(
                         icon = item.icon,
                         color = item.color,
-                        onClick = item.onClick,
-                        size = fraction
+                        onClick = {
+                            changed = true
+                            item.onClick
+                        },
+                        size = fraction,
+                        enabled = swipe.currentValue == 1
                     )
                 }
             }
         }
+
         Box(modifier = Modifier
             .offset {
                 IntOffset(swipe.offset.value.roundToInt(), 0)
@@ -188,7 +206,8 @@ fun AntCardAction(
     icon: ImageVector,
     color: Color,
     onClick: () -> Unit,
-    size: Float
+    size: Float,
+    enabled: Boolean
 ) {
     val sizeIcon = 12.dp + (size * 12).dp
     val sizeBox = 25.dp + (size * 25).dp
@@ -197,7 +216,7 @@ fun AntCardAction(
             .clip(shape = RoundedCornerShape(10.dp))
             .background(color = Ant.colors.gray_5)
             .size(sizeBox)
-            .clickable(onClick = onClick)
+            .clickable(enabled = enabled, onClick = onClick)
     ) {
         Icon(
             modifier = Modifier
