@@ -117,7 +117,7 @@ fun AntCard(
                             item.onClick.invoke()
                                   },
                         size = fraction,
-                        enabled = swipe.currentValue == 1
+                        enabled = swipe.currentValue == 1 || swipe.currentValue == 2
                     )
                 }
             }
@@ -130,10 +130,10 @@ fun AntCard(
                         color = item.color,
                         onClick = {
                             changed = true
-                            item.onClick
+                            item.onClick.invoke()
                         },
                         size = fraction,
-                        enabled = swipe.currentValue == 1
+                        enabled = swipe.currentValue == 1 || swipe.currentValue == 2
                     )
                 }
             }
