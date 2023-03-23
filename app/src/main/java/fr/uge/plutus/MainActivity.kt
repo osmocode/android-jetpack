@@ -15,7 +15,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
-    
+
     @Inject
     lateinit var transactionNotification: TransactionNotification
 

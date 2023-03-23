@@ -20,15 +20,13 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import fr.uge.plutus.data.model.Price
-import fr.uge.plutus.layout.transaction_screen.layout.AmountLayout
-import fr.uge.plutus.layout.transaction_screen.layout.DateLayout
-import fr.uge.plutus.layout.transaction_screen.layout.DescLayout
-import fr.uge.plutus.layout.transaction_screen.layout.TagLayout
+import fr.uge.plutus.layout.transaction_screen.layout.*
 import fr.uge.plutus.navigation.*
 import fr.uge.plutus.storage.SettingsWallet
 import fr.uge.plutus.ui.ant.Ant
 import fr.uge.plutus.ui.components.*
 import fr.uge.plutus.ui.input.AntDateInput
+import fr.uge.plutus.ui.input.AntLocationInput
 import fr.uge.plutus.ui.input.AntNoteInput
 import fr.uge.plutus.ui.input.AntTagInput
 
@@ -88,6 +86,15 @@ fun TransactionScreen(
             }
         )
         composable(
+            route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route,
+            content = {
+                DateLayout(
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
+        )
+        composable(
             route = NavigationRoute.MainScreen.TransactionScreen.DescLayout.route,
             content = {
                 DescLayout(
@@ -97,9 +104,9 @@ fun TransactionScreen(
             }
         )
         composable(
-            route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route,
+            route = NavigationRoute.MainScreen.TransactionScreen.LocationLayout.route,
             content = {
-                DateLayout(
+                LocationLayout(
                     navController = navController,
                     viewModel = viewModel
                 )
@@ -165,6 +172,9 @@ fun TransactionScreenOverview(
                 AntDateInput(
                     timestamp = viewModel.state.value.transactionWithTags.transaction.timestamp,
                     onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.DateLayout.route) }
+                )
+                AntLocationInput (
+                    onClick = { navController.navigate(route = NavigationRoute.MainScreen.TransactionScreen.LocationLayout.route) }
                 )
             }
             CustomButton(
